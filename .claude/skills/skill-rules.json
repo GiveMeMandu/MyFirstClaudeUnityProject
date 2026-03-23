@@ -1,0 +1,45 @@
+{
+  "version": "1.0.0",
+  "description": "Unity 게임 개발 스킬 자동 활성화 설정",
+  "skills": {
+    "unity-dev-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Unity C# 개발 패턴 및 베스트 프랙티스",
+      "promptTriggers": {
+        "keywords": [
+          "monobehaviour", "스크립트", "컴포넌트", "coroutine",
+          "inspector", "serialize", "update", "awake", "start",
+          "instantiate", "destroy", "prefab"
+        ],
+        "intentPatterns": [
+          "(만들어|작성|추가|수정).*?(스크립트|컴포넌트)",
+          "(고쳐|디버그|오류|에러).*?(스크립트|코드)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "Assets/Scripts/**/*.cs",
+          "Assets/**/*.cs"
+        ]
+      }
+    },
+    "game-design-doc": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "게임 기획 문서 작성 가이드",
+      "promptTriggers": {
+        "keywords": [
+          "기획서", "gdd", "핵심 재미", "시스템 설계",
+          "밸런스", "플레이 루프", "기획"
+        ],
+        "intentPatterns": [
+          "(작성|만들어|써줘).*?(문서|기획|gdd)",
+          "(게임|시스템).*?(설계|기획|구조)"
+        ]
+      }
+    }
+  }
+}

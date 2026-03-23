@@ -1,0 +1,35 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx tsx:*)",
+      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\")",
+      "Bash(node -e \"console.log\\(''node ok''\\)\")",
+      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Write\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"Project_Sun/Assets/Scenes/Main.unity\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
+      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Read\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"something.cs\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
+      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"skip ok \\(no output\\)\")"
+    ]
+  },
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/skill-activation-prompt.sh"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|MultiEdit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use-tracker.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
