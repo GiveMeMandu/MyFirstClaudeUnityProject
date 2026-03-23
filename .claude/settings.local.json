@@ -17,7 +17,9 @@
       "Bash(powershell -Command \"Test-NetConnection -ComputerName localhost -Port 8787 2>&1\")",
       "Skill(discord:configure)",
       "Read(//c/Users/wooch/.claude/channels/discord/**)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(git clone:*)",
+      "Bash(rm -rf /tmp/*)"
     ]
   },
   "hooks": {
