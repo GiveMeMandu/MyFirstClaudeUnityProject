@@ -6,7 +6,18 @@
       "Bash(node -e \"console.log\\(''node ok''\\)\")",
       "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Write\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"Project_Sun/Assets/Scenes/Main.unity\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
       "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Read\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"something.cs\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
-      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"skip ok \\(no output\\)\")"
+      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"skip ok \\(no output\\)\")",
+      "Bash(irm https://bun.sh/install.ps1)",
+      "Bash(iex)",
+      "Bash(powershell -Command \"irm https://bun.sh/install.ps1 | iex\")",
+      "Bash(export PATH=\"$PATH:/c/Users/wooch/.bun/bin\")",
+      "Bash(bun --version)",
+      "Bash(claude plugin:*)",
+      "Bash(curl -s http://localhost:8787)",
+      "Bash(powershell -Command \"Test-NetConnection -ComputerName localhost -Port 8787 2>&1\")",
+      "Skill(discord:configure)",
+      "Read(//c/Users/wooch/.claude/channels/discord/**)",
+      "Bash(chmod:*)"
     ]
   },
   "hooks": {

@@ -6,21 +6,19 @@
 - 인프라: .claude\ (hooks, skills, agents, commands)
 - 문서: Docs\ (아직 생성 전)
 
-## 현재 세팅 상태
-- Claude Code 설치 완료
-- .claude\ 폴더를 Project_Sun\ 안에서 워크스페이스 루트로 이동함
-- settings.local.json에 UserPromptSubmit, PostToolUse 훅 등록됨
-- skill-rules.json에 unity-dev-guidelines, game-design-doc 스킬 정의됨
-- hooks\ 안에 skill-activation-prompt, post-tool-use-tracker 파일 있음
+## 문서 시스템 (Obsidian Vault: Docs/)
+- GDD: Docs/GDD/index.md
+- 스프린트: Docs/Sprints/sprint-XX.md
+- 회의록: Docs/MeetingNotes/YYYY-MM-DD.md
+- 개발 일지: Docs/Daily/YYYY-MM-DD.md
+- 태스크: Docs/dev-docs/project-tasks.md
 
-## 확인 필요한 것
-- 훅 파일 경로가 이동 후에도 올바른지 검증 필요
-- $CLAUDE_PROJECT_DIR이 워크스페이스 루트를 가리키는지 확인 필요
-
-## 다음 목표
-- Docs\ 폴더 구조 생성
-- Discord webhook 연동
-- Notion MCP 연동
+## 파일 생성 규칙
+- 기획 문서 → Docs/GDD/ 하위
+- 스프린트 → Docs/Sprints/sprint-숫자.md
+- 회의록 → Docs/MeetingNotes/날짜.md
+- 일지 → Docs/Daily/날짜.md
+- 파일명 날짜 형식: YYYY-MM-DD
 
 # Unity Project - Claude Code Guide
 
