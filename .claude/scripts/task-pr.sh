@@ -155,10 +155,21 @@ PR_URL=$("$GH_CLI" pr create \
   --body "$PR_BODY" \
   2>&1)
 
+# ── project-tasks.md 업데이트 ──────────────────────────────
+
+TASKS_FILE="Docs/dev-docs/project-tasks.md"
+if [ -f "$TASKS_FILE" ] && grep -qF "$TASK_ID" "$TASKS_FILE" 2>/dev/null; then
+  # PR URL 추가
+  sed -i "s|\(.*${TASK_ID}.*\)|\1 — PR: ${PR_URL}|" "$TASKS_FILE" 2>/dev/null || true
+fi
+
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  PR 생성 완료"
 echo "  Branch: $BRANCH → $TARGET"
 echo "  Title:  $PR_TITLE"
 echo "  URL:    $PR_URL"
+echo ""
+echo "  머지 후 브랜치 정리:"
+echo "    bash .claude/scripts/task-cleanup.sh"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
