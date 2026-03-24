@@ -6,6 +6,7 @@
 - [x] Docs\ 폴더 구조 생성
 
 ## 진행 중
+- [ ] [TASK-001] construction-system (`feature/TASK-001-construction-system`)
 - [ ] .claude\ 경로 문제 검증
 - [ ] Discord Channels 연동
 
