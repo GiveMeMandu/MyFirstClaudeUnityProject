@@ -203,15 +203,15 @@
 
 **BuildingData ScriptableObject**에 노출하여 Inspector/커스텀 에디터에서 조정:
 
-| 파라미터 | 조정 목적 | 권장 범위 |
-|---|---|---|
-| constructionTurns (티어별) | 건설 템포 조절 | T1: 1턴, T2: 2턴, T3: 3턴 |
-| maxHP (건물별) | 방어전 생존성 | 50~300 |
-| autoRepairRate | 손상 회복 속도 | maxHP / 3 ~ maxHP / 5 (3~5턴 완전 회복) |
-| constructionCost (건물별) | 건설 진입 문턱 | 자원 종류별 비용 |
-| defenseResourceCostPerWorker | 방어 운영 부담 | 1턴 생산량의 20~40% |
-| upgradeCostMultiplier | 업그레이드 가성비 | 1.3x ~ 2.0x |
-| maxWorkers (연구 단계별) | 건설 가속 상한 | 1 → 2 → 3 |
+| 파라미터                         | 조정 목적     | 권장 범위                              |
+| ---------------------------- | --------- | ---------------------------------- |
+| constructionTurns (티어별)      | 건설 템포 조절  | T1: 1턴, T2: 2턴, T3: 3턴             |
+| maxHP (건물별)                  | 방어전 생존성   | 50~300                             |
+| autoRepairRate               | 손상 회복 속도  | maxHP / 3 ~ maxHP / 5 (3~5턴 완전 회복) |
+| constructionCost (건물별)       | 건설 진입 문턱  | 자원 종류별 비용                          |
+| defenseResourceCostPerWorker | 방어 운영 부담  | 1턴 생산량의 20~40%                     |
+| upgradeCostMultiplier        | 업그레이드 가성비 | 1.3x ~ 2.0x                        |
+| maxWorkers (연구 단계별)          | 건설 가속 상한  | 1 → 2 → 3                          |
 
 ### 기획자용 도구 요구사항
 

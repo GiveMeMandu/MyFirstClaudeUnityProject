@@ -40,6 +40,7 @@ namespace ProjectSun.Construction
             health = GetComponent<BuildingHealth>();
             if (health != null)
             {
+                health.OnDamaged += HandleDamaged;
                 health.OnDestroyed += HandleDestroyed;
                 health.OnRepaired += HandleRepaired;
             }
@@ -49,6 +50,7 @@ namespace ProjectSun.Construction
         {
             if (health != null)
             {
+                health.OnDamaged -= HandleDamaged;
                 health.OnDestroyed -= HandleDestroyed;
                 health.OnRepaired -= HandleRepaired;
             }
@@ -228,6 +230,15 @@ namespace ProjectSun.Construction
 
             SetState(BuildingSlotState.Active);
             OnUpgradeCompleted?.Invoke(this);
+        }
+
+        private void HandleDamaged(float damage)
+        {
+            // Transition to Damaged only from Active state (not during construction/upgrade)
+            if (state == BuildingSlotState.Active && health != null && health.IsDamaged)
+            {
+                SetState(BuildingSlotState.Damaged);
+            }
         }
 
         private void HandleDestroyed()
