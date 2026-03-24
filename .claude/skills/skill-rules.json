@@ -66,6 +66,27 @@
         ]
       }
     },
+    "vision-doc": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "프로젝트 비전/제작 방향성 문서 작성. 핵심 재미, 디자인 필터, 시스템 분석표, 플레이 루프",
+      "promptTriggers": {
+        "keywords": [
+          "비전", "제작 방향", "방향성", "핵심 재미", "디자인 필터",
+          "vision", "판단 기준", "핵심 컨셉", "플레이 루프"
+        ],
+        "intentPatterns": [
+          "(작성|만들어|써줘|갱신).*?(비전|방향성|vision)",
+          "(비전|방향성).*?(문서|작성|갱신)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "Docs/GDD/Vision.md"
+        ]
+      }
+    },
     "skill-developer": {
       "type": "domain",
       "enforcement": "suggest",
