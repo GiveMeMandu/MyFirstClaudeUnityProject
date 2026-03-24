@@ -2,24 +2,23 @@
   "permissions": {
     "allow": [
       "Bash(npx tsx:*)",
-      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\")",
-      "Bash(node -e \"console.log\\(''node ok''\\)\")",
-      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Write\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"Project_Sun/Assets/Scenes/Main.unity\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
-      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"---\" echo '{\"\"\"\"tool_name\"\"\"\":\"\"\"\"Read\"\"\"\",\"\"\"\"tool_input\"\"\"\":{\"\"\"\"file_path\"\"\"\":\"\"\"\"something.cs\"\"\"\"},\"\"\"\"session_id\"\"\"\":\"\"\"\"test\"\"\"\"}')",
-      "Bash(bash \"D:/Unity/MyFirstClaudeUnityProject/.claude/hooks/post-tool-use-tracker.sh\" echo \"skip ok \\(no output\\)\")",
-      "Bash(irm https://bun.sh/install.ps1)",
-      "Bash(iex)",
-      "Bash(powershell -Command \"irm https://bun.sh/install.ps1 | iex\")",
-      "Bash(export PATH=\"$PATH:/c/Users/wooch/.bun/bin\")",
-      "Bash(bun --version)",
-      "Bash(claude plugin:*)",
-      "Bash(curl -s http://localhost:8787)",
-      "Bash(powershell -Command \"Test-NetConnection -ComputerName localhost -Port 8787 2>&1\")",
-      "Skill(discord:configure)",
-      "Read(//c/Users/wooch/.claude/channels/discord/**)",
       "Bash(chmod:*)",
       "Bash(git clone:*)",
-      "Bash(rm -rf /tmp/*)"
+      "Bash(rm -rf /tmp/*)",
+      "Bash(claude plugin:*)",
+      "Skill(discord:configure)",
+      "Read(//c/Users/wooch/.claude/channels/discord/**)",
+      "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-start.sh\":*)",
+      "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-commit.sh\":*)",
+      "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-pr.sh\":*)",
+      "Bash(git checkout:*)",
+      "Bash(git pull:*)",
+      "Bash(git push:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git branch:*)",
+      "Bash(\"/c/Program Files/GitHub CLI/gh.exe\" pr:*)",
+      "Bash(/c/Users/wooch/AppData/Local/unity-cli.exe:*)"
     ]
   },
   "hooks": {
@@ -40,6 +39,18 @@
           {
             "type": "command",
             "command": "$CLAUDE_PROJECT_DIR/.claude/hooks/post-tool-use-tracker.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/unity-compile-check.sh",
+            "timeout": 30,
+            "statusMessage": "Unity 컴파일 에러 체크 중..."
           }
         ]
       }

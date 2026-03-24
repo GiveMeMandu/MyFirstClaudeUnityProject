@@ -20,9 +20,25 @@
       },
       "fileTriggers": {
         "pathPatterns": [
-          "Assets/Scripts/**/*.cs",
-          "Assets/**/*.cs"
+          "Project_Sun/Assets/Scripts/**/*.cs",
+          "Project_Sun/Assets/**/*.cs"
+        ],
+        "pathExclusions": [
+          "Project_Sun/Assets/**/Editor/**/*.cs",
+          "Project_Sun/Assets/**/Tests/**/*.cs",
+          "Project_Sun/Assets/Plugins/**/*.cs"
+        ],
+        "contentPatterns": [
+          "MonoBehaviour",
+          "using UnityEngine",
+          "\\[SerializeField\\]",
+          "void (Start|Update|Awake|OnEnable|OnDisable)\\(\\)"
         ]
+      },
+      "skipConditions": {
+        "sessionSkillUsed": true,
+        "fileMarkers": ["@skip-unity-check"],
+        "envOverride": "SKIP_UNITY_GUIDELINES"
       }
     },
     "game-design-doc": {
@@ -39,7 +55,63 @@
           "(작성|만들어|써줘).*?(문서|기획|gdd)",
           "(게임|시스템).*?(설계|기획|구조)"
         ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "Docs/GDD/**/*.md",
+          "Docs/Sprints/**/*.md"
+        ],
+        "pathExclusions": [
+          "Docs/Study/**"
+        ]
       }
+    },
+    "skill-developer": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Claude Code 스킬 생성 및 관리 메타-스킬. skill-rules.json 수정, 트리거 패턴 설계, 훅 시스템, 500-line 규칙, 점진적 공개 패턴",
+      "promptTriggers": {
+        "keywords": [
+          "skill system",
+          "스킬 만들기",
+          "스킬 추가",
+          "skill triggers",
+          "skill-rules.json",
+          "hook system",
+          "skill development",
+          "훅 설정",
+          "스킬 시스템"
+        ],
+        "intentPatterns": [
+          "(how do|how does|explain).*?skill",
+          "(create|add|modify|build).*?skill",
+          "skill.*?(work|trigger|activate|system)",
+          "(만들어|추가|수정).*?스킬",
+          "스킬.*?(동작|트리거|활성화)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          ".claude/skills/**/*.md",
+          ".claude/skills/skill-rules.json",
+          ".claude/hooks/**/*.ts",
+          ".claude/hooks/**/*.sh"
+        ]
+      }
+    }
+  },
+  "notes": {
+    "enforcement_types": {
+      "suggest": "스킬 제안만 표시, 실행 차단 없음",
+      "block": "스킬 사용 전까지 Edit/Write 차단 (가드레일)",
+      "warn": "경고 표시, 진행은 허용"
+    },
+    "priority_levels": {
+      "critical": "항상 트리거",
+      "high": "명확한 매칭 시 트리거",
+      "medium": "일반적 매칭",
+      "low": "명시적 매칭만"
     }
   }
 }
