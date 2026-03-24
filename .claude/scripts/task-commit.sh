@@ -54,7 +54,7 @@ if "$UNITY_CLI" status >/dev/null 2>&1; then
 
   ERRORS=$("$UNITY_CLI" console --filter error --lines 50 2>/dev/null || echo "")
 
-  if [ -n "$ERRORS" ]; then
+  if [ -n "$ERRORS" ] && [ "$ERRORS" != "[]" ]; then
     echo ""
     echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
     echo "  Unity C# 컴파일 에러 발견 — 커밋 중단"
