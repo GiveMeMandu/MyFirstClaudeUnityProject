@@ -25,17 +25,36 @@ namespace ProjectSun.Defense.ECS
             var deltaTime = SystemAPI.Time.DeltaTime;
 
             foreach (var (transform, stats, enemyState, target, attackTimer) in
-                SystemAPI.Query<RefRO<LocalTransform>, RefRO<EnemyStats>, RefRW<EnemyState>, RefRO<EnemyTarget>, RefRW<AttackTimer>>()
+                SystemAPI.Query<RefRO<LocalTransform>, RefRO<EnemyStats>, RefRW<EnemyState>, RefRW<EnemyTarget>, RefRW<AttackTimer>>()
                     .WithAll<EnemyTag>()
                     .WithNone<DeadTag>())
             {
                 if (!target.ValueRO.HasTarget) continue;
 
+                // 타겟 건물이 아직 존재하고 HP가 남아있는지 확인
+                bool targetValid = SystemAPI.HasComponent<BuildingData>(target.ValueRO.TargetEntity);
+                if (targetValid)
+                {
+                    var buildingData = SystemAPI.GetComponentRO<BuildingData>(target.ValueRO.TargetEntity);
+                    if (buildingData.ValueRO.CurrentHP <= 0f)
+                    {
+                        targetValid = false;
+                    }
+                }
+
+                if (!targetValid)
+                {
+                    // 타겟이 파괴됨 → Moving 상태로 전환하여 새 타겟 탐색
+                    enemyState.ValueRW.Value = (int)Defense.EnemyState.Moving;
+                    target.ValueRW.HasTarget = false;
+                    attackTimer.ValueRW.TimeSinceLastAttack = 0f;
+                    continue;
+                }
+
                 float dist = math.distance(transform.ValueRO.Position, target.ValueRO.TargetPosition);
 
                 if (dist <= stats.ValueRO.AttackRange)
                 {
-                    // 공격 범위 안 → Attacking 상태
                     enemyState.ValueRW.Value = (int)Defense.EnemyState.Attacking;
 
                     attackTimer.ValueRW.TimeSinceLastAttack += deltaTime;
@@ -44,7 +63,6 @@ namespace ProjectSun.Defense.ECS
                     {
                         attackTimer.ValueRW.TimeSinceLastAttack = 0f;
 
-                        // 타겟 건물에 데미지 누적
                         if (SystemAPI.HasComponent<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
                         {
                             var damageBuffer = SystemAPI.GetComponentRW<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
@@ -54,7 +72,6 @@ namespace ProjectSun.Defense.ECS
                 }
                 else
                 {
-                    // 공격 범위 밖 → Moving 상태
                     enemyState.ValueRW.Value = (int)Defense.EnemyState.Moving;
                 }
             }
@@ -91,7 +108,7 @@ namespace ProjectSun.Defense.ECS
                 }
             }
 
-            // DeadTag가 있는 Entity 제거 (다음 프레임에 처리하여 이펙트 재생 시간 확보)
+            // DeadTag가 있는 Entity 제거
             foreach (var (_, entity) in SystemAPI.Query<RefRO<DeadTag>>().WithEntityAccess())
             {
                 ecb.DestroyEntity(entity);
