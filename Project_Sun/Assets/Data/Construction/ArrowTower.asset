@@ -24,6 +24,10 @@ MonoBehaviour:
   autoRepairRate: 25
   repairTurns: 2
   defenseResourceCostPerSlot: 10
+  towerRange: 10
+  towerDamage: 8
+  towerAttackSpeed: 2
+  towerCanTargetAir: 1
   tier: 1
   upgradeBranches: []
   completedPrefab: {fileID: 0}

@@ -13,21 +13,17 @@ MonoBehaviour:
   m_Name: TestScenario
   m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.Turn.ScenarioDataSO
   scenarioName: Test Scenario
-  totalTurns: 15
   defaultEncounterData: {fileID: 11400000, guid: 2d6a8cad705ee324fb5d1e5ead902104, type: 2}
-  turnConfigs:
-  - turnNumber: 3
-    encounterType: 2
+  turnSchedule:
+  - encounterType: 2
     encounterData: {fileID: 0}
-  - turnNumber: 6
-    encounterType: 2
+  - encounterType: 2
     encounterData: {fileID: 0}
-  - turnNumber: 9
-    encounterType: 1
+  - encounterType: 1
     encounterData: {fileID: 0}
-  - turnNumber: 12
-    encounterType: 2
+  - encounterType: 2
     encounterData: {fileID: 0}
-  - turnNumber: 15
-    encounterType: 1
+  - encounterType: 1
+    encounterData: {fileID: 0}
+  - encounterType: 2
     encounterData: {fileID: 0}

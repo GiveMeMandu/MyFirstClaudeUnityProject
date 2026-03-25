@@ -20,14 +20,6 @@ MonoBehaviour:
     delayBeforeWave: 0
   - enemyGroups:
     - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
-      count: 30
-      spawnInterval: 0.1
-    - enemyData: {fileID: 11400000, guid: 8aae0f3ff05bf94449047ae1b54db71b, type: 2}
-      count: 5
-      spawnInterval: 0.5
-    delayBeforeWave: 10
-  - enemyGroups:
-    - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
       count: 40
       spawnInterval: 0.08
     - enemyData: {fileID: 11400000, guid: 8aae0f3ff05bf94449047ae1b54db71b, type: 2}
@@ -36,6 +28,14 @@ MonoBehaviour:
     - enemyData: {fileID: 11400000, guid: 5260f85198a5fa94fbb44f274235954f, type: 2}
       count: 10
       spawnInterval: 0.3
+    delayBeforeWave: 10
+  - enemyGroups:
+    - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
+      count: 30
+      spawnInterval: 0.1
+    - enemyData: {fileID: 11400000, guid: 8aae0f3ff05bf94449047ae1b54db71b, type: 2}
+      count: 5
+      spawnInterval: 0.5
     delayBeforeWave: 10
   enemyCountScalePerTurn: 1.15
   enemyStatScalePerTurn: 1.1
