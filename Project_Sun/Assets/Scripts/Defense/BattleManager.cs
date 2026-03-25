@@ -225,6 +225,24 @@ namespace ProjectSun.Defense
                     AccumulatedDamage = 0f
                 });
 
+                // Defense 카테고리 건물에 타워 컴포넌트 추가
+                var buildingData = slot.CurrentBuildingData;
+                if (buildingData != null && buildingData.category == BuildingCategory.Defense)
+                {
+                    entityManager.AddComponentData(buildingEntity, new TowerTag());
+                    entityManager.AddComponentData(buildingEntity, new TowerStats
+                    {
+                        Range = buildingData.towerRange,
+                        Damage = buildingData.towerDamage,
+                        AttackSpeed = buildingData.towerAttackSpeed,
+                        CanTargetAir = buildingData.towerCanTargetAir
+                    });
+                    entityManager.AddComponentData(buildingEntity, new TowerAttackTimer
+                    {
+                        TimeSinceLastAttack = 0f
+                    });
+                }
+
                 buildingEntityMap[i] = buildingEntity;
             }
         }
