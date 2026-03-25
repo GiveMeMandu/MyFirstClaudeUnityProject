@@ -55,14 +55,13 @@ namespace ProjectSun.Defense.ECS
                 SystemAPI.Query<RefRO<LocalTransform>, RefRO<TowerStats>, RefRO<BuildingData>, RefRW<TowerAttackTimer>>()
                     .WithAll<TowerTag>())
             {
-                // 파괴된 건물은 공격하지 않음
+                // 파괴된 건물 또는 비활성 타워(인력 미배치)는 스킵
                 if (buildingData.ValueRO.CurrentHP <= 0f) continue;
+                if (towerStats.ValueRO.AttackSpeed <= 0f || towerStats.ValueRO.Damage <= 0f) continue;
 
                 attackTimer.ValueRW.TimeSinceLastAttack += deltaTime;
 
-                float attackInterval = towerStats.ValueRO.AttackSpeed > 0f
-                    ? 1f / towerStats.ValueRO.AttackSpeed
-                    : 1f;
+                float attackInterval = 1f / towerStats.ValueRO.AttackSpeed;
 
                 if (attackTimer.ValueRO.TimeSinceLastAttack < attackInterval) continue;
 

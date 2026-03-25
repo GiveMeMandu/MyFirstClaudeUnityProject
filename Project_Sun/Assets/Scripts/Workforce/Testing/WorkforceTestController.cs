@@ -1,4 +1,5 @@
 using ProjectSun.Construction;
+using ProjectSun.Turn;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,16 +8,20 @@ namespace ProjectSun.Workforce.Testing
     /// <summary>
     /// IMGUI 기반 인력 배치 테스트 UI.
     /// 건물 선택 → 슬롯별 +/- 버튼으로 인력 배치.
+    /// 낮 페이즈에서만 배치 변경 가능.
     /// </summary>
     public class WorkforceTestController : MonoBehaviour
     {
         [Header("연동")]
         [SerializeField] private WorkforceManager workforceManager;
         [SerializeField] private BuildingManager buildingManager;
+        [SerializeField] private TurnManager turnManager;
         [SerializeField] private Camera mainCamera;
 
         private BuildingSlot selectedSlot;
         private Vector2 scrollPos;
+
+        private bool IsDayPhase => turnManager == null || turnManager.CurrentPhase == TurnPhase.DayPhase;
 
         private void Update()
         {
@@ -79,10 +84,17 @@ namespace ProjectSun.Workforce.Testing
                 new GUIStyle(GUI.skin.label) { richText = true });
 
             GUILayout.Space(3);
+            if (!IsDayPhase)
+            {
+                GUILayout.Label("<color=orange>Night — assignment locked</color>",
+                    new GUIStyle(GUI.skin.label) { richText = true });
+            }
+            GUI.enabled = IsDayPhase;
             if (GUILayout.Button("Unassign All"))
             {
                 workforceManager.UnassignAll();
             }
+            GUI.enabled = true;
 
             GUILayout.EndVertical();
         }
@@ -132,12 +144,12 @@ namespace ProjectSun.Workforce.Testing
                 GUILayout.Label($"{slot.SlotName}", GUILayout.Width(90));
                 GUILayout.Label($"{slot.AssignedWorkers}/{slot.MaxWorkers}", GUILayout.Width(35));
 
-                GUI.enabled = slot.AssignedWorkers > 0;
+                GUI.enabled = IsDayPhase && slot.AssignedWorkers > 0;
                 if (GUILayout.Button("-", GUILayout.Width(25)))
                 {
                     workforceManager.UnassignWorker(selectedSlot, i);
                 }
-                GUI.enabled = slot.CanAddWorker && workforceManager.IdleCount > 0;
+                GUI.enabled = IsDayPhase && slot.CanAddWorker && workforceManager.IdleCount > 0;
                 if (GUILayout.Button("+", GUILayout.Width(25)))
                 {
                     workforceManager.AssignWorker(selectedSlot, i);
@@ -183,12 +195,12 @@ namespace ProjectSun.Workforce.Testing
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Healers: {healSlot.AssignedWorkers}/{healSlot.MaxWorkers}", GUILayout.Width(120));
 
-            GUI.enabled = healSlot.AssignedWorkers > 0;
+            GUI.enabled = IsDayPhase && healSlot.AssignedWorkers > 0;
             if (GUILayout.Button("-", GUILayout.Width(25)))
             {
                 workforceManager.UnassignHealer();
             }
-            GUI.enabled = healSlot.CanAddWorker && workforceManager.IdleCount > 0;
+            GUI.enabled = IsDayPhase && healSlot.CanAddWorker && workforceManager.IdleCount > 0;
             if (GUILayout.Button("+", GUILayout.Width(25)))
             {
                 workforceManager.AssignHealer();

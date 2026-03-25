@@ -282,8 +282,8 @@ namespace ProjectSun.Workforce
                 }
                 else
                 {
-                    // WorkerSlotConfig가 없으면 기본 슬롯 1개 생성
-                    runtimeSlots.Add(CreateDefaultSlot(data));
+                    // WorkerSlotConfig가 없으면 카테고리 기반 기본 슬롯 생성
+                    runtimeSlots.AddRange(CreateDefaultSlots(data));
                 }
 
                 buildingSlots[slot] = runtimeSlots;
@@ -298,23 +298,47 @@ namespace ProjectSun.Workforce
             InitializeSlots();
         }
 
-        private WorkerSlotRuntime CreateDefaultSlot(BuildingData data)
+        private List<WorkerSlotRuntime> CreateDefaultSlots(BuildingData data)
         {
-            var slotType = data.category switch
-            {
-                BuildingCategory.Resource => WorkerSlotType.Production,
-                BuildingCategory.Defense => WorkerSlotType.AttackPower,
-                BuildingCategory.Research => WorkerSlotType.Research,
-                _ => WorkerSlotType.Production
-            };
+            var result = new List<WorkerSlotRuntime>();
 
-            return new WorkerSlotRuntime(new WorkerSlotDefinition
+            if (data.category == BuildingCategory.Defense)
             {
-                slotName = data.category.ToString(),
-                slotType = slotType,
-                maxWorkers = data.maxConstructionWorkers,
-                effectPerWorker = 1f
-            });
+                // 방어 건물: 공격력 슬롯 + 공격속도 슬롯
+                result.Add(new WorkerSlotRuntime(new WorkerSlotDefinition
+                {
+                    slotName = "공격력",
+                    slotType = WorkerSlotType.AttackPower,
+                    maxWorkers = 2,
+                    effectPerWorker = 1f
+                }));
+                result.Add(new WorkerSlotRuntime(new WorkerSlotDefinition
+                {
+                    slotName = "공격속도",
+                    slotType = WorkerSlotType.AttackSpeed,
+                    maxWorkers = 2,
+                    effectPerWorker = 1f
+                }));
+            }
+            else
+            {
+                var slotType = data.category switch
+                {
+                    BuildingCategory.Resource => WorkerSlotType.Production,
+                    BuildingCategory.Research => WorkerSlotType.Research,
+                    _ => WorkerSlotType.Production
+                };
+
+                result.Add(new WorkerSlotRuntime(new WorkerSlotDefinition
+                {
+                    slotName = data.category.ToString(),
+                    slotType = slotType,
+                    maxWorkers = data.maxConstructionWorkers,
+                    effectPerWorker = 1f
+                }));
+            }
+
+            return result;
         }
 
         private void SyncBuildingWorkers(BuildingSlot building)

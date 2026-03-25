@@ -172,6 +172,7 @@ public static class TurnTestSceneBuilder
         var workforceCtrl = workforceCtrlGO.AddComponent<WorkforceTestController>();
         SetField(workforceCtrl, "workforceManager", workforceMgr);
         SetField(workforceCtrl, "buildingManager", manager);
+        SetField(workforceCtrl, "turnManager", turnMgr);
         SetField(workforceCtrl, "mainCamera", cam);
 
         // HP 초기화
