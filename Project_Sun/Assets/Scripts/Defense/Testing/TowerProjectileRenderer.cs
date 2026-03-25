@@ -97,11 +97,15 @@ namespace ProjectSun.Defense.Testing
                 // 파괴된 건물 무시
                 if (bData.CurrentHP <= 0f) continue;
 
+                var towerStats = entityManager.GetComponentData<TowerStats>(towerEntities[t]);
+
+                // 비활성 타워 무시 (인력 미배치)
+                if (towerStats.AttackSpeed <= 0f || towerStats.Damage <= 0f) continue;
+
                 // 방금 공격한 타워만 (타이머가 deltaTime 미만)
                 if (timer.TimeSinceLastAttack > Time.deltaTime * 2f) continue;
 
                 var towerPos = entityManager.GetComponentData<LocalTransform>(towerEntities[t]).Position;
-                var towerStats = entityManager.GetComponentData<TowerStats>(towerEntities[t]);
                 float rangeSq = towerStats.Range * towerStats.Range;
 
                 // 가장 가까운 적 찾기
