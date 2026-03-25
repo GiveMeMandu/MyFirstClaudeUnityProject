@@ -20,10 +20,8 @@ namespace ProjectSun.Defense
         [SerializeField] private WaveDataSO waveData;
         [SerializeField] private int currentTurnNumber = 1;
 
-        [Header("적 프리팹 (SubScene 내 Entity Prefab)")]
-        [SerializeField] private GameObject basicEnemyPrefab;
-        [SerializeField] private GameObject heavyEnemyPrefab;
-        [SerializeField] private GameObject flyingEnemyPrefab;
+        [Header("스폰 포인트")]
+        [SerializeField] private List<Transform> spawnPoints = new();
 
         [Header("연동")]
         [SerializeField] private BuildingManager buildingManager;
@@ -75,6 +73,9 @@ namespace ProjectSun.Defense
             waveTimer = 0f;
             allWavesSpawned = false;
 
+            // 스폰 포인트를 ECS에 등록
+            RegisterSpawnPoints();
+
             // 건물 데이터를 DOTS 세계로 브릿지
             BridgeBuildingsToECS();
 
@@ -93,8 +94,9 @@ namespace ProjectSun.Defense
         /// </summary>
         public void StopBattle()
         {
-            // 모든 적 Entity 제거
             CleanupECSEntities();
+            Time.timeScale = 1f;
+            timeScale = 1f;
             SetBattleState(BattleState.Idle);
         }
 
@@ -107,18 +109,36 @@ namespace ProjectSun.Defense
             Time.timeScale = timeScale;
         }
 
+        /// <summary>
+        /// 현재 남은 적 수 (UI용)
+        /// </summary>
+        public int GetRemainingEnemyCount()
+        {
+            if (defaultWorld == null || !defaultWorld.IsCreated) return 0;
+            var query = entityManager.CreateEntityQuery(typeof(EnemyTag));
+            return query.CalculateEntityCount();
+        }
+
         private void Update()
         {
             if (battleState != BattleState.InProgress) return;
 
-            // 웨이브 스폰 타이밍 관리
             UpdateWaveSpawning();
-
-            // 건물 데미지 동기화 (DOTS → MonoBehaviour)
             SyncBuildingDamage();
-
-            // 전투 종료 조건 확인
             CheckBattleEndConditions();
+        }
+
+        private void RegisterSpawnPoints()
+        {
+            for (int i = 0; i < spawnPoints.Count; i++)
+            {
+                if (spawnPoints[i] == null) continue;
+                var spEntity = entityManager.CreateEntity();
+                var pos = spawnPoints[i].position;
+                entityManager.AddComponentData(spEntity, new SpawnPoint { Index = i });
+                entityManager.AddComponentData(spEntity, LocalTransform.FromPosition(
+                    new float3(pos.x, pos.y, pos.z)));
+            }
         }
 
         private void UpdateWaveSpawning()
@@ -155,14 +175,11 @@ namespace ProjectSun.Defense
                 int scaledCount = waveData.GetScaledCount(group.count, currentTurnNumber);
                 statistics.TotalSpawned += scaledCount;
 
-                // ECS SpawnGroup Entity 생성
-                var prefab = GetEntityPrefab(group.enemyData.enemyType);
-                if (prefab == Entity.Null) continue;
-
+                // SpawnGroup Entity 생성 — WaveSpawnSystem이 실제 적을 스폰
                 var spawnEntity = entityManager.CreateEntity();
                 entityManager.AddComponentData(spawnEntity, new SpawnGroup
                 {
-                    EnemyPrefab = prefab,
+                    EnemyPrefab = Entity.Null, // 런타임 생성이므로 프리팹 불필요
                     RemainingCount = scaledCount,
                     SpawnInterval = group.spawnInterval,
                     SpawnTimer = 0f,
@@ -175,31 +192,6 @@ namespace ProjectSun.Defense
                     BaseAttackInterval = group.enemyData.attackInterval
                 });
             }
-        }
-
-        private Entity GetEntityPrefab(EnemyType type)
-        {
-            // 런타임에 GameObject → Entity 변환은 Baking이 필요.
-            // PoC에서는 SubScene에 프리팹을 배치하고 베이크된 Entity를 참조.
-            // 이를 위해 PrefabEntityHolder 싱글턴을 사용.
-            var query = entityManager.CreateEntityQuery(typeof(PrefabEntityReference));
-            if (query.IsEmpty) return Entity.Null;
-
-            var entities = query.ToEntityArray(Allocator.Temp);
-            Entity result = Entity.Null;
-
-            for (int i = 0; i < entities.Length; i++)
-            {
-                var prefRef = entityManager.GetComponentData<PrefabEntityReference>(entities[i]);
-                if (prefRef.EnemyType == (int)type)
-                {
-                    result = prefRef.PrefabEntity;
-                    break;
-                }
-            }
-
-            entities.Dispose();
-            return result;
         }
 
         private void BridgeBuildingsToECS()
@@ -260,13 +252,11 @@ namespace ProjectSun.Defense
                         slot.Health.TakeDamage(damageBuffer.AccumulatedDamage);
                         statistics.TotalDamageToBuildings += damageBuffer.AccumulatedDamage;
 
-                        // 건물 피해 기록
                         statistics.RecordBuildingDamage(
                             slot.CurrentBuildingData != null ? slot.CurrentBuildingData.buildingName : $"Building {buildingData.SlotIndex}",
                             damageBuffer.AccumulatedDamage
                         );
 
-                        // ECS 건물 HP 동기화
                         entityManager.SetComponentData(entities[i], new ECS.BuildingData
                         {
                             MaxHP = buildingData.MaxHP,
@@ -278,7 +268,6 @@ namespace ProjectSun.Defense
                     }
                 }
 
-                // 데미지 버퍼 리셋
                 entityManager.SetComponentData(entities[i], new BuildingDamageBuffer { AccumulatedDamage = 0f });
             }
 
@@ -309,10 +298,7 @@ namespace ProjectSun.Defense
                 var enemyQuery = entityManager.CreateEntityQuery(typeof(EnemyTag));
                 var spawnGroupQuery = entityManager.CreateEntityQuery(typeof(SpawnGroup));
 
-                int remainingEnemies = enemyQuery.CalculateEntityCount();
-                int remainingSpawnGroups = spawnGroupQuery.CalculateEntityCount();
-
-                if (remainingEnemies == 0 && remainingSpawnGroups == 0)
+                if (enemyQuery.CalculateEntityCount() == 0 && spawnGroupQuery.CalculateEntityCount() == 0)
                 {
                     EndBattle(BattleState.Victory);
                 }
@@ -324,7 +310,6 @@ namespace ProjectSun.Defense
             Time.timeScale = 1f;
             timeScale = 1f;
 
-            // 적 수 업데이트
             var enemyQuery = entityManager.CreateEntityQuery(typeof(EnemyTag));
             statistics.TotalKilled = statistics.TotalSpawned - enemyQuery.CalculateEntityCount();
 
@@ -337,17 +322,17 @@ namespace ProjectSun.Defense
         {
             if (defaultWorld == null || !defaultWorld.IsCreated) return;
 
-            // 적 Entity 전부 제거
             var enemyQuery = entityManager.CreateEntityQuery(typeof(EnemyTag));
             entityManager.DestroyEntity(enemyQuery);
 
-            // 건물 Entity 제거
             var buildingQuery = entityManager.CreateEntityQuery(typeof(BuildingTag));
             entityManager.DestroyEntity(buildingQuery);
 
-            // SpawnGroup 제거
             var spawnQuery = entityManager.CreateEntityQuery(typeof(SpawnGroup));
             entityManager.DestroyEntity(spawnQuery);
+
+            var spawnPointQuery = entityManager.CreateEntityQuery(typeof(SpawnPoint));
+            entityManager.DestroyEntity(spawnPointQuery);
 
             buildingEntityMap.Clear();
         }
@@ -367,9 +352,6 @@ namespace ProjectSun.Defense
         }
     }
 
-    /// <summary>
-    /// 전투 통계 데이터 (MonoBehaviour 측)
-    /// </summary>
     [Serializable]
     public class BattleStatisticsData
     {

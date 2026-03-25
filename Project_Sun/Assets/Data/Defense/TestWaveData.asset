@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b0b10298e97457145888f6faf5db0e9e, type: 3}
+  m_Name: TestWaveData
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.Defense.WaveDataSO
+  waves:
+  - enemyGroups:
+    - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
+      count: 20
+      spawnInterval: 0.1
+    delayBeforeWave: 0
+  - enemyGroups:
+    - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
+      count: 30
+      spawnInterval: 0.1
+    - enemyData: {fileID: 11400000, guid: 8aae0f3ff05bf94449047ae1b54db71b, type: 2}
+      count: 5
+      spawnInterval: 0.5
+    delayBeforeWave: 10
+  - enemyGroups:
+    - enemyData: {fileID: 11400000, guid: 14410b8e304f12f428e48eab1dcde852, type: 2}
+      count: 40
+      spawnInterval: 0.08
+    - enemyData: {fileID: 11400000, guid: 8aae0f3ff05bf94449047ae1b54db71b, type: 2}
+      count: 8
+      spawnInterval: 0.4
+    - enemyData: {fileID: 11400000, guid: 5260f85198a5fa94fbb44f274235954f, type: 2}
+      count: 10
+      spawnInterval: 0.3
+    delayBeforeWave: 10
+  enemyCountScalePerTurn: 1.15
+  enemyStatScalePerTurn: 1.1
