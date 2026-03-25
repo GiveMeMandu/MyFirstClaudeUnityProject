@@ -38,17 +38,22 @@ public static class DefenseTestSceneBuilder
         public BuildingCategory category;
         public bool isHQ;
         public float maxHP;
+        // 타워 스탯 (Defense 카테고리 전용)
+        public float towerRange;
+        public float towerDamage;
+        public float towerAttackSpeed;
+        public bool towerCanTargetAir;
     }
 
     private static readonly SlotConfig[] SlotConfigs =
     {
         new() { name = "Headquarters",  category = BuildingCategory.Administration, isHQ = true,  maxHP = 300 },
         new() { name = "Farm",          category = BuildingCategory.Resource,       isHQ = false, maxHP = 80 },
-        new() { name = "Arrow Tower",   category = BuildingCategory.Defense,        isHQ = false, maxHP = 120 },
+        new() { name = "Arrow Tower",   category = BuildingCategory.Defense,        isHQ = false, maxHP = 120, towerRange = 10f, towerDamage = 8f,  towerAttackSpeed = 2f, towerCanTargetAir = false },
         new() { name = "Wall",          category = BuildingCategory.Wall,           isHQ = false, maxHP = 200 },
         new() { name = "Wall East",     category = BuildingCategory.Wall,           isHQ = false, maxHP = 200 },
         new() { name = "Mine",          category = BuildingCategory.Resource,       isHQ = false, maxHP = 80 },
-        new() { name = "Arrow Tower 2", category = BuildingCategory.Defense,        isHQ = false, maxHP = 120 },
+        new() { name = "Arrow Tower 2", category = BuildingCategory.Defense,        isHQ = false, maxHP = 120, towerRange = 12f, towerDamage = 12f, towerAttackSpeed = 1f, towerCanTargetAir = true },
     };
 
     // 스폰 포인트 위치 (기지 외곽 4방향)
@@ -126,6 +131,10 @@ public static class DefenseTestSceneBuilder
         SetPrivateField(hybridRenderer, "basicEnemyMaterial", basicEnemyMat);
         SetPrivateField(hybridRenderer, "heavyEnemyMaterial", heavyEnemyMat);
         SetPrivateField(hybridRenderer, "flyingEnemyMaterial", flyingEnemyMat);
+
+        // TowerProjectileRenderer
+        var projectileRendererGO = new GameObject("TowerProjectileRenderer");
+        projectileRendererGO.AddComponent<TowerProjectileRenderer>();
 
         // DefenseTestController
         var controllerGO = new GameObject("DefenseTestController");
@@ -238,6 +247,15 @@ public static class DefenseTestSceneBuilder
             data.maxHP = cfg.maxHP;
             data.autoRepairRate = 25f;
             data.repairTurns = 2;
+
+            // 타워 스탯 설정 (Defense 카테고리)
+            if (cfg.category == BuildingCategory.Defense)
+            {
+                data.towerRange = cfg.towerRange;
+                data.towerDamage = cfg.towerDamage;
+                data.towerAttackSpeed = cfg.towerAttackSpeed;
+                data.towerCanTargetAir = cfg.towerCanTargetAir;
+            }
             data.baseWorkerSlots = 1;
             data.maxConstructionWorkers = 1;
             data.tier = 1;
