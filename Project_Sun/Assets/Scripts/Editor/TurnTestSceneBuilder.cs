@@ -10,6 +10,8 @@ using ProjectSun.Defense;
 using ProjectSun.Defense.Testing;
 using ProjectSun.Turn;
 using ProjectSun.Turn.Testing;
+using ProjectSun.Workforce;
+using ProjectSun.Workforce.Testing;
 
 /// <summary>
 /// 턴 시스템 통합 테스트 씬 자동 생성.
@@ -139,14 +141,24 @@ public static class TurnTestSceneBuilder
         var toastGO = new GameObject("ToastMessage");
         var toast = toastGO.AddComponent<ToastMessage>();
 
+        // WorkforceManager
+        var workforceGO = new GameObject("WorkforceManager");
+        var workforceMgr = workforceGO.AddComponent<WorkforceManager>();
+        SetField(workforceMgr, "buildingManager", manager);
+        SetField(workforceMgr, "totalWorkers", 4);
+
         // TurnManager
         var turnGO = new GameObject("TurnManager");
         var turnMgr = turnGO.AddComponent<TurnManager>();
         SetField(turnMgr, "scenarioData", scenarioData);
         SetField(turnMgr, "buildingManager", manager);
         SetField(turnMgr, "battleManager", battleMgr);
+        SetField(turnMgr, "workforceManager", workforceMgr);
         SetField(turnMgr, "screenFader", fader);
         SetField(turnMgr, "toastMessage", toast);
+
+        // BattleManager에 WorkforceManager 연결
+        SetField(battleMgr, "workforceManager", workforceMgr);
 
         // TurnTestController
         var turnCtrlGO = new GameObject("TurnTestController");
@@ -154,6 +166,13 @@ public static class TurnTestSceneBuilder
         SetField(turnCtrl, "turnManager", turnMgr);
         SetField(turnCtrl, "buildingManager", manager);
         SetField(turnCtrl, "mainCamera", cam);
+
+        // WorkforceTestController
+        var workforceCtrlGO = new GameObject("WorkforceTestController");
+        var workforceCtrl = workforceCtrlGO.AddComponent<WorkforceTestController>();
+        SetField(workforceCtrl, "workforceManager", workforceMgr);
+        SetField(workforceCtrl, "buildingManager", manager);
+        SetField(workforceCtrl, "mainCamera", cam);
 
         // HP 초기화
         for (int i = 0; i < slots.Count; i++)
