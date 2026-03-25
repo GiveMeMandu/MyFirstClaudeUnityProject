@@ -10,6 +10,7 @@
       "Read(//c/Users/wooch/.claude/channels/discord/**)",
       "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-start.sh\":*)",
       "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-commit.sh\":*)",
+      "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-commit-sf.sh\":*)",
       "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-pr.sh\":*)",
       "Bash(bash \"$CLAUDE_PROJECT_DIR/.claude/scripts/task-cleanup.sh\":*)",
       "Bash(git checkout:*)",
