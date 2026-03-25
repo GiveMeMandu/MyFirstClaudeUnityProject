@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ProjectSun.Workforce;
 using UnityEngine;
 
 namespace ProjectSun.Construction
@@ -66,6 +67,10 @@ namespace ProjectSun.Construction
 
         [Tooltip("공중 유닛 공격 가능 여부")]
         public bool towerCanTargetAir;
+
+        [Header("인력 슬롯 구성")]
+        [Tooltip("건물의 인력 슬롯 구성 (null이면 카테고리 기반 기본 슬롯 1개 생성)")]
+        public WorkerSlotConfig workerSlotConfig;
 
         [Header("업그레이드 분기")]
         [Tooltip("현재 티어")]
