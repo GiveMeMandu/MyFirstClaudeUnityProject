@@ -145,13 +145,25 @@ namespace ProjectSun.Construction
         }
 
         /// <summary>
-        /// 턴 종료 시 호출. 모든 슬롯의 건설/수리/자동회복 진행.
+        /// 다음 낮 시작 시 호출. 모든 슬롯의 건설/수리 진행도 처리.
+        /// 자동 회복은 포함하지 않음 (ProcessAutoRepair로 분리).
         /// </summary>
         public void ProcessTurn()
         {
             foreach (var slot in allSlots)
             {
                 slot.ProcessTurn();
+            }
+        }
+
+        /// <summary>
+        /// 낮 종료 시 호출. 손상 건물의 자동 회복만 처리.
+        /// </summary>
+        public void ProcessAutoRepair()
+        {
+            foreach (var slot in allSlots)
+            {
+                slot.ProcessAutoRepair();
             }
         }
 
