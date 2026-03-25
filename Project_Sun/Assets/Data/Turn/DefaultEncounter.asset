@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36041bb78a48e4741af50d5842bfaa42, type: 3}
   m_Name: DefaultEncounter
   m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.Turn.EncounterDataSO
-  battleChance: 0.3
+  battleChance: 0
   eventChance: 0.25
   eventPool:
   - eventName: "\uBC29\uB791 \uC0C1\uC778"

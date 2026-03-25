@@ -33,7 +33,7 @@ namespace ProjectSun.Turn
 
         public int CurrentTurn => currentTurn;
         public TurnPhase CurrentPhase => currentPhase;
-        public int TotalTurns => scenarioData != null ? scenarioData.totalTurns : 20;
+        public int TotalTurns => scenarioData != null ? scenarioData.TotalTurns : 20;
         public bool IsProcessing => currentPhase != TurnPhase.DayPhase && currentPhase != TurnPhase.GameOver;
 
         public event Action<TurnPhase> OnPhaseChanged;
@@ -239,6 +239,9 @@ namespace ProjectSun.Turn
 
             // 전투 종료 대기
             yield return new WaitUntil(() => !battleInProgress);
+
+            // 다음 전투를 위해 Idle 상태로 리셋
+            battleManager.ResetToIdle();
         }
 
         private void HandleBattleEnded(BattleStatisticsData stats)

@@ -101,6 +101,17 @@ namespace ProjectSun.Defense
         }
 
         /// <summary>
+        /// 전투 종료 후 Idle 상태로 리셋 (TurnManager에서 호출).
+        /// 다음 전투를 시작하려면 반드시 호출해야 함.
+        /// </summary>
+        public void ResetToIdle()
+        {
+            Time.timeScale = 1f;
+            timeScale = 1f;
+            SetBattleState(BattleState.Idle);
+        }
+
+        /// <summary>
         /// 배속 설정 (1x 또는 2x)
         /// </summary>
         public void SetTimeScale(float scale)

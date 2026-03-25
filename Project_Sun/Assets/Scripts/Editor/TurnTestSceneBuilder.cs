@@ -152,6 +152,8 @@ public static class TurnTestSceneBuilder
         var turnCtrlGO = new GameObject("TurnTestController");
         var turnCtrl = turnCtrlGO.AddComponent<TurnTestController>();
         SetField(turnCtrl, "turnManager", turnMgr);
+        SetField(turnCtrl, "buildingManager", manager);
+        SetField(turnCtrl, "mainCamera", cam);
 
         // HP 초기화
         for (int i = 0; i < slots.Count; i++)

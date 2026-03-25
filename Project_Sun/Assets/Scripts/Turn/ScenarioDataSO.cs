@@ -5,25 +5,26 @@ using UnityEngine;
 namespace ProjectSun.Turn
 {
     /// <summary>
-    /// 턴별 인카운터 설정
+    /// 턴별 인카운터 설정.
+    /// 배열 인덱스 = 턴 번호 - 1 (즉, [0]은 1턴, [1]은 2턴...).
     /// </summary>
     [Serializable]
     public struct TurnEncounterConfig
     {
-        [Tooltip("이 설정이 적용되는 턴 번호 (1부터 시작)")]
-        [Min(1)]
-        public int turnNumber;
-
-        [Tooltip("이 턴의 인카운터 유형")]
+        [Tooltip("이 턴의 인카운터 유형\n" +
+                 "- None: 아무 일 없음\n" +
+                 "- FixedBattle: 반드시 전투 발생\n" +
+                 "- RandomEncounter: 확률 테이블에 따라 결정")]
         public EncounterType encounterType;
 
-        [Tooltip("랜덤 인카운터일 경우 사용할 확률 테이블 (null이면 기본값)")]
+        [Tooltip("RandomEncounter일 경우 사용할 확률 테이블 (null이면 기본값 사용)")]
         public EncounterDataSO encounterData;
     }
 
     /// <summary>
     /// 시나리오 전체 정의.
-    /// 총 턴 수, 턴별 인카운터 유형, 기본 인카운터 확률 등을 설정.
+    /// turnSchedule 배열로 각 턴의 인카운터를 직접 지정.
+    /// 배열의 [0] = 1턴, [1] = 2턴, ..., [N-1] = N턴.
     /// </summary>
     [CreateAssetMenu(fileName = "NewScenario", menuName = "ProjectSun/Turn/Scenario Data")]
     public class ScenarioDataSO : ScriptableObject
@@ -31,55 +32,58 @@ namespace ProjectSun.Turn
         [Header("시나리오 기본 설정")]
         public string scenarioName;
 
-        [Tooltip("총 턴 수 (이 턴까지 생존하면 클리어)")]
-        [Min(1)]
-        public int totalTurns = 20;
-
         [Header("기본 인카운터 설정")]
-        [Tooltip("턴별 설정이 없는 턴에 적용되는 기본 인카운터 데이터")]
+        [Tooltip("turnSchedule에 설정이 없거나 RandomEncounter의 encounterData가 null일 때 사용")]
         public EncounterDataSO defaultEncounterData;
 
-        [Header("턴별 인카운터 설정")]
-        [Tooltip("특정 턴에 대한 인카운터 오버라이드 (고정 전투 등)")]
-        public List<TurnEncounterConfig> turnConfigs = new();
+        [Header("턴별 스케줄")]
+        [Tooltip("각 턴의 인카운터를 순서대로 정의.\n" +
+                 "배열 크기 = 총 턴 수.\n" +
+                 "[0] = 1턴, [1] = 2턴, ...")]
+        public List<TurnEncounterConfig> turnSchedule = new();
 
         /// <summary>
-        /// 주어진 턴의 인카운터 유형과 데이터를 반환
+        /// 총 턴 수 (배열 크기로 결정)
+        /// </summary>
+        public int TotalTurns => turnSchedule.Count;
+
+        /// <summary>
+        /// 주어진 턴의 인카운터 유형과 데이터를 반환 (1-based)
         /// </summary>
         public (EncounterType type, EncounterDataSO data) GetTurnEncounter(int turnNumber)
         {
-            // 턴별 설정 우선
-            foreach (var config in turnConfigs)
+            int index = turnNumber - 1;
+            if (index >= 0 && index < turnSchedule.Count)
             {
-                if (config.turnNumber == turnNumber)
-                {
-                    return (config.encounterType, config.encounterData ?? defaultEncounterData);
-                }
+                var config = turnSchedule[index];
+                return (config.encounterType, config.encounterData ?? defaultEncounterData);
             }
 
-            // 기본: 랜덤 인카운터
+            // 범위 밖이면 랜덤 인카운터
             return (EncounterType.RandomEncounter, defaultEncounterData);
         }
 
         /// <summary>
-        /// 기본 시나리오 자동 생성 (테스트용)
+        /// 기본 시나리오 자동 생성 (테스트용, 15턴)
         /// </summary>
         public void GenerateDefaultScenario(EncounterDataSO defaultEncounter)
         {
             scenarioName = "Test Scenario";
-            totalTurns = 15;
             defaultEncounterData = defaultEncounter;
 
-            turnConfigs.Clear();
+            turnSchedule.Clear();
 
-            // 턴 3, 6, 9, 12, 15에 고정 전투
-            int[] battleTurns = { 3, 6, 9, 12, 15 };
-            foreach (int t in battleTurns)
+            // 15턴 스케줄: 턴 3, 6, 9, 12, 15에 고정 전투, 나머지 랜덤
+            var battleTurns = new HashSet<int> { 3, 6, 9, 12, 15 };
+
+            for (int turn = 1; turn <= 15; turn++)
             {
-                turnConfigs.Add(new TurnEncounterConfig
+                turnSchedule.Add(new TurnEncounterConfig
                 {
-                    turnNumber = t,
-                    encounterType = EncounterType.FixedBattle
+                    encounterType = battleTurns.Contains(turn)
+                        ? EncounterType.FixedBattle
+                        : EncounterType.RandomEncounter,
+                    encounterData = null // 기본값 사용
                 });
             }
         }
