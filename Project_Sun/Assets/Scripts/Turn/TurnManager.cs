@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using ProjectSun.Construction;
 using ProjectSun.Defense;
+using ProjectSun.Workforce;
 using UnityEngine;
 
 namespace ProjectSun.Turn
@@ -18,6 +19,7 @@ namespace ProjectSun.Turn
         [Header("연동")]
         [SerializeField] private BuildingManager buildingManager;
         [SerializeField] private BattleManager battleManager;
+        [SerializeField] private WorkforceManager workforceManager;
         [SerializeField] private ScreenFader screenFader;
         [SerializeField] private ToastMessage toastMessage;
 
@@ -60,6 +62,22 @@ namespace ProjectSun.Turn
         public void EndTurn()
         {
             if (currentPhase != TurnPhase.DayPhase) return;
+
+            // 미배치 인력 경고 (토스트로 표시, 진행은 허용)
+            if (workforceManager != null && workforceManager.HasIdleWorkers && toastMessage != null)
+            {
+                toastMessage.Show("미배치 인력 경고",
+                    $"배치되지 않은 인력이 {workforceManager.IdleCount}명 있습니다.\n턴을 종료하시겠습니까?");
+                StartCoroutine(WaitForWarningThenProcess());
+                return;
+            }
+
+            StartCoroutine(ProcessTurnTransition());
+        }
+
+        private IEnumerator WaitForWarningThenProcess()
+        {
+            yield return new WaitUntil(() => !toastMessage.IsVisible);
             StartCoroutine(ProcessTurnTransition());
         }
 
@@ -276,13 +294,18 @@ namespace ProjectSun.Turn
         }
 
         /// <summary>
-        /// 다음 낮 시작 시 처리: 건설 진행도 증가, 완성 건물 활성화
+        /// 다음 낮 시작 시 처리: 건설 진행도 증가, 부상 회복
         /// </summary>
         private void ProcessDayStartEffects()
         {
             if (buildingManager != null)
             {
                 buildingManager.ProcessTurn();
+            }
+
+            if (workforceManager != null)
+            {
+                workforceManager.ProcessHealingTurn();
             }
         }
 

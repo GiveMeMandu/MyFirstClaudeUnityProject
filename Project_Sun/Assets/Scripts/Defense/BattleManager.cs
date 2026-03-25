@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using ProjectSun.Construction;
 using ProjectSun.Defense.ECS;
+using ProjectSun.Workforce;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
@@ -25,6 +26,7 @@ namespace ProjectSun.Defense
 
         [Header("연동")]
         [SerializeField] private BuildingManager buildingManager;
+        [SerializeField] private WorkforceManager workforceManager;
 
         [Header("런타임 상태")]
         [SerializeField] private BattleState battleState = BattleState.Idle;
@@ -240,12 +242,17 @@ namespace ProjectSun.Defense
                 var buildingData = slot.CurrentBuildingData;
                 if (buildingData != null && buildingData.category == BuildingCategory.Defense)
                 {
+                    // 인력이 배치되어야 타워 활성화 (0명이면 공격 안 함)
+                    bool towerActive = workforceManager == null || workforceManager.IsTowerActive(slot);
+                    float effectiveDamage = towerActive ? buildingData.towerDamage : 0f;
+                    float effectiveAttackSpeed = towerActive ? buildingData.towerAttackSpeed : 0f;
+
                     entityManager.AddComponentData(buildingEntity, new TowerTag());
                     entityManager.AddComponentData(buildingEntity, new TowerStats
                     {
                         Range = buildingData.towerRange,
-                        Damage = buildingData.towerDamage,
-                        AttackSpeed = buildingData.towerAttackSpeed,
+                        Damage = effectiveDamage,
+                        AttackSpeed = effectiveAttackSpeed,
                         CanTargetAir = buildingData.towerCanTargetAir
                     });
                     entityManager.AddComponentData(buildingEntity, new TowerAttackTimer
@@ -294,6 +301,12 @@ namespace ProjectSun.Defense
                             IsWall = buildingData.IsWall,
                             SlotIndex = buildingData.SlotIndex
                         });
+
+                        // 건물 파괴 시 배치된 인력 부상 처리
+                        if (slot.Health.IsDestroyed && workforceManager != null)
+                        {
+                            workforceManager.InjureWorkersFromBuilding(slot);
+                        }
                     }
                 }
 
