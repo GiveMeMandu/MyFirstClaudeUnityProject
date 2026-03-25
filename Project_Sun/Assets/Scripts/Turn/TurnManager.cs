@@ -267,7 +267,12 @@ namespace ProjectSun.Turn
         private void ProcessDayEndEffects()
         {
             // 자원 생산 (추후 자원 시스템 연동)
-            // 손상 자동 회복은 ProcessTurn()에 포함 — 다음 낮 시작에서 호출
+
+            // 손상 건물 자동 회복 (턴 종료 시, 밤 전환 전)
+            if (buildingManager != null)
+            {
+                buildingManager.ProcessAutoRepair();
+            }
         }
 
         /// <summary>

@@ -136,6 +136,9 @@ namespace ProjectSun.Construction
         /// <summary>
         /// 턴 종료 시 호출. 건설/업그레이드/수리 진행도 처리.
         /// </summary>
+        /// <summary>
+        /// 다음 낮 시작 시 호출. 건설/업그레이드/수리 진행도 처리.
+        /// </summary>
         public void ProcessTurn()
         {
             switch (state)
@@ -149,13 +152,21 @@ namespace ProjectSun.Construction
                 case BuildingSlotState.Repairing:
                     ProcessRepair();
                     break;
-                case BuildingSlotState.Damaged:
-                    health?.ApplyAutoRepair();
-                    if (health != null && health.IsFullHealth)
-                    {
-                        SetState(BuildingSlotState.Active);
-                    }
-                    break;
+            }
+        }
+
+        /// <summary>
+        /// 낮 종료 시 호출. 손상 건물 자동 회복만 처리.
+        /// </summary>
+        public void ProcessAutoRepair()
+        {
+            if (state == BuildingSlotState.Damaged)
+            {
+                health?.ApplyAutoRepair();
+                if (health != null && health.IsFullHealth)
+                {
+                    SetState(BuildingSlotState.Active);
+                }
             }
         }
 
