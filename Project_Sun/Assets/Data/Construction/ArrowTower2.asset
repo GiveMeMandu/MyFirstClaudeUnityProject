@@ -28,6 +28,7 @@ MonoBehaviour:
   towerDamage: 12
   towerAttackSpeed: 1
   towerCanTargetAir: 0
+  workerSlotConfig: {fileID: 0}
   tier: 1
   upgradeBranches: []
   completedPrefab: {fileID: 0}
