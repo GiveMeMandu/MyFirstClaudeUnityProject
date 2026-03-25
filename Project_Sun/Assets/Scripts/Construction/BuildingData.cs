@@ -51,6 +51,22 @@ namespace ProjectSun.Construction
         [Tooltip("인력 슬롯당 운영 자원 소모량")]
         public float defenseResourceCostPerSlot;
 
+        [Header("타워 스탯 (Defense 카테고리 전용)")]
+        [Tooltip("타워 사거리")]
+        [Min(0f)]
+        public float towerRange = 8f;
+
+        [Tooltip("타워 데미지")]
+        [Min(0f)]
+        public float towerDamage = 10f;
+
+        [Tooltip("타워 공격 속도 (초당 공격 횟수)")]
+        [Min(0.1f)]
+        public float towerAttackSpeed = 1f;
+
+        [Tooltip("공중 유닛 공격 가능 여부")]
+        public bool towerCanTargetAir;
+
         [Header("업그레이드 분기")]
         [Tooltip("현재 티어")]
         [Min(1)]
