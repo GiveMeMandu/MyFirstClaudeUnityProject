@@ -97,6 +97,17 @@ fi
   fi
 } >> "$LOG_FILE"
 
+# ── 세션 로그 자동 커밋 + 푸시 ────────────────────────────
+
+cd "$PROJECT_DIR" 2>/dev/null || true
+if [ -f "$LOG_FILE" ]; then
+  git add "$LOG_FILE" 2>/dev/null || true
+  if ! git diff --cached --quiet 2>/dev/null; then
+    git commit -m "docs(daily): 세션 로그 자동 기록 ${DATE}" 2>/dev/null || true
+    git push 2>/dev/null || true
+  fi
+fi
+
 # ── 오래된 세션 상태 정리 (7일+) ─────────────────────────
 
 if [ -d "$STATE_DIR" ]; then
