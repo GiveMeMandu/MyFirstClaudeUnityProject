@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b5822f05b250034980fca924d42ce88, type: 3}
+  m_Name: D-002
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.Encounter.EncounterDefinitionSO
+  encounterName: "\uCD95\uC81C \uC694\uCCAD"
+  description: "\uC8FC\uBBFC\uB4E4\uC774 \uCD95\uC81C\uB97C \uC5F4\uACE0 \uC2F6\uB2E4\uACE0
+    \uD569\uB2C8\uB2E4."
+  category: 0
+  choices:
+  - choiceText: "\uD5C8\uAC00"
+    costResourceId: 
+    costAmount: 0
+    requiredBuildingName: 
+    effects:
+    - effectType: 0
+      resourceId: basic
+      resourceAmount: -8
+      workerAmount: 0
+      buffType: 0
+      buffValue: 0
+      buffDuration: 0
+  - choiceText: "\uBD88\uD5C8"
+    costResourceId: 
+    costAmount: 0
+    requiredBuildingName: 
+    effects: []
+  weight: 1

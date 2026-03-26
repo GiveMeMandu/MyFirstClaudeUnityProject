@@ -1,0 +1,69 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b5822f05b250034980fca924d42ce88, type: 3}
+  m_Name: M-001
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.Encounter.EncounterDefinitionSO
+  encounterName: "\uC0DD\uC874\uC790 \uBC1C\uACAC"
+  description: "\uD3D0\uD5C8\uC5D0\uC11C \uC0DD\uC874\uC790 \uC9D1\uB2E8\uC744 \uBC1C\uACAC\uD588\uC2B5\uB2C8\uB2E4."
+  category: 1
+  choices:
+  - choiceText: "\uC2DD\uB7C9 \uB098\uB214"
+    costResourceId: 
+    costAmount: 0
+    requiredBuildingName: 
+    effects:
+    - effectType: 0
+      resourceId: basic
+      resourceAmount: -10
+      workerAmount: 0
+      buffType: 0
+      buffValue: 0
+      buffDuration: 0
+    - effectType: 1
+      resourceId: 
+      resourceAmount: 0
+      workerAmount: 2
+      buffType: 0
+      buffValue: 0
+      buffDuration: 0
+  - choiceText: "\uAD50\uC5ED \uC81C\uC548"
+    costResourceId: advanced
+    costAmount: 15
+    requiredBuildingName: 
+    effects:
+    - effectType: 0
+      resourceId: basic
+      resourceAmount: 30
+      workerAmount: 0
+      buffType: 0
+      buffValue: 0
+      buffDuration: 0
+  - choiceText: "\uC804\uD22C \uD0DC\uC138"
+    costResourceId: 
+    costAmount: 0
+    requiredBuildingName: Arrow Tower
+    effects:
+    - effectType: 3
+      resourceId: 
+      resourceAmount: 0
+      workerAmount: 0
+      buffType: 1
+      buffValue: 0.25
+      buffDuration: 3
+    - effectType: 1
+      resourceId: 
+      resourceAmount: 0
+      workerAmount: 1
+      buffType: 0
+      buffValue: 0
+      buffDuration: 0
+  weight: 1
