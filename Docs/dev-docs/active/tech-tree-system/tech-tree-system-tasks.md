@@ -3,7 +3,7 @@
 ## Sub-Features
 
 ### SF-01: 데이터 모델 (열거형, 구조체, SO) [M]
-- **상태**: TODO
+- **상태**: DONE
 - **의존**: -
 - **파일**: TechTreeEnums.cs, TechNodeEffect.cs, TechNodeSO.cs, TechTreeCategorySO.cs, TechTreeDataSO.cs
 - **커밋**: —
@@ -16,7 +16,7 @@
 - [ ] Unity 컴파일 통과
 
 ### SF-02: 핵심 매니저 (연구 상태, 진행도, 완료 처리) [L]
-- **상태**: TODO
+- **상태**: IN_PROGRESS
 - **의존**: SF-01
 - **파일**: TechTreeManager.cs
 - **커밋**: —
@@ -56,3 +56,4 @@
 ## 완료 이력
 | SF | 커밋 해시 | 날짜 |
 |---|---|---|
+| SF-01 | f076204 | 2026-03-26 |
