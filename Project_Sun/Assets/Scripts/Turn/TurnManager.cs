@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using ProjectSun.Construction;
 using ProjectSun.Defense;
 using ProjectSun.Encounter;
+using ProjectSun.Exploration;
 using ProjectSun.Resource;
 using ProjectSun.Workforce;
 using UnityEngine;
@@ -26,6 +27,7 @@ namespace ProjectSun.Turn
         [SerializeField] private ResourceManager resourceManager;
         [SerializeField] private EncounterManager encounterManager;
         [SerializeField] private BuffManager buffManager;
+        [SerializeField] private ExplorationManager explorationManager;
         [SerializeField] private ScreenFader screenFader;
         [SerializeField] private ToastMessage toastMessage;
 
@@ -107,6 +109,12 @@ namespace ProjectSun.Turn
             lastProductionSummary = null;
             ProcessDayEndEffects();
 
+            // 원정대 이동 처리 (턴 종료 시)
+            if (explorationManager != null)
+            {
+                explorationManager.ProcessTurnMovement();
+            }
+
             // 생산 결과 토스트
             if (!string.IsNullOrEmpty(lastProductionSummary) && toastMessage != null)
             {
@@ -179,6 +187,12 @@ namespace ProjectSun.Turn
             ProcessDayStartEffects();
 
             yield return new WaitForSecondsRealtime(0.2f);
+
+            // ── 탐사 도착 이벤트 처리 (낮 시작 시) ──
+            if (explorationManager != null)
+            {
+                yield return ProcessExplorationArrivals();
+            }
 
             // ── 일상 인카운터 (낮 시작 시) ──
             if (encounterManager != null && encounterManager.TryTriggerDailyEncounter())
@@ -317,6 +331,85 @@ namespace ProjectSun.Turn
                 SetPhase(TurnPhase.GameOver);
                 OnGameOver?.Invoke(GameOverReason.Defeat);
             }
+        }
+
+        /// <summary>
+        /// 탐사 도착 이벤트를 순차 처리
+        /// </summary>
+        private IEnumerator ProcessExplorationArrivals()
+        {
+            while (explorationManager.HasPendingArrivals)
+            {
+                var arrival = explorationManager.DequeueArrival();
+                if (!arrival.HasValue) break;
+
+                var nodeData = explorationManager.GetNodeData(arrival.Value.nodeIndex);
+                if (nodeData == null) continue;
+
+                switch (nodeData.nodeType)
+                {
+                    case Exploration.ExplorationNodeType.Resource:
+                        // 자원 보상 지급
+                        if (resourceManager != null)
+                        {
+                            var lines = new List<string>();
+                            foreach (var reward in nodeData.resourceRewards)
+                            {
+                                var resType = ParseResourceType(reward.resourceId);
+                                resourceManager.AddResource(resType, reward.amount);
+                                lines.Add($"{resType}: +{reward.amount}");
+                            }
+                            if (toastMessage != null && lines.Count > 0)
+                            {
+                                toastMessage.Show($"탐사 발견: {nodeData.nodeName}",
+                                    string.Join("\n", lines));
+                                yield return new WaitUntil(() => !toastMessage.IsVisible);
+                            }
+                        }
+                        break;
+
+                    case Exploration.ExplorationNodeType.Recon:
+                        // 정찰 정보 토스트 (추후 웨이브 정보 연동)
+                        if (toastMessage != null)
+                        {
+                            toastMessage.Show($"정찰 정보: {nodeData.nodeName}",
+                                $"{nodeData.reconTurnsAhead}턴 후 웨이브 정보를 획득했습니다.\n{nodeData.description}");
+                            yield return new WaitUntil(() => !toastMessage.IsVisible);
+                        }
+                        break;
+
+                    case Exploration.ExplorationNodeType.Encounter:
+                        // 인카운터 발생
+                        if (encounterManager != null && nodeData.encounterDefinition != null)
+                        {
+                            encounterManager.ShowEncounter(nodeData.encounterDefinition);
+                            yield return new WaitUntil(() => !encounterManager.IsWaitingForChoice);
+                        }
+                        break;
+
+                    case Exploration.ExplorationNodeType.Tech:
+                        // 기술 해금 토스트 (추후 연동)
+                        if (toastMessage != null)
+                        {
+                            toastMessage.Show($"기술 발견: {nodeData.nodeName}",
+                                $"기술 해금 아이템을 획득했습니다.\n{nodeData.description}");
+                            yield return new WaitUntil(() => !toastMessage.IsVisible);
+                        }
+                        break;
+                }
+            }
+        }
+
+        private Resource.ResourceType ParseResourceType(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return Resource.ResourceType.Basic;
+            return id.ToLower() switch
+            {
+                "basic" => Resource.ResourceType.Basic,
+                "advanced" => Resource.ResourceType.Advanced,
+                "defense" => Resource.ResourceType.Defense,
+                _ => Resource.ResourceType.Basic
+            };
         }
 
         /// <summary>
