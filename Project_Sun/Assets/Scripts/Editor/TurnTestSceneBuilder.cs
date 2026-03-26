@@ -10,6 +10,8 @@ using ProjectSun.Defense;
 using ProjectSun.Defense.Testing;
 using ProjectSun.Turn;
 using ProjectSun.Turn.Testing;
+using ProjectSun.Resource;
+using ProjectSun.Resource.Testing;
 using ProjectSun.Workforce;
 using ProjectSun.Workforce.Testing;
 
@@ -141,11 +143,27 @@ public static class TurnTestSceneBuilder
         var toastGO = new GameObject("ToastMessage");
         var toast = toastGO.AddComponent<ToastMessage>();
 
+        // ResourceManager
+        var resourceGO = new GameObject("ResourceManager");
+        var resourceMgr = resourceGO.AddComponent<ResourceManager>();
+        SetField(resourceMgr, "buildingManager", manager);
+
+        // ResourceUI
+        var resourceUIGO = new GameObject("ResourceUI");
+        var resourceUI = resourceUIGO.AddComponent<ResourceUI>();
+        SetField(resourceUI, "resourceManager", resourceMgr);
+
+        // BuildingManager에 ResourceManager 연결
+        SetField(manager, "resourceManager", resourceMgr);
+
         // WorkforceManager
         var workforceGO = new GameObject("WorkforceManager");
         var workforceMgr = workforceGO.AddComponent<WorkforceManager>();
         SetField(workforceMgr, "buildingManager", manager);
         SetField(workforceMgr, "totalWorkers", 4);
+
+        // ResourceManager에 WorkforceManager 연결
+        SetField(resourceMgr, "workforceManager", workforceMgr);
 
         // TurnManager
         var turnGO = new GameObject("TurnManager");
@@ -154,6 +172,7 @@ public static class TurnTestSceneBuilder
         SetField(turnMgr, "buildingManager", manager);
         SetField(turnMgr, "battleManager", battleMgr);
         SetField(turnMgr, "workforceManager", workforceMgr);
+        SetField(turnMgr, "resourceManager", resourceMgr);
         SetField(turnMgr, "screenFader", fader);
         SetField(turnMgr, "toastMessage", toast);
 
