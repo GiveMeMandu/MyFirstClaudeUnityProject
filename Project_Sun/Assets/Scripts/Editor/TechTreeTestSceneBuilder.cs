@@ -9,6 +9,8 @@ using ProjectSun.Workforce;
 using ProjectSun.TechTree;
 using ProjectSun.TechTree.Testing;
 using ProjectSun.Turn;
+using ProjectSun.Turn.Testing;
+using ProjectSun.Workforce.Testing;
 
 /// <summary>
 /// 기술 트리 시스템 테스트 씬 자동 생성.
@@ -110,6 +112,22 @@ public static class TechTreeTestSceneBuilder
         var resourceUIGO = new GameObject("ResourceUI");
         var resourceUI = resourceUIGO.AddComponent<ProjectSun.Resource.Testing.ResourceUI>();
         SetField(resourceUI, "resourceManager", resourceMgr);
+
+        // TurnTestController (턴 종료 버튼 + 턴/페이즈 표시)
+        var cam = Camera.main;
+        var turnCtrlGO = new GameObject("TurnTestController");
+        var turnCtrl = turnCtrlGO.AddComponent<TurnTestController>();
+        SetField(turnCtrl, "turnManager", turnMgr);
+        SetField(turnCtrl, "buildingManager", buildingMgr);
+        SetField(turnCtrl, "mainCamera", cam);
+
+        // WorkforceTestController (인력 배치 UI)
+        var workforceCtrlGO = new GameObject("WorkforceTestController");
+        var workforceCtrl = workforceCtrlGO.AddComponent<WorkforceTestController>();
+        SetField(workforceCtrl, "workforceManager", workforceMgr);
+        SetField(workforceCtrl, "buildingManager", buildingMgr);
+        SetField(workforceCtrl, "turnManager", turnMgr);
+        SetField(workforceCtrl, "mainCamera", cam);
 
         EditorSceneManager.SaveScene(scene, ScenePath);
         AssetDatabase.SaveAssets();
