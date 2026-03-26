@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ProjectSun.Resource;
 using UnityEngine;
 
 namespace ProjectSun.Construction
@@ -10,7 +11,10 @@ namespace ProjectSun.Construction
         [Header("슬롯 관리")]
         [SerializeField] private List<BuildingSlot> allSlots = new();
 
-        [Header("방어 운영 자원")]
+        [Header("자원 연동")]
+        [SerializeField] private ResourceManager resourceManager;
+
+        [Header("방어 운영 자원 (레거시 — ResourceManager 사용 시 무시)")]
         [SerializeField] private string defenseResourceId = "ammo";
         [SerializeField] private float currentDefenseResource = 100f;
 
@@ -210,18 +214,19 @@ namespace ProjectSun.Construction
 
         private bool CanAfford(List<ResourceCost> costs)
         {
-            // TODO: 자원 시스템 연동 후 실제 보유량 체크
+            if (resourceManager != null)
+                return resourceManager.CanAfford(costs);
             return true;
         }
 
         private void SpendResources(List<ResourceCost> costs)
         {
-            // TODO: 자원 시스템 연동 후 실제 차감
+            resourceManager?.SpendCosts(costs);
         }
 
         private void RefundResources(List<ResourceCost> costs)
         {
-            // TODO: 자원 시스템 연동 후 실제 반환
+            resourceManager?.RefundCosts(costs);
         }
     }
 }

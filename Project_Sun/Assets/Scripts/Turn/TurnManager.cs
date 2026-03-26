@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using ProjectSun.Construction;
 using ProjectSun.Defense;
+using ProjectSun.Resource;
 using ProjectSun.Workforce;
 using UnityEngine;
 
@@ -20,6 +22,7 @@ namespace ProjectSun.Turn
         [SerializeField] private BuildingManager buildingManager;
         [SerializeField] private BattleManager battleManager;
         [SerializeField] private WorkforceManager workforceManager;
+        [SerializeField] private ResourceManager resourceManager;
         [SerializeField] private ScreenFader screenFader;
         [SerializeField] private ToastMessage toastMessage;
 
@@ -63,6 +66,18 @@ namespace ProjectSun.Turn
         {
             if (currentPhase != TurnPhase.DayPhase) return;
 
+            // 방어 자원 부족 체크 (턴 종료 차단)
+            if (resourceManager != null && !resourceManager.HasEnoughDefenseResource())
+            {
+                int cost = resourceManager.CalculateDefenseResourceCost();
+                if (toastMessage != null)
+                {
+                    toastMessage.Show("방어 자원 부족",
+                        $"방어 자원이 부족합니다.\n필요: {cost} / 보유: {resourceManager.DefenseResource}\n방어 인력을 조정해주세요.");
+                }
+                return; // 턴 종료 차단
+            }
+
             // 미배치 인력 경고 (토스트로 표시, 진행은 허용)
             if (workforceManager != null && workforceManager.HasIdleWorkers && toastMessage != null)
             {
@@ -86,10 +101,15 @@ namespace ProjectSun.Turn
             // ── 낮 종료 처리 ──
             SetPhase(TurnPhase.DayEnd);
 
-            // 자원 생산 (추후 구현)
-            // 손상 건물 자동 회복은 BuildingManager.ProcessTurn()에 포함되어 있으나
-            // 건설 진행도와 분리하여 여기서 회복만 먼저 처리
+            lastProductionSummary = null;
             ProcessDayEndEffects();
+
+            // 생산 결과 토스트
+            if (!string.IsNullOrEmpty(lastProductionSummary) && toastMessage != null)
+            {
+                toastMessage.Show("자원 생산", lastProductionSummary);
+                yield return new WaitUntil(() => !toastMessage.IsVisible);
+            }
 
             yield return new WaitForSecondsRealtime(0.3f);
 
@@ -251,12 +271,23 @@ namespace ProjectSun.Turn
         {
             if (battleManager == null) yield break;
 
+            // 전투 시작 시 방어 자원 차감
+            resourceManager?.DeductDefenseResource();
+
             battleInProgress = true;
             lastBattleStats = null;
             battleManager.StartBattle();
 
             // 전투 종료 대기
             yield return new WaitUntil(() => !battleInProgress);
+
+            // 전투 보상 (PoC: 고정 보상)
+            if (lastBattleStats != null && lastBattleStats.TotalKilled > 0)
+            {
+                int basicReward = lastBattleStats.TotalKilled * 2;
+                int advancedReward = lastBattleStats.TotalKilled / 5;
+                resourceManager?.GrantBattleReward(basicReward, advancedReward);
+            }
 
             // 다음 전투를 위해 Idle 상태로 리셋
             battleManager.ResetToIdle();
@@ -280,11 +311,30 @@ namespace ProjectSun.Turn
         }
 
         /// <summary>
-        /// 낮 종료 시 처리: 손상 건물 자동 회복 (건설 진행도는 제외)
+        /// 낮 종료 시 처리: 자원 생산 → 손상 건물 자동 회복
         /// </summary>
         private void ProcessDayEndEffects()
         {
-            // 자원 생산 (추후 자원 시스템 연동)
+            // 자원 생산 (인력 배치된 자원 건물)
+            if (resourceManager != null)
+            {
+                var produced = resourceManager.ProcessProduction();
+
+                // 생산 결과 토스트
+                if (toastMessage != null)
+                {
+                    var lines = new List<string>();
+                    foreach (var kvp in produced)
+                    {
+                        if (kvp.Value > 0)
+                            lines.Add($"{kvp.Key}: +{kvp.Value}");
+                    }
+                    if (lines.Count > 0)
+                    {
+                        lastProductionSummary = string.Join("\n", lines);
+                    }
+                }
+            }
 
             // 손상 건물 자동 회복 (턴 종료 시, 밤 전환 전)
             if (buildingManager != null)
@@ -292,6 +342,8 @@ namespace ProjectSun.Turn
                 buildingManager.ProcessAutoRepair();
             }
         }
+
+        private string lastProductionSummary;
 
         /// <summary>
         /// 다음 낮 시작 시 처리: 건설 진행도 증가, 부상 회복
