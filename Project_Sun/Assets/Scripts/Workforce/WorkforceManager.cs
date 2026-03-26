@@ -29,10 +29,14 @@ namespace ProjectSun.Workforce
         // 본부 치료 슬롯
         private WorkerSlotRuntime healingSlot;
 
+        // 원정대에 배치된 인력 수
+        private int expeditionWorkers;
+
         public int TotalWorkers => totalWorkers;
         public int InjuredCount => injuredWorkerHealTimers.Count;
         public int HealthyCount => totalWorkers - InjuredCount;
-        public int AssignedCount => GetTotalAssigned();
+        public int ExpeditionWorkers => expeditionWorkers;
+        public int AssignedCount => GetTotalAssigned() + expeditionWorkers;
         public int IdleCount => HealthyCount - AssignedCount;
 
         public event Action OnWorkforceChanged;
@@ -208,6 +212,42 @@ namespace ProjectSun.Workforce
                 }
             }
 
+            OnWorkforceChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// 원정대에 인력 배치 (탐사 시스템에서 호출)
+        /// </summary>
+        public bool AssignExpeditionWorkers(int count)
+        {
+            if (count <= 0) return false;
+            if (IdleCount < count) return false;
+
+            expeditionWorkers += count;
+            OnWorkforceChanged?.Invoke();
+            return true;
+        }
+
+        /// <summary>
+        /// 원정대에서 인력 회수 (귀환/해산 시 호출)
+        /// </summary>
+        public void ReturnExpeditionWorkers(int count)
+        {
+            expeditionWorkers = Mathf.Max(0, expeditionWorkers - count);
+            OnWorkforceChanged?.Invoke();
+        }
+
+        /// <summary>
+        /// 원정대 인력 부상 처리 (인카운터 결과 등)
+        /// </summary>
+        public void InjureExpeditionWorkers(int count)
+        {
+            int actual = Mathf.Min(count, expeditionWorkers);
+            expeditionWorkers -= actual;
+            for (int i = 0; i < actual; i++)
+            {
+                injuredWorkerHealTimers.Add(naturalHealTurns);
+            }
             OnWorkforceChanged?.Invoke();
         }
 
