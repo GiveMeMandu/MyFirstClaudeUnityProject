@@ -5,6 +5,7 @@ using ProjectSun.Construction;
 using ProjectSun.Defense;
 using ProjectSun.Encounter;
 using ProjectSun.Exploration;
+using ProjectSun.Policy;
 using ProjectSun.Resource;
 using ProjectSun.Workforce;
 using UnityEngine;
@@ -28,6 +29,7 @@ namespace ProjectSun.Turn
         [SerializeField] private EncounterManager encounterManager;
         [SerializeField] private BuffManager buffManager;
         [SerializeField] private ExplorationManager explorationManager;
+        [SerializeField] private PolicyManager policyManager;
         [SerializeField] private ScreenFader screenFader;
         [SerializeField] private ToastMessage toastMessage;
 
@@ -185,6 +187,12 @@ namespace ProjectSun.Turn
             // ── 다음 낮 시작 처리 ──
             SetPhase(TurnPhase.DayStart);
             ProcessDayStartEffects();
+
+            // ── 정책 해금 체크 (낮 시작 시) ──
+            if (policyManager != null)
+            {
+                policyManager.OnNewTurn(currentTurn);
+            }
 
             yield return new WaitForSecondsRealtime(0.2f);
 
