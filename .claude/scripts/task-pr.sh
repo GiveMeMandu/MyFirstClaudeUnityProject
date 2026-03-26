@@ -25,7 +25,7 @@ fi
 # 브랜치에서 type, task-id, slug 추출
 BRANCH_TYPE=$(echo "$BRANCH" | cut -d'/' -f1)
 BRANCH_REST=$(echo "$BRANCH" | cut -d'/' -f2)
-TASK_ID=$(echo "$BRANCH_REST" | grep -oP 'TASK-[0-9]+')
+TASK_ID=$(echo "$BRANCH_REST" | grep -oE 'TASK-[0-9]+')
 SLUG=$(echo "$BRANCH_REST" | sed "s/${TASK_ID}-//")
 
 # ── target 브랜치 결정 ────────────────────────────────────
@@ -76,7 +76,7 @@ if [ $# -ge 2 ]; then
 
     ERRORS=$("$UNITY_CLI" console --filter error --lines 50 2>/dev/null || echo "")
 
-    if [ -n "$ERRORS" ]; then
+    if [ -n "$ERRORS" ] && [ "$ERRORS" != "[]" ]; then
       echo ""
       echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
       echo "  Unity C# 컴파일 에러 발견 — PR 생성 중단"
