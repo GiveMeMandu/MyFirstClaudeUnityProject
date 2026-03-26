@@ -14,6 +14,8 @@ using ProjectSun.Encounter;
 using ProjectSun.Encounter.Testing;
 using ProjectSun.Resource;
 using ProjectSun.Resource.Testing;
+using ProjectSun.Exploration;
+using ProjectSun.Exploration.Testing;
 using ProjectSun.Workforce;
 using ProjectSun.Workforce.Testing;
 
@@ -219,6 +221,20 @@ public static class TurnTestSceneBuilder
         SetField(workforceCtrl, "buildingManager", manager);
         SetField(workforceCtrl, "turnManager", turnMgr);
         SetField(workforceCtrl, "mainCamera", cam);
+
+        // ExplorationManager + ExplorationUI
+        var explorationMapSO = ExplorationTestSceneBuilder.CreateExplorationMapAsset();
+        var explorationGO = new GameObject("ExplorationManager");
+        var explorationMgr = explorationGO.AddComponent<ExplorationManager>();
+        SetField(explorationMgr, "mapData", explorationMapSO);
+        SetField(explorationMgr, "workforceManager", workforceMgr);
+        SetField(explorationMgr, "buildingManager", manager);
+        SetField(turnMgr, "explorationManager", explorationMgr);
+
+        var explorationUIGO = new GameObject("ExplorationUI");
+        var explorationUI = explorationUIGO.AddComponent<ExplorationUI>();
+        SetField(explorationUI, "explorationManager", explorationMgr);
+        SetField(explorationUI, "workforceManager", workforceMgr);
 
         // HP 초기화
         for (int i = 0; i < slots.Count; i++)
