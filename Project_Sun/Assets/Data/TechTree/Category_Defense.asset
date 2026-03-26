@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 57b103a307ed83f4697530a93efc25d9, type: 3}
+  m_Name: Category_Defense
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.TechTree.TechTreeCategorySO
+  categoryName: "\uBC29\uC5B4"
+  category: 1
+  nodes:
+  - {fileID: 11400000, guid: 4f70a43c0fb69a549a9cac591b311204, type: 2}
+  - {fileID: 11400000, guid: ee7d2859a3dc8eb41a10b455b90a38c8, type: 2}
+  - {fileID: 11400000, guid: 84e47103f818acc498eb928779ee7df2, type: 2}

@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a3f872b38d70944c9d54c1708b37b5b, type: 3}
+  m_Name: TestExpansionData
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.WallExpansion.WallExpansionDataSO
+  maxLevel: 4
+  expansionAnimDuration: 1.5
+  levels:
+  - level: 1
+    basicCost: 60
+    advancedCost: 0
+    slotIds: []
+    unlockedFeatures: 
+    additionalSpawnPoints: 1
+    requiresResearch: 0
+    minTurn: 0
+  - level: 2
+    basicCost: 100
+    advancedCost: 20
+    slotIds: []
+    unlockedFeatures: 
+    additionalSpawnPoints: 1
+    requiresResearch: 0
+    minTurn: 0
+  - level: 3
+    basicCost: 150
+    advancedCost: 50
+    slotIds: []
+    unlockedFeatures: 
+    additionalSpawnPoints: 1
+    requiresResearch: 0
+    minTurn: 0
+  - level: 4
+    basicCost: 200
+    advancedCost: 80
+    slotIds: []
+    unlockedFeatures: 
+    additionalSpawnPoints: 1
+    requiresResearch: 0
+    minTurn: 0

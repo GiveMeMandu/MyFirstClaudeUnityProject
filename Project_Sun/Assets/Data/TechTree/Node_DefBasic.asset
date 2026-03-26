@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0b36326f884ce144ebed1a80a43a8fdf, type: 3}
+  m_Name: Node_DefBasic
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.TechTree.TechNodeSO
+  nodeName: "\uAC15\uD654 \uD654\uC0B4"
+  description: "\uD0C0\uC6CC \uB370\uBBF8\uC9C0 +25%"
+  category: 1
+  researchCost:
+  - resourceId: basic
+    amount: 12
+  requiredResearchPoints: 2
+  prerequisites: []
+  effects:
+  - effectType: 2
+    targetId: ArrowTower
+    value: 25
+    description: "Arrow Tower \uB370\uBBF8\uC9C0 +25%"
+  nodePosition: {x: 0, y: 0}

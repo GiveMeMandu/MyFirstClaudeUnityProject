@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd5ec25599c861547a1b8a816e548a9b, type: 3}
+  m_Name: PoC_TechTree
+  m_EditorClassIdentifier: Assembly-CSharp::ProjectSun.TechTree.TechTreeDataSO
+  treeName: "PoC \uAE30\uC220 \uD2B8\uB9AC"
+  description: "PoC\uC6A9 \uBC94\uC6A9 \uAE30\uC220 \uD2B8\uB9AC (7\uAC1C \uB178\uB4DC)"
+  categories:
+  - {fileID: 11400000, guid: 9490c70491219fa499af70eb7cef7e59, type: 2}
+  - {fileID: 11400000, guid: 01787005f4aaea34a9bc414db068c74d, type: 2}
+  - {fileID: 11400000, guid: 9e1155844e0fac2458cdb3519ebec5a6, type: 2}
+  researchPointsPerWorker: 1
