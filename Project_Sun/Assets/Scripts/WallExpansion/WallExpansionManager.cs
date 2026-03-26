@@ -22,6 +22,10 @@ namespace ProjectSun.WallExpansion
         [SerializeField] private BuildingManager buildingManager;
         [SerializeField] private TurnManager turnManager;
 
+        [Header("씬 기반 슬롯 그룹 (SO의 slotIds와 병행 사용 가능)")]
+        [Tooltip("씬에 배치된 WallExpansionSlotGroup 목록. 레벨 매칭으로 해금.")]
+        [SerializeField] private List<WallExpansionSlotGroup> slotGroups = new();
+
         [Header("런타임 상태")]
         [SerializeField] private int currentWallLevel;
 
@@ -162,8 +166,11 @@ namespace ProjectSun.WallExpansion
 
             OnExpansionStarted?.Invoke(currentWallLevel);
 
-            // 슬롯 해금
+            // 슬롯 해금 (SO 기반 slotIds)
             RevealSlots(levelData);
+
+            // 슬롯 해금 (씬 기반 SlotGroup)
+            RevealSlotGroups(currentWallLevel);
 
             // 시스템 해금
             if (levelData.unlockedFeatures != null && levelData.unlockedFeatures.Count > 0)
@@ -269,6 +276,17 @@ namespace ProjectSun.WallExpansion
                 else
                 {
                     Debug.LogWarning($"[WallExpansionManager] 슬롯 '{slotId}'을(를) 찾을 수 없습니다.");
+                }
+            }
+        }
+
+        private void RevealSlotGroups(int level)
+        {
+            foreach (var group in slotGroups)
+            {
+                if (group != null && group.UnlockLevel == level)
+                {
+                    group.RevealAll();
                 }
             }
         }
