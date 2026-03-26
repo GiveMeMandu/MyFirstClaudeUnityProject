@@ -2,59 +2,27 @@
 set -euo pipefail
 
 # task-start.sh — GitFlow 브랜치 생성
-# Usage: task-start.sh <type> <task-id> <slug>
-# Example: task-start.sh feature TASK-001 day-night-cycle
+# Usage: task-start.sh <type> <slug>
+# Example: task-start.sh feature resource-system
 
 VALID_TYPES="feature system hotfix"
-TASK_ID_PATTERN='^TASK-[0-9]+$'
 SLUG_PATTERN='^[a-z0-9]([a-z0-9-]*[a-z0-9])?$'
-
-# ── TASK ID 자동 증가 함수 ─────────────────────────────────
-
-get_next_task_id() {
-  local max_num=0
-
-  # 로컬 브랜치에서 TASK-NNN 추출
-  while IFS= read -r branch; do
-    if [[ "$branch" =~ TASK-([0-9]+) ]]; then
-      local num=$((10#${BASH_REMATCH[1]}))
-      if [ "$num" -gt "$max_num" ]; then
-        max_num=$num
-      fi
-    fi
-  done < <(git branch --list '*TASK-*' 2>/dev/null)
-
-  # 원격 브랜치에서도 확인
-  while IFS= read -r branch; do
-    if [[ "$branch" =~ TASK-([0-9]+) ]]; then
-      local num=$((10#${BASH_REMATCH[1]}))
-      if [ "$num" -gt "$max_num" ]; then
-        max_num=$num
-      fi
-    fi
-  done < <(git branch -r --list '*TASK-*' 2>/dev/null)
-
-  local next=$((max_num + 1))
-  printf "TASK-%03d" "$next"
-}
 
 # ── 인자 검증 ──────────────────────────────────────────────
 
 if [ $# -lt 2 ]; then
-  echo "사용법: task-start.sh <type> <slug> [task-id]"
-  echo "  type:    feature | system | hotfix"
-  echo "  slug:    영문 kebab-case (예: day-night-cycle)"
-  echo "  task-id: TASK-NNN (생략 시 자동 부여)"
+  echo "사용법: task-start.sh <type> <slug>"
+  echo "  type:  feature | system | hotfix"
+  echo "  slug:  영문 kebab-case (예: resource-system)"
   echo ""
   echo "예시:"
-  echo "  task-start.sh feature day-night-cycle          # TASK ID 자동"
-  echo "  task-start.sh feature day-night-cycle TASK-001  # TASK ID 수동"
+  echo "  task-start.sh feature resource-system"
+  echo "  task-start.sh hotfix ui-crash"
   exit 1
 fi
 
 TYPE="$1"
 SLUG="$2"
-TASK_ID_INPUT="${3:-auto}"
 
 # type 검증
 if ! echo "$VALID_TYPES" | grep -qw "$TYPE"; then
@@ -70,22 +38,9 @@ if ! [[ "$SLUG" =~ $SLUG_PATTERN ]]; then
   exit 1
 fi
 
-# task-id: 자동 또는 수동
-if [ "$TASK_ID_INPUT" = "auto" ] || [ "$TASK_ID_INPUT" = "next" ]; then
-  TASK_ID=$(get_next_task_id)
-  echo "TASK ID 자동 부여: $TASK_ID"
-else
-  TASK_ID=$(echo "$TASK_ID_INPUT" | tr '[:lower:]' '[:upper:]')
-  if ! [[ "$TASK_ID" =~ $TASK_ID_PATTERN ]]; then
-    echo "오류: 유효하지 않은 태스크 ID '$TASK_ID'"
-    echo "  형식: TASK-NNN (예: TASK-001) 또는 생략하여 자동 부여"
-    exit 1
-  fi
-fi
-
 # ── 브랜치명 조합 ──────────────────────────────────────────
 
-BRANCH="${TYPE}/${TASK_ID}-${SLUG}"
+BRANCH="${TYPE}/${SLUG}"
 
 # ── 이미 존재하는 브랜치 확인 ──────────────────────────────
 
@@ -157,7 +112,6 @@ if [ ! -d "$TASK_DIR" ]; then
 
 - **Last Updated**: ${TODAY}
 - **Branch**: ${BRANCH}
-- **Task ID**: ${TASK_ID}
 - **Type**: ${TYPE}
 - **Base**: ${BASE}
 
@@ -196,10 +150,10 @@ fi
 TASKS_FILE="Docs/dev-docs/project-tasks.md"
 
 if [ -f "$TASKS_FILE" ]; then
-  TASK_ENTRY="- [ ] [${TASK_ID}] ${SLUG} (\`${BRANCH}\`)"
+  TASK_ENTRY="- [ ] ${SLUG} (\`${BRANCH}\`)"
 
   # 이미 등록되어 있는지 확인
-  if ! grep -qF "${TASK_ID}" "$TASKS_FILE" 2>/dev/null; then
+  if ! grep -qF "${SLUG}" "$TASKS_FILE" 2>/dev/null; then
     # "## 진행 중" 섹션 바로 아래에 추가
     if grep -q "## 진행 중" "$TASKS_FILE"; then
       sed -i "/## 진행 중/a ${TASK_ENTRY}" "$TASKS_FILE"
@@ -209,7 +163,7 @@ if [ -f "$TASKS_FILE" ]; then
       echo "## 진행 중" >> "$TASKS_FILE"
       echo "$TASK_ENTRY" >> "$TASKS_FILE"
     fi
-    echo "project-tasks.md에 태스크 등록: ${TASK_ID}"
+    echo "project-tasks.md에 태스크 등록: ${SLUG}"
   fi
 fi
 
@@ -218,8 +172,7 @@ fi
 echo ""
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
 echo "  브랜치 생성 완료"
-echo "  Branch:  $BRANCH"
-echo "  Task ID: $TASK_ID"
-echo "  Base:    $BASE"
-echo "  Docs:    $TASK_DIR/"
+echo "  Branch: $BRANCH"
+echo "  Base:   $BASE"
+echo "  Docs:   $TASK_DIR/"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

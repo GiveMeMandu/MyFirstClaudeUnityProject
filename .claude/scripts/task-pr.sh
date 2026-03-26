@@ -9,7 +9,7 @@ set -euo pipefail
 UNITY_CLI="/c/Users/wooch/AppData/Local/unity-cli.exe"
 GH_CLI="/c/Program Files/GitHub CLI/gh.exe"
 VALID_COMMIT_TYPES="feat fix chore docs refactor test"
-BRANCH_PATTERN='^(feature|system|hotfix)/TASK-[0-9]+-'
+BRANCH_PATTERN='^(feature|system|hotfix)/'
 
 # ── 브랜치 검증 + 파싱 ────────────────────────────────────
 
@@ -22,11 +22,9 @@ if ! [[ "$BRANCH" =~ $BRANCH_PATTERN ]]; then
   exit 1
 fi
 
-# 브랜치에서 type, task-id, slug 추출
+# 브랜치에서 type, slug 추출
 BRANCH_TYPE=$(echo "$BRANCH" | cut -d'/' -f1)
-BRANCH_REST=$(echo "$BRANCH" | cut -d'/' -f2)
-TASK_ID=$(echo "$BRANCH_REST" | grep -oE 'TASK-[0-9]+')
-SLUG=$(echo "$BRANCH_REST" | sed "s/${TASK_ID}-//")
+SLUG=$(echo "$BRANCH" | cut -d'/' -f2)
 
 # ── target 브랜치 결정 ────────────────────────────────────
 
@@ -124,7 +122,7 @@ fi
 
 # slug을 읽기 좋게 변환: kebab-case → Title Case
 READABLE_SLUG=$(echo "$SLUG" | tr '-' ' ' | awk '{for(i=1;i<=NF;i++) $i=toupper(substr($i,1,1)) substr($i,2)} 1')
-PR_TITLE="[${TASK_ID}] ${READABLE_SLUG}"
+PR_TITLE="${READABLE_SLUG}"
 
 # ── PR body 생성 ──────────────────────────────────────────
 
@@ -158,9 +156,9 @@ PR_URL=$("$GH_CLI" pr create \
 # ── project-tasks.md 업데이트 ──────────────────────────────
 
 TASKS_FILE="Docs/dev-docs/project-tasks.md"
-if [ -f "$TASKS_FILE" ] && grep -qF "$TASK_ID" "$TASKS_FILE" 2>/dev/null; then
+if [ -f "$TASKS_FILE" ] && grep -qF "$SLUG" "$TASKS_FILE" 2>/dev/null; then
   # PR URL 추가
-  sed -i "s|\(.*${TASK_ID}.*\)|\1 — PR: ${PR_URL}|" "$TASKS_FILE" 2>/dev/null || true
+  sed -i "s|\(.*${SLUG}.*\)|\1 — PR: ${PR_URL}|" "$TASKS_FILE" 2>/dev/null || true
 fi
 
 echo ""

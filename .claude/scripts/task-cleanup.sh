@@ -14,7 +14,7 @@ if [ "${1:-}" = "--dry-run" ]; then
   echo ""
 fi
 
-BRANCH_PATTERN='^(feature|system|hotfix)/TASK-[0-9]+-'
+BRANCH_PATTERN='^(feature|system|hotfix)/'
 DELETED_COUNT=0
 SKIPPED_COUNT=0
 

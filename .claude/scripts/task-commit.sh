@@ -7,7 +7,7 @@ set -euo pipefail
 
 UNITY_CLI="/c/Users/wooch/AppData/Local/unity-cli.exe"
 VALID_COMMIT_TYPES="feat fix chore docs refactor test"
-BRANCH_PATTERN='^(feature|system|hotfix)/TASK-[0-9]+-'
+BRANCH_PATTERN='^(feature|system|hotfix)/'
 
 # ── 인자 검증 ──────────────────────────────────────────────
 
@@ -38,7 +38,7 @@ BRANCH=$(git branch --show-current)
 if ! [[ "$BRANCH" =~ $BRANCH_PATTERN ]]; then
   echo "오류: 태스크 브랜치가 아닙니다."
   echo "  현재 브랜치: $BRANCH"
-  echo "  허용 패턴: feature/TASK-NNN-*, system/TASK-NNN-*, hotfix/TASK-NNN-*"
+  echo "  허용 패턴: feature/*, system/*, hotfix/*"
   echo ""
   echo "  /task-start 로 먼저 태스크 브랜치를 생성하세요."
   exit 1

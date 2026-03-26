@@ -13,6 +13,20 @@
 - 개발 일지: Docs/Daily/YYYY-MM-DD.md
 - 태스크: Docs/dev-docs/project-tasks.md
 
+## 커밋 형식
+- 형식: `[PS-NNN] type(scope): message`
+- PS-NNN은 `.git/hooks/prepare-commit-msg` hook이 자동 부여 (수동 추가 금지)
+- type: feat | fix | chore | docs | refactor | test
+- scope: 시스템 slug (선택적, 예: resource-system)
+- 카운터 파일: `$(git rev-parse --git-common-dir)/ps-counter`
+- worktree 간 카운터 공유됨
+
+## 브랜치 네이밍
+- 형식: `<type>/<slug>` (예: `feature/resource-system`, `hotfix/ui-crash`)
+- type: feature | system | hotfix
+- slug: 영문 kebab-case
+- TASK-NNN은 브랜치에 사용하지 않음 (커밋 PS-NNN으로 대체)
+
 ## 파일 생성 규칙
 - 기획 문서 → Docs/GDD/ 하위
 - 스프린트 → Docs/Sprints/sprint-숫자.md

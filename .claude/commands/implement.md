@@ -54,8 +54,8 @@ Arguments: $ARGUMENTS
 bash "$CLAUDE_PROJECT_DIR/.claude/scripts/task-start.sh" feature <slug>
 ```
 
-- TASK ID는 자동 부여됩니다
-- 스크립트 출력에서 부여된 TASK ID와 브랜치명을 기록하세요
+- 브랜치명은 `feature/<slug>` 형식으로 생성됩니다
+- 스크립트 출력에서 브랜치명을 기록하세요
 
 ### Phase 2: SF별 구현 계획 수립
 
