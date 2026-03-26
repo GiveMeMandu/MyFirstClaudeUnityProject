@@ -13,6 +13,7 @@ namespace ProjectSun.Workforce
         AttackSpeed,
         Construction,
         Research,
-        Healing
+        Healing,
+        Expedition
     }
 }

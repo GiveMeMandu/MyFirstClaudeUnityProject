@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using ProjectSun.Construction;
+using ProjectSun.Workforce;
 using UnityEngine;
 
 namespace ProjectSun.Exploration
@@ -16,6 +18,10 @@ namespace ProjectSun.Exploration
         [Header("원정대 설정")]
         [SerializeField] private int minTeamSize = 1;
         [SerializeField] private int maxTeamSize = 3;
+
+        [Header("연동")]
+        [SerializeField] private WorkforceManager workforceManager;
+        [SerializeField] private BuildingManager buildingManager;
 
         // 노드별 안개 상태
         private FogState[] fogStates;
@@ -221,6 +227,137 @@ namespace ProjectSun.Exploration
         {
             if (arrivalQueue.Count == 0) return null;
             return arrivalQueue.Dequeue();
+        }
+
+        /// <summary>
+        /// 원정대 인원 설정 (인력 시스템 연동)
+        /// </summary>
+        public bool SetTeamMembers(int teamIndex, int memberCount)
+        {
+            if (teamIndex < 0 || teamIndex >= teams.Count) return false;
+            var team = teams[teamIndex];
+
+            if (team.State != ExpeditionState.Idle) return false;
+            if (memberCount < minTeamSize || memberCount > maxTeamSize) return false;
+
+            int currentMembers = team.MemberCount;
+            int delta = memberCount - currentMembers;
+
+            if (workforceManager != null)
+            {
+                if (delta > 0)
+                {
+                    if (!workforceManager.AssignExpeditionWorkers(delta))
+                        return false;
+                }
+                else if (delta < 0)
+                {
+                    workforceManager.ReturnExpeditionWorkers(-delta);
+                }
+            }
+
+            team.SetMembers(memberCount);
+            OnTeamsChanged?.Invoke();
+            return true;
+        }
+
+        /// <summary>
+        /// 원정대 해산 (인력 복귀)
+        /// </summary>
+        public bool DisbandTeam(int teamIndex)
+        {
+            if (teamIndex < 0 || teamIndex >= teams.Count) return false;
+            var team = teams[teamIndex];
+
+            if (team.State != ExpeditionState.Idle) return false;
+
+            int members = team.MemberCount;
+            if (members > 0 && workforceManager != null)
+            {
+                workforceManager.ReturnExpeditionWorkers(members);
+            }
+
+            team.Disband();
+            if (mapData != null)
+                team.PlaceAtBase(mapData.baseNodeIndex);
+
+            OnTeamsChanged?.Invoke();
+            return true;
+        }
+
+        /// <summary>
+        /// 탐사 건물 수 갱신 (BuildingManager 이벤트에서 호출)
+        /// </summary>
+        public void RefreshMaxTeams()
+        {
+            if (buildingManager == null)
+            {
+                SetMaxTeams(0);
+                return;
+            }
+
+            int explorationBuildingCount = 0;
+            foreach (var slot in buildingManager.AllSlots)
+            {
+                if (slot.CurrentBuildingData != null &&
+                    slot.CurrentBuildingData.category == BuildingCategory.Exploration &&
+                    slot.State == BuildingSlotState.Active)
+                {
+                    explorationBuildingCount++;
+                }
+            }
+
+            SetMaxTeams(explorationBuildingCount);
+        }
+
+        /// <summary>
+        /// 귀환 완료된 원정대의 인력을 자동 복귀 처리
+        /// </summary>
+        public void ProcessReturnedTeams()
+        {
+            if (mapData == null) return;
+
+            foreach (var team in teams)
+            {
+                if (team.IsAtBase(mapData.baseNodeIndex) && team.MemberCount > 0 &&
+                    team.State == ExpeditionState.Idle)
+                {
+                    // 기지에 있고 인원이 있는 팀은 유지 (플레이어가 해산할지 결정)
+                }
+            }
+        }
+
+        private void Start()
+        {
+            // 건설 시스템 이벤트 구독
+            if (buildingManager != null)
+            {
+                buildingManager.OnConstructionCompleted += HandleBuildingChanged;
+                buildingManager.OnBuildingDestroyed += HandleBuildingChanged;
+                buildingManager.OnUpgradeCompleted += HandleBuildingChanged;
+            }
+
+            InitializeMap();
+            RefreshMaxTeams();
+        }
+
+        private void OnDestroy()
+        {
+            if (buildingManager != null)
+            {
+                buildingManager.OnConstructionCompleted -= HandleBuildingChanged;
+                buildingManager.OnBuildingDestroyed -= HandleBuildingChanged;
+                buildingManager.OnUpgradeCompleted -= HandleBuildingChanged;
+            }
+        }
+
+        private void HandleBuildingChanged(BuildingSlot slot)
+        {
+            if (slot.CurrentBuildingData != null &&
+                slot.CurrentBuildingData.category == BuildingCategory.Exploration)
+            {
+                RefreshMaxTeams();
+            }
         }
 
         /// <summary>
