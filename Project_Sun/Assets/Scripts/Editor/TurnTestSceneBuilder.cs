@@ -10,6 +10,8 @@ using ProjectSun.Defense;
 using ProjectSun.Defense.Testing;
 using ProjectSun.Turn;
 using ProjectSun.Turn.Testing;
+using ProjectSun.Encounter;
+using ProjectSun.Encounter.Testing;
 using ProjectSun.Resource;
 using ProjectSun.Resource.Testing;
 using ProjectSun.Workforce;
@@ -165,6 +167,28 @@ public static class TurnTestSceneBuilder
         // ResourceManager에 WorkforceManager 연결
         SetField(resourceMgr, "workforceManager", workforceMgr);
 
+        // EncounterManager + BuffManager
+        var encounterPoolSO = CreateEncounterPool();
+        var buffGO = new GameObject("BuffManager");
+        var buffMgr = buffGO.AddComponent<BuffManager>();
+
+        var encounterGO = new GameObject("EncounterManager");
+        var encounterMgr = encounterGO.AddComponent<EncounterManager>();
+        SetField(encounterMgr, "encounterPool", encounterPoolSO);
+        SetField(encounterMgr, "resourceManager", resourceMgr);
+        SetField(encounterMgr, "workforceManager", workforceMgr);
+        SetField(encounterMgr, "buildingManager", manager);
+        SetField(encounterMgr, "buffManager", buffMgr);
+
+        // EncounterUI + BuffUI
+        var encounterUIGO = new GameObject("EncounterUI");
+        var encUI = encounterUIGO.AddComponent<EncounterUI>();
+        SetField(encUI, "encounterManager", encounterMgr);
+
+        var buffUIGO = new GameObject("BuffUI");
+        var bUI = buffUIGO.AddComponent<BuffUI>();
+        SetField(bUI, "buffManager", buffMgr);
+
         // TurnManager
         var turnGO = new GameObject("TurnManager");
         var turnMgr = turnGO.AddComponent<TurnManager>();
@@ -173,6 +197,8 @@ public static class TurnTestSceneBuilder
         SetField(turnMgr, "battleManager", battleMgr);
         SetField(turnMgr, "workforceManager", workforceMgr);
         SetField(turnMgr, "resourceManager", resourceMgr);
+        SetField(turnMgr, "encounterManager", encounterMgr);
+        SetField(turnMgr, "buffManager", buffMgr);
         SetField(turnMgr, "screenFader", fader);
         SetField(turnMgr, "toastMessage", toast);
 
@@ -207,13 +233,17 @@ public static class TurnTestSceneBuilder
         AssetDatabase.Refresh();
 
         Debug.Log($"Turn test scene created at {ScenePath}");
+
+        Debug.Log($"Turn test scene created at {ScenePath}");
         Debug.Log("Press 'End Turn (Night)' to start the turn loop.");
     }
+
+    private const string EncounterDataPath = "Assets/Data/Encounter";
 
     private static void EnsureDirectories()
     {
         string[] dirs = { "Assets/Data", TurnDataPath, DefenseDataPath, ConstructionDataPath,
-                          "Assets/Materials", MaterialPath, "Assets/Scenes" };
+                          EncounterDataPath, "Assets/Materials", MaterialPath, "Assets/Scenes" };
         foreach (var dir in dirs)
         {
             if (!AssetDatabase.IsValidFolder(dir))
@@ -486,5 +516,66 @@ public static class TurnTestSceneBuilder
             type = type.BaseType;
         }
         Debug.LogWarning($"Field '{fieldName}' not found on {obj.GetType().Name}");
+    }
+
+    private static EncounterPoolSO CreateEncounterPool()
+    {
+        string poolPath = $"{EncounterDataPath}/TestEncounterPool.asset";
+        var existing = AssetDatabase.LoadAssetAtPath<EncounterPoolSO>(poolPath);
+        if (existing != null) return existing;
+
+        // 일상 인카운터 생성
+        var daily1 = CreateEncounterDef("D-001", "정찰 보고", "정찰병이 인근에서 보급품을 발견했습니다.",
+            EncounterCategory.Daily,
+            new EncounterChoice { choiceText = "회수하라", effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "basic", resourceAmount = 10 } } },
+            new EncounterChoice { choiceText = "무시하라", effects = new() });
+
+        var daily2 = CreateEncounterDef("D-002", "축제 요청", "주민들이 축제를 열고 싶다고 합니다.",
+            EncounterCategory.Daily,
+            new EncounterChoice { choiceText = "허가", effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "basic", resourceAmount = -8 } } },
+            new EncounterChoice { choiceText = "불허", effects = new() });
+
+        var daily3 = CreateEncounterDef("D-003", "생산 호황", "오늘 생산 시설의 효율이 좋습니다!",
+            EncounterCategory.Daily,
+            new EncounterChoice { choiceText = "더 돌려!", effects = new() { new ChoiceEffect { effectType = EffectType.Buff, buffType = BuffType.ProductionBonus, buffValue = 0.3f, buffDuration = 3 } } },
+            new EncounterChoice { choiceText = "무리하지 말자", effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "basic", resourceAmount = 5 } } });
+
+        var daily4 = CreateEncounterDef("D-004", "의문의 물자", "기지 앞에 정체불명의 물자가 놓여있습니다.",
+            EncounterCategory.Daily,
+            new EncounterChoice { choiceText = "사용한다", effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "defense", resourceAmount = 5 }, new ChoiceEffect { effectType = EffectType.WorkerInjury, workerAmount = 1 } } },
+            new EncounterChoice { choiceText = "버린다", effects = new() });
+
+        // 중요 인카운터 생성
+        var major1 = CreateEncounterDef("M-001", "생존자 발견", "폐허에서 생존자 집단을 발견했습니다.",
+            EncounterCategory.Major,
+            new EncounterChoice { choiceText = "식량 나눔", effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "basic", resourceAmount = -10 }, new ChoiceEffect { effectType = EffectType.WorkerChange, workerAmount = 2 } } },
+            new EncounterChoice { choiceText = "교역 제안", costResourceId = "advanced", costAmount = 15, effects = new() { new ChoiceEffect { effectType = EffectType.ResourceChange, resourceId = "basic", resourceAmount = 30 } } },
+            new EncounterChoice { choiceText = "전투 태세", requiredBuildingName = "Arrow Tower", effects = new() { new ChoiceEffect { effectType = EffectType.Buff, buffType = BuffType.AttackBonus, buffValue = 0.25f, buffDuration = 3 }, new ChoiceEffect { effectType = EffectType.WorkerChange, workerAmount = 1 } } });
+
+        // 풀 생성
+        var pool = ScriptableObject.CreateInstance<EncounterPoolSO>();
+        pool.dailyEncounters = new() { daily1, daily2, daily3, daily4 };
+        pool.majorEncounters = new() { major1 };
+
+        AssetDatabase.CreateAsset(pool, poolPath);
+        return pool;
+    }
+
+    private static EncounterDefinitionSO CreateEncounterDef(string id, string name, string desc,
+        EncounterCategory category, params EncounterChoice[] choices)
+    {
+        string path = $"{EncounterDataPath}/{id}.asset";
+        var existing = AssetDatabase.LoadAssetAtPath<EncounterDefinitionSO>(path);
+        if (existing != null) return existing;
+
+        var so = ScriptableObject.CreateInstance<EncounterDefinitionSO>();
+        so.encounterName = name;
+        so.description = desc;
+        so.category = category;
+        so.choices = new List<EncounterChoice>(choices);
+        so.weight = 1f;
+
+        AssetDatabase.CreateAsset(so, path);
+        return so;
     }
 }

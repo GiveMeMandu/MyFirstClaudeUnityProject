@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using ProjectSun.Construction;
 using ProjectSun.Defense;
+using ProjectSun.Encounter;
 using ProjectSun.Resource;
 using ProjectSun.Workforce;
 using UnityEngine;
@@ -23,6 +24,8 @@ namespace ProjectSun.Turn
         [SerializeField] private BattleManager battleManager;
         [SerializeField] private WorkforceManager workforceManager;
         [SerializeField] private ResourceManager resourceManager;
+        [SerializeField] private EncounterManager encounterManager;
+        [SerializeField] private BuffManager buffManager;
         [SerializeField] private ScreenFader screenFader;
         [SerializeField] private ToastMessage toastMessage;
 
@@ -176,6 +179,12 @@ namespace ProjectSun.Turn
             ProcessDayStartEffects();
 
             yield return new WaitForSecondsRealtime(0.2f);
+
+            // ── 일상 인카운터 (낮 시작 시) ──
+            if (encounterManager != null && encounterManager.TryTriggerDailyEncounter())
+            {
+                yield return new WaitUntil(() => !encounterManager.IsWaitingForChoice);
+            }
 
             // ── 낮 페이즈 복귀 ──
             SetPhase(TurnPhase.DayPhase);
@@ -346,7 +355,7 @@ namespace ProjectSun.Turn
         private string lastProductionSummary;
 
         /// <summary>
-        /// 다음 낮 시작 시 처리: 건설 진행도 증가, 부상 회복
+        /// 다음 낮 시작 시 처리: 건설 진행도 증가, 부상 회복, 버프 턴 감소
         /// </summary>
         private void ProcessDayStartEffects()
         {
@@ -358,6 +367,11 @@ namespace ProjectSun.Turn
             if (workforceManager != null)
             {
                 workforceManager.ProcessHealingTurn();
+            }
+
+            if (buffManager != null)
+            {
+                buffManager.ProcessTurn();
             }
         }
 
