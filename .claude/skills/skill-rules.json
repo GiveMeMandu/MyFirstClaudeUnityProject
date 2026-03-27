@@ -111,8 +111,9 @@
       "fileTriggers": {
         "pathPatterns": [
           "UI_Study/Assets/**/*.cs",
-          "UI_Study/Assets/**/*.uxml",
-          "UI_Study/Assets/**/*.uss"
+          "Project_Sun/Assets/**/*View.cs",
+          "Project_Sun/Assets/**/*Presenter.cs",
+          "Project_Sun/Assets/**/*LifetimeScope.cs"
         ],
         "contentPatterns": [
           "IInitializable",
@@ -122,10 +123,16 @@
           "Subscribe\\(",
           "LifetimeScope",
           "RegisterEntryPoint",
+          "RegisterComponent",
           "OnClickAsObservable",
           "UniTask",
           "ModalContainer",
-          "PageContainer"
+          "PageContainer",
+          "SheetContainer",
+          "AddressableAssetService",
+          "ScopedAssetLoader",
+          "DOTween",
+          "SubscribeAwait"
         ]
       },
       "skipConditions": {
