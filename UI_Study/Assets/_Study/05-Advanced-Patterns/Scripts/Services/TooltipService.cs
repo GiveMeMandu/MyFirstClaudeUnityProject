@@ -5,7 +5,9 @@ using UnityEngine.UI;
 namespace UIStudy.Advanced.Services
 {
     /// <summary>
-    /// 싱글톤 툴팁 컨트롤러 — 호버 딜레이 후 표시, 화면 가장자리 클램핑.
+    /// 싱글톤 툴팁 컨트롤러.
+    /// TooltipPanel: anchor=(0,0) pivot=(0,1) — 좌하단 기준, 좌상단 피벗.
+    /// anchoredPosition에 스크린 좌표를 Canvas 스케일로 나눈 값을 대입.
     /// </summary>
     public class TooltipService : MonoBehaviour
     {
@@ -16,17 +18,11 @@ namespace UIStudy.Advanced.Services
         [SerializeField] private float _maxWidth = 300f;
         [SerializeField] private Vector2 _offset = new(15f, -15f);
 
-        private Canvas _parentCanvas;
-        private RectTransform _canvasRectTransform;
-        private Camera _canvasCamera;
+        private Canvas _rootCanvas;
 
         private void Awake()
         {
-            _parentCanvas = GetComponentInParent<Canvas>();
-            _canvasRectTransform = _parentCanvas.GetComponent<RectTransform>();
-            _canvasCamera = _parentCanvas.renderMode == RenderMode.ScreenSpaceOverlay
-                ? null
-                : _parentCanvas.worldCamera;
+            _rootCanvas = GetComponentInParent<Canvas>().rootCanvas;
             Hide();
         }
 
@@ -36,28 +32,29 @@ namespace UIStudy.Advanced.Services
             _layoutElement.enabled = _tooltipText.preferredWidth > _maxWidth;
 
             _tooltipPanel.gameObject.SetActive(true);
-
-            // 강제 레이아웃 갱신 (ContentSizeFitter 반영)
             LayoutRebuilder.ForceRebuildLayoutImmediate(_tooltipPanel);
 
-            // 스크린 좌표 → Canvas 로컬 좌표 변환
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                _canvasRectTransform, screenPosition, _canvasCamera, out var localPoint);
+            // ScreenSpaceOverlay: 스크린 좌표를 Canvas 스케일로 나누면 anchoredPosition
+            var scaleFactor = _rootCanvas.scaleFactor;
+            var pos = screenPosition / scaleFactor + _offset;
 
-            var position = localPoint + _offset;
-            var tooltipSize = _tooltipPanel.sizeDelta;
-            var canvasSize = _canvasRectTransform.rect.size;
-            var halfCanvas = canvasSize * 0.5f;
+            var tooltipSize = _tooltipPanel.rect.size;
+            var screenW = Screen.width / scaleFactor;
+            var screenH = Screen.height / scaleFactor;
 
             // 오른쪽 넘침
-            if (position.x + tooltipSize.x > halfCanvas.x)
-                position.x = localPoint.x - tooltipSize.x - _offset.x;
+            if (pos.x + tooltipSize.x > screenW)
+                pos.x = screenPosition.x / scaleFactor - tooltipSize.x - _offset.x;
 
-            // 아래 넘침
-            if (position.y - tooltipSize.y < -halfCanvas.y)
-                position.y = localPoint.y + tooltipSize.y + Mathf.Abs(_offset.y);
+            // 위 넘침 (pivot이 좌상단이므로 pos.y가 높을수록 위)
+            if (pos.y > screenH)
+                pos.y = screenH;
 
-            _tooltipPanel.anchoredPosition = position;
+            // 아래 넘침 (pos.y - tooltipSize 가 0 이하)
+            if (pos.y - tooltipSize.y < 0)
+                pos.y = tooltipSize.y;
+
+            _tooltipPanel.anchoredPosition = pos;
         }
 
         public void Hide()
