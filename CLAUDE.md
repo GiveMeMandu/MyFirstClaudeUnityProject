@@ -2,9 +2,10 @@
 
 ## 워크스페이스 구조
 - 루트: D:\Unity\MYFIRSTCLAUDEUNITYPROJECT\
-- Unity 프로젝트: Project_Sun\
+- Unity 프로젝트 (메인): Project_Sun\
+- Unity 프로젝트 (UI 학습): UI_Study\
 - 인프라: .claude\ (hooks, skills, agents, commands)
-- 문서: Docs\ (아직 생성 전)
+- 문서: Docs\
 
 ## 문서 시스템 (Obsidian Vault: Docs/)
 - GDD: Docs/GDD/index.md
@@ -126,6 +127,27 @@ Use after text-editing `.prefab`, `.unity`, `.asset`, `.mat` files.
 
 ## Project Structure
 
-- Unity project root: `Project_Sun/`
+- Unity project root (메인): `Project_Sun/`
 - Assets: `Project_Sun/Assets/`
 - Packages: `Project_Sun/Packages/`
+
+- Unity project root (UI 학습): `UI_Study/`
+- Assets: `UI_Study/Assets/`
+- Packages: `UI_Study/Packages/`
+- 학습 예제: `UI_Study/Assets/_Study/<topic-slug>/`
+
+## UI Study Pipeline
+
+UI 학습/연구를 위한 자동화 파이프라인:
+
+```
+/ui-research <주제>     → 기술/라이브러리/패턴 심층 조사
+/ui-study-plan <주제>   → 학습 계획 수립 (단계별 예제 설계)
+/ui-implement <계획>    → 계획에 따라 예제 구현
+/ui-review [경로]       → 코드 리뷰 (베스트 프랙티스 검증)
+```
+
+- 리서치 결과: `Docs/UI-Study/research/`
+- 학습 계획: `Docs/UI-Study/plans/`
+- 패턴 문서: `Docs/UI-Study/patterns/`
+- 리뷰 보고: `Docs/UI-Study/reviews/`

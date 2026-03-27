@@ -87,6 +87,53 @@
         ]
       }
     },
+    "ui-dev-guidelines": {
+      "type": "domain",
+      "enforcement": "suggest",
+      "priority": "high",
+      "description": "Unity UGUI 개발 시 MV(R)P + VContainer + R3 + UniTask 패턴 가이드",
+      "promptTriggers": {
+        "keywords": [
+          "ui", "ugui", "canvas", "panel", "popup", "modal",
+          "presenter", "viewmodel", "mvp", "mvrp",
+          "r3", "reactive", "subscribe", "observable",
+          "unitask", "async", "await",
+          "vcontainer", "lifetimescope", "inject",
+          "dotween", "tween",
+          "screennavigator", "page", "sheet"
+        ],
+        "intentPatterns": [
+          "(만들어|작성|추가|수정).*?(ui|패널|팝업|화면|뷰|프리젠터)",
+          "(ui|패널|뷰).*?(만들어|작성|추가|수정)",
+          "(바인딩|구독|subscribe).*?(ui|뷰|화면)"
+        ]
+      },
+      "fileTriggers": {
+        "pathPatterns": [
+          "UI_Study/Assets/**/*.cs",
+          "UI_Study/Assets/**/*.uxml",
+          "UI_Study/Assets/**/*.uss"
+        ],
+        "contentPatterns": [
+          "IInitializable",
+          "IDisposable",
+          "ReactiveProperty",
+          "Observable<",
+          "Subscribe\\(",
+          "LifetimeScope",
+          "RegisterEntryPoint",
+          "OnClickAsObservable",
+          "UniTask",
+          "ModalContainer",
+          "PageContainer"
+        ]
+      },
+      "skipConditions": {
+        "sessionSkillUsed": true,
+        "fileMarkers": ["@skip-ui-check"],
+        "envOverride": "SKIP_UI_GUIDELINES"
+      }
+    },
     "skill-developer": {
       "type": "domain",
       "enforcement": "suggest",
