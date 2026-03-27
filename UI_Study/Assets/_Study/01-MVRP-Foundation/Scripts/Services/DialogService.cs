@@ -45,7 +45,9 @@ namespace UIStudy.MVRP.Services
             var confirmed = false;
             var tcs = new UniTaskCompletionSource();
 
-            ct.Register(() => tcs.TrySetCanceled());
+            var ctr = ct.CanBeCanceled
+                ? ct.Register(() => tcs.TrySetCanceled())
+                : default;
 
             var confirmSub = _dialogView.OnConfirmClick.Subscribe(_ =>
             {
@@ -63,14 +65,19 @@ namespace UIStudy.MVRP.Services
             {
                 await tcs.Task;
             }
+            catch (OperationCanceledException)
+            {
+                confirmed = false;
+            }
             finally
             {
+                ctr.Dispose();
                 confirmSub.Dispose();
                 cancelSub.Dispose();
 
-                // 닫기
+                // 닫기 — CancellationToken.None으로 호출 (원본 ct는 이미 취소됐을 수 있음)
                 if (_animatedPanel != null)
-                    await _animatedPanel.HideAsync(ct);
+                    await _animatedPanel.HideAsync(CancellationToken.None);
                 else
                     _dialogView.Hide();
             }

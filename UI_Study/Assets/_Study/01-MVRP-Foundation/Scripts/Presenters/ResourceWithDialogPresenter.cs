@@ -1,6 +1,4 @@
 using System;
-using System.Threading;
-using Cysharp.Threading.Tasks;
 using R3;
 using UIStudy.MVRP.Models;
 using UIStudy.MVRP.Services;
@@ -19,7 +17,6 @@ namespace UIStudy.MVRP.Presenters
         private readonly ResourceModel _model;
         private readonly ResourceHUDView _view;
         private readonly DialogService _dialogService;
-        private readonly CancellationTokenSource _cts = new();
         private readonly CompositeDisposable _disposables = new();
 
         private const int GoldPerClick = 10;
@@ -101,11 +98,6 @@ namespace UIStudy.MVRP.Presenters
                 .AddTo(_disposables);
         }
 
-        public void Dispose()
-        {
-            _cts.Cancel();
-            _cts.Dispose();
-            _disposables.Dispose();
-        }
+        public void Dispose() => _disposables.Dispose();
     }
 }
