@@ -19,9 +19,10 @@ namespace UIStudy.Navigation.Services
         }
 
         public AsyncProcessHandle Push(string resourceKey, bool playAnimation = true,
+            bool loadAsync = true,
             Action<(string pageId, Page page)> onLoad = null)
         {
-            return _pageContainer.Push(resourceKey, playAnimation, onLoad: onLoad);
+            return _pageContainer.Push(resourceKey, playAnimation, loadAsync: loadAsync, onLoad: onLoad);
         }
 
         public AsyncProcessHandle Pop(bool playAnimation = true)
