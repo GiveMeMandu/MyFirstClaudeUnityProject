@@ -3,13 +3,13 @@ using R3;
 using UIStudy.Advanced.Services;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 
 namespace UIStudy.Advanced.Views
 {
     /// <summary>
     /// 툴팁 트리거 — 호버 가능한 UI 요소에 부착.
-    /// 0.4초 딜레이 후 TooltipService.Show() 호출.
-    /// 마우스 이탈 시 즉시 숨김.
+    /// 0.4초 딜레이 후 현재 마우스 위치에서 TooltipService.Show() 호출.
     /// </summary>
     public class TooltipTrigger : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     {
@@ -18,10 +18,8 @@ namespace UIStudy.Advanced.Views
 
         private TooltipService _tooltipService;
         private IDisposable _delaySubscription;
+        private bool _isHovering;
 
-        /// <summary>
-        /// VContainer로 주입하거나 FindObjectOfType으로 설정.
-        /// </summary>
         public void SetService(TooltipService service) => _tooltipService = service;
 
         private void Start()
@@ -32,16 +30,25 @@ namespace UIStudy.Advanced.Views
 
         public void OnPointerEnter(PointerEventData eventData)
         {
+            _isHovering = true;
             _delaySubscription?.Dispose();
             _delaySubscription = Observable.Timer(TimeSpan.FromSeconds(_delay))
                 .Subscribe(_ =>
                 {
-                    _tooltipService?.Show(_tooltipText, eventData.position);
+                    if (_isHovering && _tooltipService != null)
+                    {
+                        // 딜레이 후 현재 마우스 위치 사용 (New Input System)
+                        var mousePos = Mouse.current != null
+                            ? Mouse.current.position.ReadValue()
+                            : Vector2.zero;
+                        _tooltipService.Show(_tooltipText, mousePos);
+                    }
                 });
         }
 
         public void OnPointerExit(PointerEventData eventData)
         {
+            _isHovering = false;
             _delaySubscription?.Dispose();
             _delaySubscription = null;
             _tooltipService?.Hide();
