@@ -9,6 +9,7 @@
 | 003 | [R3 리액티브 라이브러리](r3-reactive-library.md) | library | 2026-03-27 | 조사완료 |
 | 004 | [VContainer + UGUI 통합](vcontainer-ugui-integration.md) | integration | 2026-03-27 | 조사완료 |
 | 005 | [기술 스택 결정 종합](tech-stack-decisions.md) | integration | 2026-03-27 | 확정 |
+| 006 | [라이브러리 공식 예제 + 실전 패턴 조사](library-examples-survey.md) | integration | 2026-03-28 | 조사완료 |
 
 ---
 
