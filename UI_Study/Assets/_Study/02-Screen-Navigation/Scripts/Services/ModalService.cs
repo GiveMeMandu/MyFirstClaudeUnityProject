@@ -28,7 +28,8 @@ namespace UIStudy.Navigation.Services
             var confirmed = false;
             var tcs = new UniTaskCompletionSource();
 
-            _modalContainer.Push("ConfirmModal", true, onLoad: args =>
+            // Push를 await하여 모달 로드+애니메이션 완료까지 대기
+            var pushHandle = _modalContainer.Push("ConfirmModal", true, onLoad: args =>
             {
                 var modal = (ConfirmModalView)args.modal;
                 modal.SetMessage(message);
@@ -45,6 +46,7 @@ namespace UIStudy.Navigation.Services
                     tcs.TrySetResult();
                 }).AddTo(modal);
             });
+            await pushHandle.Task;
 
             try
             {
@@ -55,7 +57,10 @@ namespace UIStudy.Navigation.Services
                 confirmed = false;
             }
 
-            _modalContainer.Pop(true);
+            // Pop을 await하여 닫기 애니메이션 완료까지 대기
+            var popHandle = _modalContainer.Pop(true);
+            await popHandle.Task;
+
             return confirmed;
         }
 
@@ -66,7 +71,7 @@ namespace UIStudy.Navigation.Services
         {
             var tcs = new UniTaskCompletionSource();
 
-            _modalContainer.Push("InfoModal", true, onLoad: args =>
+            var pushHandle = _modalContainer.Push("InfoModal", true, onLoad: args =>
             {
                 var modal = (InfoModalView)args.modal;
                 modal.SetTitle(title);
@@ -77,6 +82,7 @@ namespace UIStudy.Navigation.Services
                     tcs.TrySetResult();
                 }).AddTo(modal);
             });
+            await pushHandle.Task;
 
             try
             {
@@ -87,7 +93,8 @@ namespace UIStudy.Navigation.Services
                 // 취소 시에도 모달 닫기
             }
 
-            _modalContainer.Pop(true);
+            var popHandle = _modalContainer.Pop(true);
+            await popHandle.Task;
         }
     }
 }
