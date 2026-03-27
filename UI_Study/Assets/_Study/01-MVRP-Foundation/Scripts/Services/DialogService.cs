@@ -8,33 +8,43 @@ namespace UIStudy.MVRP.Services
 {
     /// <summary>
     /// 다이얼로그 서비스 — UniTask로 다이얼로그 결과를 await 가능하게 제공.
-    /// VContainer에서 Singleton으로 등록하여 어디서든 주입받아 사용.
+    /// AnimatedPanelView가 있으면 애니메이션 포함, 없으면 SetActive로 대체.
     /// </summary>
     public class DialogService : IDisposable
     {
         private readonly ConfirmDialogView _dialogView;
+        private readonly AnimatedPanelView _animatedPanel;
 
         public DialogService(ConfirmDialogView dialogView)
         {
             _dialogView = dialogView;
-            _dialogView.Hide();
+            // AnimatedPanelView가 같은 GameObject에 있으면 사용
+            _animatedPanel = dialogView.GetComponent<AnimatedPanelView>();
+
+            if (_animatedPanel != null)
+                _animatedPanel.HideImmediate();
+            else
+                _dialogView.Hide();
         }
 
         /// <summary>
         /// 확인 다이얼로그를 표시하고 사용자 응답을 await.
         /// true = 확인, false = 취소.
-        /// CancellationToken으로 씬 전환 시 안전하게 정리.
         /// </summary>
         public async UniTask<bool> ShowConfirmAsync(string message, CancellationToken ct = default)
         {
             _dialogView.SetMessage(message);
-            _dialogView.Show();
 
-            // 확인 또는 취소 중 먼저 오는 것을 대기
+            // 열기 (애니메이션 유무에 따라 분기)
+            if (_animatedPanel != null)
+                await _animatedPanel.ShowAsync(ct);
+            else
+                _dialogView.Show();
+
+            // 버튼 대기
             var confirmed = false;
             var tcs = new UniTaskCompletionSource();
 
-            // CancellationToken 등록
             ct.Register(() => tcs.TrySetCanceled());
 
             var confirmSub = _dialogView.OnConfirmClick.Subscribe(_ =>
@@ -57,7 +67,12 @@ namespace UIStudy.MVRP.Services
             {
                 confirmSub.Dispose();
                 cancelSub.Dispose();
-                _dialogView.Hide();
+
+                // 닫기
+                if (_animatedPanel != null)
+                    await _animatedPanel.HideAsync(ct);
+                else
+                    _dialogView.Hide();
             }
 
             return confirmed;
@@ -65,7 +80,6 @@ namespace UIStudy.MVRP.Services
 
         public void Dispose()
         {
-            // 필요 시 추가 정리
         }
     }
 }
