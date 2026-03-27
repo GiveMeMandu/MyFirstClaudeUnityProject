@@ -5,13 +5,16 @@ using UnityEngine.UI;
 namespace UIStudy.Advanced.Views
 {
     /// <summary>
-    /// 2-tier 체력바/프로그레스바 — 배경 필(프리뷰) + 전경 필(DOTween 보간).
-    /// 배경 필은 즉시 목표값으로 이동, 전경 필은 부드럽게 추격.
-    /// 큰 변화 시 스케일 펀치 애니메이션.
+    /// 2-tier 체력바 — Image.fillAmount 기반.
+    ///
+    /// 데미지 시: 전경(메인)이 즉시 줄어듦, 배경(잔상)이 천천히 따라감
+    /// 힐 시: 배경(프리뷰)이 즉시 늘어남, 전경(메인)이 천천히 따라감
+    ///
+    /// 사용 조건: 두 Image 모두 Type=Filled, FillMethod=Horizontal, Source Image 할당 필수.
     /// </summary>
     public class AnimatedBarView : MonoBehaviour
     {
-        [Header("Fill Images")]
+        [Header("Fill Images (Type=Filled, Horizontal)")]
         [SerializeField] private Image _foregroundFill;
         [SerializeField] private Image _backgroundFill;
 
@@ -19,7 +22,7 @@ namespace UIStudy.Advanced.Views
         [SerializeField] private float _tweenDuration = 0.5f;
         [SerializeField] private float _punchThreshold = 0.2f;
 
-        private Tween _foregroundTween;
+        private Tween _trailingTween;
         private float _currentValue = 1f;
 
         /// <summary>
@@ -27,21 +30,37 @@ namespace UIStudy.Advanced.Views
         /// </summary>
         public void SetValue(float normalizedValue)
         {
-            var delta = Mathf.Abs(normalizedValue - _currentValue);
+            normalizedValue = Mathf.Clamp01(normalizedValue);
+            var delta = normalizedValue - _currentValue;
             _currentValue = normalizedValue;
 
-            // 배경 필 — 즉시 목표값 (프리뷰)
-            _backgroundFill.fillAmount = normalizedValue;
+            _trailingTween?.Kill();
 
-            // 전경 필 — DOTween 보간
-            _foregroundTween?.Kill();
-            _foregroundTween = _foregroundFill
-                .DOFillAmount(normalizedValue, _tweenDuration)
-                .SetEase(Ease.OutQuad)
-                .SetUpdate(true); // UnscaledDeltaTime — 일시정지 중에도 동작
+            if (delta < 0)
+            {
+                // === 데미지 (값 감소) ===
+                // 전경(메인)이 즉시 줄어듦
+                _foregroundFill.fillAmount = normalizedValue;
+                // 배경(잔상)이 천천히 따라감
+                _trailingTween = _backgroundFill
+                    .DOFillAmount(normalizedValue, _tweenDuration)
+                    .SetEase(Ease.InQuad)
+                    .SetUpdate(true);
+            }
+            else
+            {
+                // === 힐 (값 증가) ===
+                // 배경(프리뷰)이 즉시 늘어남
+                _backgroundFill.fillAmount = normalizedValue;
+                // 전경(메인)이 천천히 따라감
+                _trailingTween = _foregroundFill
+                    .DOFillAmount(normalizedValue, _tweenDuration)
+                    .SetEase(Ease.OutQuad)
+                    .SetUpdate(true);
+            }
 
             // 큰 변화 시 스케일 펀치
-            if (delta >= _punchThreshold)
+            if (Mathf.Abs(delta) >= _punchThreshold)
             {
                 transform.DOKill();
                 transform.localScale = Vector3.one;
@@ -50,14 +69,11 @@ namespace UIStudy.Advanced.Views
             }
         }
 
-        /// <summary>
-        /// 색상 변경 (HP 잔량에 따라).
-        /// </summary>
         public void SetForegroundColor(Color color) => _foregroundFill.color = color;
 
         private void OnDestroy()
         {
-            _foregroundTween?.Kill();
+            _trailingTween?.Kill();
             transform.DOKill();
         }
     }
