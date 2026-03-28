@@ -408,12 +408,12 @@ namespace UIStudy.Editor
         //  UI Helpers
         // ================================================================
 
-        private static void AddEventSystem()
+        internal static void AddEventSystem()
         {
             var go = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
         }
 
-        private static GameObject AddCanvas(string name)
+        internal static GameObject AddCanvas(string name)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Canvas),
                 typeof(CanvasScaler), typeof(GraphicRaycaster));
@@ -424,7 +424,7 @@ namespace UIStudy.Editor
             return go;
         }
 
-        private static TextMeshProUGUI AddTMPText(Transform parent, string name, string text,
+        internal static TextMeshProUGUI AddTMPText(Transform parent, string name, string text,
             float fontSize, TextAlignmentOptions alignment, Color? color = null)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(TextMeshProUGUI));
@@ -438,13 +438,13 @@ namespace UIStudy.Editor
             return tmp;
         }
 
-        private static GameObject AddButton(Transform parent, string name, string label, Vector2 size)
+        internal static GameObject AddButton(Transform parent, string name, string label, Vector2 size)
         {
             var go = CreateUIButton(parent, name, label, size);
             return go;
         }
 
-        private static GameObject CreateUIButton(Transform parent, string name, string label, Vector2 size)
+        internal static GameObject CreateUIButton(Transform parent, string name, string label, Vector2 size)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Image), typeof(Button));
             go.transform.SetParent(parent, false);
@@ -468,7 +468,7 @@ namespace UIStudy.Editor
             return go;
         }
 
-        private static Image AddImage(Transform parent, string name, Color color, Vector2 size)
+        internal static Image AddImage(Transform parent, string name, Color color, Vector2 size)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
@@ -479,7 +479,7 @@ namespace UIStudy.Editor
             return img;
         }
 
-        private static Slider AddSlider(Transform parent, string name, float min, float max, float value)
+        internal static Slider AddSlider(Transform parent, string name, float min, float max, float value)
         {
             var go = DefaultControls.CreateSlider(new DefaultControls.Resources());
             go.name = name;
@@ -497,7 +497,7 @@ namespace UIStudy.Editor
             return slider;
         }
 
-        private static GameObject AddPanel(Transform parent, string name, Color bgColor)
+        internal static GameObject AddPanel(Transform parent, string name, Color bgColor)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(Image));
             go.transform.SetParent(parent, false);
@@ -506,7 +506,7 @@ namespace UIStudy.Editor
             return go;
         }
 
-        private static GameObject AddHorizontalRow(Transform parent, string name, float height)
+        internal static GameObject AddHorizontalRow(Transform parent, string name, float height)
         {
             var go = new GameObject(name, typeof(RectTransform), typeof(HorizontalLayoutGroup));
             go.transform.SetParent(parent, false);
@@ -523,7 +523,7 @@ namespace UIStudy.Editor
             return go;
         }
 
-        private static TextMeshProUGUI CreateUITMPText(Transform parent, string name, string text,
+        internal static TextMeshProUGUI CreateUITMPText(Transform parent, string name, string text,
             float fontSize, TextAlignmentOptions alignment)
         {
             return AddTMPText(parent, name, text, fontSize, alignment, Color.white);
@@ -533,14 +533,14 @@ namespace UIStudy.Editor
         //  RectTransform Helpers
         // ================================================================
 
-        private enum AnchorPreset
+        internal enum AnchorPreset
         {
             TopStretch,
             BottomStretch,
             StretchAll
         }
 
-        private static RectTransform Anchor(RectTransform rt, AnchorPreset preset,
+        internal static RectTransform Anchor(RectTransform rt, AnchorPreset preset,
             Vector2 offsetMin, Vector2 offsetMax)
         {
             switch (preset)
@@ -579,7 +579,7 @@ namespace UIStudy.Editor
             return rt;
         }
 
-        private static void StretchFill(RectTransform rt)
+        internal static void StretchFill(RectTransform rt)
         {
             rt.anchorMin = Vector2.zero;
             rt.anchorMax = Vector2.one;
@@ -587,7 +587,7 @@ namespace UIStudy.Editor
             rt.offsetMax = Vector2.zero;
         }
 
-        private static void EnsureDir(string assetPath)
+        internal static void EnsureDir(string assetPath)
         {
             var fullDir = Path.GetDirectoryName(Path.Combine(Application.dataPath, "..",  assetPath));
             if (!string.IsNullOrEmpty(fullDir) && !Directory.Exists(fullDir))
