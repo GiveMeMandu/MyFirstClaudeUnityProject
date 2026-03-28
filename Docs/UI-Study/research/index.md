@@ -12,6 +12,12 @@
 | 006 | [라이브러리 공식 예제 + 실전 패턴 조사](library-examples-survey.md) | integration | 2026-03-28 | 조사완료 |
 | 007 | [UGUI 코드 기반 레이아웃 (code-first)](ugui-programmatic-layout.md) | practice | 2026-03-28 | 조사완료 |
 | 008 | [UGUI Tooltip 위치 계산 시스템](ugui-tooltip-positioning.md) | practice | 2026-03-28 | 조사완료 |
+| 009 | [게임 UI 패턴 12종 — HUD/인벤토리/대화/팝업 등](game-ui-patterns.md) | pattern | 2026-03-28 | 조사완료 |
+| 010 | [UGUI 고급 UI 애니메이션 패턴](ugui-animation-patterns.md) | animation | 2026-03-28 | 조사완료 |
+| 011 | [UGUI ScrollView 풀링 & 버추얼 스크롤](ugui-scrollview-pooling.md) | practice | 2026-03-28 | 조사완료 |
+| 012 | [UGUI 성능 최적화 기법 종합](ugui-performance-optimization.md) | performance | 2026-03-28 | 조사완료 |
+| 013 | [R3 UI 데이터 바인딩 패턴](r3-ui-binding-patterns.md) | library / practice | 2026-03-28 | 조사완료 |
+| 014 | [UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) | practice | 2026-03-28 | 조사완료 |
 
 ---
 
@@ -19,18 +25,28 @@
 
 ### pattern
 - [001 - UGUI UI 아키텍처 패턴 비교](ugui-ui-architecture-patterns.md) — MVP, MVVM, MVC, Flux/Redux 비교
+- [009 - 게임 UI 패턴 12종](game-ui-patterns.md) — HUD/인벤토리/대화/팝업/탭/로딩/설정/월드UI/래디얼/튜토리얼/리더보드/샵
 
 ### library
 - [002 - UniTask UI 비동기 패턴](unitask-ui-research.md) — 다이얼로그 await, R3/VContainer 통합
 - [003 - R3 리액티브 라이브러리](r3-reactive-library.md) — UniRx 후속, API 차이, Unity 기능
+- [013 - R3 UI 데이터 바인딩 패턴](r3-ui-binding-patterns.md) — ReactiveProperty/Command/Triggers/SubscribeAwait 실전 패턴 10종
 
 ### integration
 - [004 - VContainer + UGUI 통합](vcontainer-ugui-integration.md) — DI 스코핑, 프리팹 주입, 자식 스코프
 - [005 - 기술 스택 결정 종합](tech-stack-decisions.md) — 12개 영역 최종 결정
 
+### animation
+- [010 - UGUI 고급 UI 애니메이션 패턴](ugui-animation-patterns.md) — DOTween Sequence/이징/프리셋, 화면전환, 마이크로인터랙션, 스태거, 상태머신, USN 트랜지션, 성능최적화, Spine/Lottie, UI파티클, 반응형
+
 ### practice
 - [007 - UGUI 코드 기반 레이아웃 (code-first)](ugui-programmatic-layout.md) — RectTransform 앵커 치트시트, DefaultControls, LayoutGroup, Editor 스크립트 씬 빌더, unity-cli 검증 루틴
 - [008 - UGUI Tooltip 위치 계산 시스템](ugui-tooltip-positioning.md) — RectTransformUtility, Canvas 모드별 카메라, anchoredPosition, 경계 클램핑, ScaleMode, New Input System
+- [011 - UGUI ScrollView 풀링 & 버추얼 스크롤](ugui-scrollview-pooling.md) — LoopScrollRect/FancyScrollView/EnhancedScroller 비교, ObservableCollections.R3 통합, Canvas 성능, LayoutGroup 대안, 무한스크롤/페이지네이션
+- [014 - UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) — CanvasScaler 3모드/Match 공식, SafeAreaPanel, AspectRatioFitter, SpriteAtlas Variant, 방향전환(R3), TMP auto-size, DeviceProfile, UIScaleService, DPI-Aware, Unity6 변경사항
+
+### performance
+- [012 - UGUI 성능 최적화 기법 종합](ugui-performance-optimization.md) — Canvas Rebuild 비용/트리거, Canvas 분리 전략, 드로우콜 배칭, Overdraw 감소, LayoutGroup 대안, TMP 최적화, RaycastTarget, SetActive vs CanvasGroup, 오브젝트 풀링, 프로파일러 도구, 대규모 UI, 메모리 최적화
 
 ---
 
