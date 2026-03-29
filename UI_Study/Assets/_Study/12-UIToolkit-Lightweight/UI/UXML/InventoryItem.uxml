@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:VisualElement class="item-row">
+        <ui:Label name="item-icon" class="item-icon" text="?" />
+        <ui:VisualElement class="item-info">
+            <ui:Label name="item-name" class="item-name" text="Item Name" />
+            <ui:Label name="item-rarity" class="item-rarity" text="Common" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

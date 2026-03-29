@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/Inventory.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <ui:Label class="title" text="Inventory — ListView Virtualization" />
+
+        <!-- Top bar: search + sort -->
+        <ui:VisualElement class="toolbar">
+            <ui:TextField name="search-field" class="search-field" label="Search" />
+            <ui:DropdownField name="sort-dropdown" class="sort-dropdown" label="Sort"
+                choices="Name,Rarity Asc,Rarity Desc" index="0" />
+        </ui:VisualElement>
+
+        <!-- Two-column layout -->
+        <ui:VisualElement class="content">
+            <!-- Left: item list -->
+            <ui:VisualElement class="list-panel">
+                <ui:Label name="item-count-label" class="item-count" text="0 items" />
+                <ui:ListView name="inventory-list" class="inventory-list"
+                    fixed-item-height="48" />
+            </ui:VisualElement>
+
+            <!-- Right: detail panel -->
+            <ui:VisualElement name="detail-panel" class="detail-panel">
+                <ui:Label class="detail-title" text="Item Detail" />
+                <ui:VisualElement class="detail-icon-area">
+                    <ui:Label name="detail-icon" class="detail-icon" text="?" />
+                </ui:VisualElement>
+                <ui:Label name="detail-name" class="detail-name" text="Select an item" />
+                <ui:Label name="detail-rarity" class="detail-rarity" text="" />
+                <ui:Label name="detail-desc" class="detail-desc" text="Choose an item from the list to view details." />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

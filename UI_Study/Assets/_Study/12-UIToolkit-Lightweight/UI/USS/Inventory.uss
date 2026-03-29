@@ -1,0 +1,199 @@
+.root {
+    flex-grow: 1;
+    background-color: rgb(25, 25, 35);
+    padding: 20px;
+}
+
+.title {
+    font-size: 18px;
+    color: rgb(180, 180, 200);
+    margin-bottom: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+}
+
+/* Toolbar */
+.toolbar {
+    flex-direction: row;
+    margin-bottom: 12px;
+    align-items: flex-end;
+}
+
+.search-field {
+    flex-grow: 1;
+    margin-right: 12px;
+}
+
+.search-field > .unity-text-field__input {
+    background-color: rgb(40, 40, 55);
+    border-color: rgb(60, 60, 80);
+    border-radius: 4px;
+    color: rgb(220, 220, 240);
+    padding: 4px 8px;
+}
+
+.sort-dropdown {
+    width: 160px;
+}
+
+.sort-dropdown > .unity-popup-field__input {
+    background-color: rgb(40, 40, 55);
+    border-color: rgb(60, 60, 80);
+    border-radius: 4px;
+    color: rgb(220, 220, 240);
+}
+
+/* Two-column content */
+.content {
+    flex-grow: 1;
+    flex-direction: row;
+}
+
+/* Left panel: list */
+.list-panel {
+    flex-grow: 2;
+    margin-right: 12px;
+    background-color: rgb(30, 30, 42);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(50, 50, 70);
+    padding: 8px;
+}
+
+.item-count {
+    font-size: 11px;
+    color: rgb(130, 130, 160);
+    margin-bottom: 6px;
+    padding-left: 4px;
+}
+
+.inventory-list {
+    flex-grow: 1;
+}
+
+/* Item row template */
+.item-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 4px;
+
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+
+.item-row:hover {
+    background-color: rgb(50, 50, 70);
+}
+
+.item-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background-color: rgb(60, 60, 80);
+    color: rgb(200, 200, 220);
+    font-size: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-right: 10px;
+    flex-shrink: 0;
+}
+
+.item-info {
+    flex-grow: 1;
+    justify-content: center;
+}
+
+.item-name {
+    font-size: 13px;
+    color: rgb(220, 220, 240);
+    -unity-font-style: bold;
+}
+
+.item-rarity {
+    font-size: 11px;
+    color: rgb(130, 130, 160);
+}
+
+/* Rarity colors */
+.rarity--common   { color: rgb(180, 180, 180); }
+.rarity--uncommon { color: rgb(30, 255, 0); }
+.rarity--rare     { color: rgb(0, 112, 221); }
+.rarity--epic     { color: rgb(163, 53, 238); }
+.rarity--legendary { color: rgb(255, 128, 0); }
+
+/* Right panel: detail */
+.detail-panel {
+    flex-grow: 1;
+    min-width: 220px;
+    background-color: rgb(30, 30, 42);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(50, 50, 70);
+    padding: 20px;
+    align-items: center;
+}
+
+.detail-title {
+    font-size: 14px;
+    color: rgb(130, 130, 160);
+    margin-bottom: 16px;
+    -unity-font-style: bold;
+}
+
+.detail-icon-area {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    background-color: rgb(50, 50, 70);
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+}
+
+.detail-icon {
+    font-size: 28px;
+    color: rgb(200, 200, 220);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.detail-name {
+    font-size: 18px;
+    color: rgb(240, 240, 255);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+    -unity-text-align: upper-center;
+}
+
+.detail-rarity {
+    font-size: 13px;
+    color: rgb(130, 130, 160);
+    margin-bottom: 12px;
+    -unity-text-align: upper-center;
+}
+
+.detail-desc {
+    font-size: 12px;
+    color: rgb(160, 160, 180);
+    -unity-text-align: upper-center;
+    white-space: normal;
+}
+
+/* ListView alternating rows */
+.unity-list-view__item:nth-child(even) {
+    background-color: rgb(35, 35, 48);
+}
+
+.unity-list-view__item:nth-child(odd) {
+    background-color: rgb(30, 30, 42);
+}
+
+/* Selected item highlight */
+.unity-list-view__item--selected {
+    background-color: rgb(40, 60, 100);
+}
+
+.unity-list-view__item--selected .item-name {
+    color: rgb(255, 255, 255);
+}

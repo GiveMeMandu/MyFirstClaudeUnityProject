@@ -1,0 +1,47 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/Settings.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <ui:Label class="title" text="Settings — TabView Demo" />
+
+        <ui:VisualElement class="settings-container">
+            <ui:TabView name="settings-tabs" class="settings-tabs">
+                <!-- Graphics tab -->
+                <ui:Tab label="Graphics" name="tab-graphics" class="settings-tab">
+                    <ui:VisualElement class="tab-content">
+                        <ui:DropdownField name="quality-dropdown" label="Quality"
+                            choices="Low,Medium,High,Ultra" index="2" class="setting-field" />
+                        <ui:Toggle name="fullscreen-toggle" label="Fullscreen"
+                            value="true" class="setting-field" />
+                    </ui:VisualElement>
+                </ui:Tab>
+
+                <!-- Audio tab -->
+                <ui:Tab label="Audio" name="tab-audio" class="settings-tab">
+                    <ui:VisualElement class="tab-content">
+                        <ui:Slider name="master-slider" label="Master Volume"
+                            low-value="0" high-value="1" value="0.8"
+                            show-input-field="true" class="setting-field" />
+                        <ui:Slider name="sfx-slider" label="SFX Volume"
+                            low-value="0" high-value="1" value="0.7"
+                            show-input-field="true" class="setting-field" />
+                    </ui:VisualElement>
+                </ui:Tab>
+
+                <!-- Gameplay tab -->
+                <ui:Tab label="Gameplay" name="tab-gameplay" class="settings-tab">
+                    <ui:VisualElement class="tab-content">
+                        <ui:DropdownField name="difficulty-dropdown" label="Difficulty"
+                            choices="Easy,Normal,Hard,Nightmare" index="1" class="setting-field" />
+                    </ui:VisualElement>
+                </ui:Tab>
+            </ui:TabView>
+
+            <!-- Apply / Cancel buttons -->
+            <ui:VisualElement class="button-bar">
+                <ui:Button name="btn-apply" class="btn btn-apply" text="Apply" />
+                <ui:Button name="btn-cancel" class="btn btn-cancel" text="Cancel" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
