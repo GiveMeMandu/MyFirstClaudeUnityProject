@@ -196,7 +196,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIStudy.UIToolkitLightweight.InventoryView
   _document: {fileID: 502580959}
-  _itemTemplate: {fileID: 0}
+  _itemTemplate: {fileID: 9197481963319205126, guid: 2957b5455c2cd6a4a811372b37caee32, type: 3}
 --- !u!114 &502580959
 MonoBehaviour:
   m_ObjectHideFlags: 0
