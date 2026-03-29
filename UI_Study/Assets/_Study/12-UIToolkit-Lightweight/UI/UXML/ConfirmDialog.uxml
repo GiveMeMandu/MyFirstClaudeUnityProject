@@ -1,0 +1,33 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/ConfirmDialog.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <!-- Demo trigger button -->
+        <ui:Button name="btn-trigger" class="btn-trigger" text="Open Confirm Dialog" />
+        <ui:Label name="result-label" class="result-label" text="" />
+
+        <!-- Loading trigger -->
+        <ui:Button name="btn-loading" class="btn-trigger btn-loading" text="Start Loading" />
+
+        <!-- Modal overlay (hidden by default) -->
+        <ui:VisualElement name="modal-overlay" class="modal-overlay">
+            <ui:VisualElement name="dialog-panel" class="dialog-panel">
+                <ui:Label name="dialog-title" class="dialog-title" text="Confirm" />
+                <ui:Label name="dialog-message" class="dialog-message" text="Are you sure?" />
+                <ui:VisualElement class="dialog-buttons">
+                    <ui:Button name="btn-confirm" class="btn btn-confirm" text="Confirm" />
+                    <ui:Button name="btn-cancel" class="btn btn-cancel" text="Cancel" />
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Loading overlay (hidden by default) -->
+        <ui:VisualElement name="loading-overlay" class="loading-overlay">
+            <ui:VisualElement class="loading-panel">
+                <ui:Label class="loading-title" text="Loading..." />
+                <ui:ProgressBar name="progress-bar" class="progress-bar" />
+                <ui:Label name="progress-label" class="progress-label" text="0%" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
