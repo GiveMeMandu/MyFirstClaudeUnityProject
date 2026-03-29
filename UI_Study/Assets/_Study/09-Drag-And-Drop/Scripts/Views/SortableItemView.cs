@@ -136,7 +136,9 @@ namespace UIStudy.DragDrop.Views
         }
 
         /// <summary>
-        /// Placeholder 위치에 복귀 후 Placeholder 제거.
+        /// Placeholder 위치에 복귀.
+        /// 순서 중요: index 캡처 → Placeholder 제거 → reparent → SetSiblingIndex
+        /// (Placeholder가 남아있으면 off-by-one 발생)
         /// </summary>
         public void ReturnToPlaceholder()
         {
@@ -145,10 +147,12 @@ namespace UIStudy.DragDrop.Views
             var parent = _placeholder.transform.parent;
             int siblingIndex = _placeholder.transform.GetSiblingIndex();
 
+            // Placeholder를 먼저 제거해야 sibling index가 밀리지 않음
+            DestroyImmediate(_placeholder);
+            _placeholder = null;
+
             transform.SetParent(parent, false);
             transform.SetSiblingIndex(siblingIndex);
-
-            DestroyPlaceholder();
         }
 
         /// <summary>
@@ -184,7 +188,7 @@ namespace UIStudy.DragDrop.Views
         {
             if (_placeholder != null)
             {
-                Destroy(_placeholder);
+                DestroyImmediate(_placeholder);
                 _placeholder = null;
             }
         }

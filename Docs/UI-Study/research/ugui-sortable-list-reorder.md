@@ -54,12 +54,13 @@ OnDrag:
   4. (선택) 스크롤뷰 경계 자동 스크롤
 
 OnEndDrag:
-  1. 드래그 항목을 원래 컨테이너로 reparent
-  2. Placeholder.SiblingIndex 위치로 SetSiblingIndex
-  3. Placeholder 제거
-  4. CanvasGroup.blocksRaycasts = true
-  5. DOTween으로 scale 1.05 → 1.0, 그림자 비활성화
-  6. DOTween으로 anchoredPosition → LayoutGroup이 계산한 최종 위치로 스냅
+  1. Placeholder의 SiblingIndex를 먼저 저장
+  2. Placeholder 먼저 제거 (컨테이너에서 슬롯 해방)  ← 순서 중요 (섹션 2.11 참조)
+  3. 드래그 항목을 원래 컨테이너로 reparent
+  4. 저장한 인덱스로 SetSiblingIndex
+  5. CanvasGroup.blocksRaycasts = true
+  6. DOTween으로 scale 1.05 → 1.0, 그림자 비활성화
+  7. DOTween으로 anchoredPosition → LayoutGroup이 계산한 최종 위치로 스냅
 ```
 
 ---
@@ -381,14 +382,15 @@ public class SortableListItem : MonoBehaviour,
     // ── OnEndDrag ─────────────────────────────────────────────
     public void OnEndDrag(PointerEventData eventData)
     {
+        // 1. Placeholder 인덱스를 먼저 캡처
         int finalIndex = _listController.GetPlaceholderIndex();
 
-        // 1. 원래 컨테이너로 복귀
+        // 2. Placeholder 먼저 제거 (off-by-one 방지 — 섹션 2.11 참조)
+        _listController.RemovePlaceholder();
+
+        // 3. 원래 컨테이너로 복귀 + 올바른 인덱스 설정
         transform.SetParent(_originalParent, worldPositionStays: true);
         transform.SetSiblingIndex(finalIndex);
-
-        // 2. Placeholder 제거
-        _listController.RemovePlaceholder();
 
         // 3. 레이캐스트 복구
         _canvasGroup.blocksRaycasts = true;
@@ -662,7 +664,173 @@ public class TaskListPresenter : IDisposable
 
 ---
 
-### 2.11 오픈소스 레퍼런스 정리
+### 2.11 EndDrag 연산 순서 버그 (Placeholder Off-by-One)
+
+#### 버그 증상
+
+Placeholder가 드래그 중 올바른 위치를 시각적으로 표시하지만, 드롭 시 아이템이 한 칸 위(index - 1)로 착지하는 현상.
+
+#### 원인: SetSiblingIndex의 인덱스 재계산
+
+Unity의 `SetSiblingIndex`는 **항목을 같은 컨테이너에 reparent할 때 인덱스를 재계산**한다.
+
+아이템이 Canvas 루트에 있을 때는 컨테이너 밖에 있으므로 Placeholder만 컨테이너 내 인덱스를 점유하고 있다. 예: 컨테이너 자식 `[A, Placeholder(idx=2), B, C]`.
+
+드롭 시 아이템을 컨테이너로 reparent하면(`transform.SetParent(container)`), 아이템은 즉시 **마지막 자식**으로 추가된다. 이 시점 컨테이너 자식은 `[A, Placeholder(idx=2), B, C, Item(idx=4)]`가 된다.
+
+이 상태에서 `SetSiblingIndex(placeholder.GetSiblingIndex())` → `SetSiblingIndex(2)`를 호출하면:
+- Item이 index 4 → index 2로 이동
+- Placeholder는 index 4에서 3으로 밀림 (아직 컨테이너 안에 있으므로)
+- 최종 순서: `[A, Item(idx=2), Placeholder(idx=3), B, C]`
+
+이후 Placeholder를 Destroy하면 `[A, Item(idx=2), B, C]`가 되어 **올바른 위치**.
+
+그러나 반대 방향(아이템이 Placeholder보다 낮은 인덱스 위치로 이동할 때)에서는 문제가 발생하지 않는다. **버그는 아이템이 원래 위치보다 아래로 이동할 때 특정 조건에서 발생**한다.
+
+#### 실제 원인: Reparent 전 인덱스 캡처 누락 또는 잘못된 순서
+
+```
+버그 있는 코드 (흔한 실수):
+  1. int finalIndex = placeholder.GetSiblingIndex();  // ← 여기서 캡처
+  2. transform.SetParent(container);                  // ← 아이템이 컨테이너에 추가됨
+  3. transform.SetSiblingIndex(finalIndex);           // ← finalIndex는 reparent 전 값
+  4. Destroy(placeholder);
+```
+
+3번 실행 시점에서 컨테이너 안에는 `[..., Placeholder, ..., Item(last)]`가 있다. Item이 마지막에 추가되었으므로, `SetSiblingIndex(finalIndex)` 호출 시 Unity가 Item을 Placeholder 앞에 삽입하지만, **Placeholder도 여전히 그 슬롯을 차지**하고 있어 Item이 Placeholder 바로 앞인 `finalIndex - 1` 위치에 실제로 착지한다.
+
+#### 올바른 연산 순서 (Fix)
+
+**방법 A: Placeholder를 먼저 Destroy, 그 다음 reparent (권장)**
+
+```csharp
+public void OnEndDrag(PointerEventData eventData)
+{
+    // 1. Placeholder 인덱스를 먼저 저장
+    int finalIndex = _placeholder.transform.GetSiblingIndex();
+
+    // 2. Placeholder 먼저 제거 → 컨테이너에서 해당 슬롯이 비워짐
+    Destroy(_placeholder);
+    _placeholder = null;
+
+    // 3. 이제 아이템을 컨테이너로 reparent
+    transform.SetParent(_originalParent, worldPositionStays: true);
+
+    // 4. 저장된 인덱스로 SetSiblingIndex
+    //    Placeholder가 이미 없으므로 인덱스 충돌 없음
+    transform.SetSiblingIndex(finalIndex);
+
+    _canvasGroup.blocksRaycasts = true;
+}
+```
+
+**왜 방법 A가 동작하는가**: Placeholder가 Destroy되면 컨테이너 자식은 `[A, B, C]` (인덱스 재정렬). 아이템을 reparent 후 `SetSiblingIndex(finalIndex)`를 호출하면 다른 Placeholder가 없으므로 정확한 위치에 착지한다.
+
+**주의**: Destroy는 즉시가 아니라 프레임 끝에 실제 소멸한다. `DestroyImmediate`는 에디터 전용이므로 런타임에서는 `Destroy` 후 `_placeholder = null`로 참조를 즉시 무효화하고, SiblingIndex 캡처를 `Destroy` 호출 전에 반드시 완료해야 한다.
+
+**방법 B: Reparent 후 인덱스 보정 (주의 필요)**
+
+```csharp
+public void OnEndDrag(PointerEventData eventData)
+{
+    // 1. Placeholder 인덱스 캡처
+    int placeholderIndex = _placeholder.transform.GetSiblingIndex();
+
+    // 2. 아이템을 컨테이너로 reparent (마지막 자식으로 추가됨)
+    transform.SetParent(_originalParent, worldPositionStays: true);
+
+    // 3. 아이템이 컨테이너에 추가된 현재 인덱스 확인
+    int itemCurrentIndex = transform.GetSiblingIndex();
+
+    // 4. 아이템이 Placeholder보다 낮은 인덱스(뒤)에서 추가되었다면
+    //    Placeholder가 한 칸 앞으로 밀렸으므로 보정 불필요
+    //    아이템이 Placeholder보다 높은 인덱스(뒤)에서 왔다면
+    //    SetSiblingIndex 호출 시 Placeholder가 한 자리 차지 → 보정 필요
+    int correctedIndex = (itemCurrentIndex > placeholderIndex)
+        ? placeholderIndex
+        : placeholderIndex - 1;  // 아이템이 앞에서 삽입되면 Placeholder가 +1 밀림
+
+    transform.SetSiblingIndex(correctedIndex);
+
+    // 5. Placeholder 제거
+    Destroy(_placeholder);
+    _placeholder = null;
+
+    _canvasGroup.blocksRaycasts = true;
+}
+```
+
+방법 B는 인덱스 보정 조건이 복잡하고 버그를 유발하기 쉬우므로 **방법 A(Destroy 먼저)를 권장**.
+
+#### tetr4lab/ReOrderableList의 해결책
+
+tetr4lab은 `destroyDummy`에서 다음 순서를 사용한다:
+
+```csharp
+private void destroyDummy(GameObject element) {
+    if (element != null) {
+        element.transform.SetParent(content.transform);       // 1. reparent 먼저
+        var index = dummy.transform.GetSiblingIndex();        // 2. dummy 인덱스 캡처
+        element.transform.SetSiblingIndex(index);            // 3. SetSiblingIndex
+        element = null;
+    }
+    Destroy(dummy.gameObject);                               // 4. dummy Destroy 마지막
+}
+```
+
+이 방식은 **reparent를 먼저** 한다. reparent 직후 아이템은 컨테이너 마지막에 추가되고, 이때 dummy(placeholder)는 아직 컨테이너 안에 있다. `SetSiblingIndex(index)`에서 `index`는 reparent 이후 dummy가 점유 중인 인덱스이므로, 아이템이 dummy 위치로 이동하고 dummy는 뒤로 밀린다. 마지막에 dummy를 Destroy하면 최종 순서가 올바르다.
+
+결론적으로 **tetr4lab 방식은 방법 B의 변형**으로, 이 경우에는 인덱스 보정이 필요 없는 이유는 `SetSiblingIndex(dummy.GetSiblingIndex())`가 항상 dummy가 있는 위치 정확히로 Item을 이동시키기 때문이다 (Item이 dummy보다 뒤에서 삽입되었을 때, dummy.GetSiblingIndex()는 Item 삽입으로 변경되지 않음).
+
+#### FullStackForger/ifup-ui-sortable-list의 해결책
+
+```csharp
+private void AttachDraggedItem() {
+    // 1. Mock(Placeholder) 먼저 제거 + 비활성화
+    m_targetList.DetachItem(m_mockItem, m_targetList.canvas.transform);
+    m_mockItem.gameObject.SetActive(false);
+
+    // 2. 그 다음 실제 아이템을 목표 인덱스로 삽입
+    sortableList.AttachItem(m_draggedItem, itemIndex);
+}
+```
+
+Placeholder를 먼저 컨테이너에서 분리(DetachItem)한 후 아이템을 삽입한다. **방법 A와 동일한 접근**.
+
+#### OnDrag의 `newSiblingIndex--` 보정
+
+`OnDrag`에서도 유사한 off-by-one이 발생한다. Placeholder가 이미 컨테이너 안에 있을 때 새 삽입 인덱스를 계산하면, Placeholder 자신이 순회 카운트에 포함되어 인덱스가 1 높게 계산된다:
+
+```csharp
+public void OnDrag(PointerEventData eventData)
+{
+    int newSiblingIndex = _container.childCount;
+
+    for (int i = 0; i < _container.childCount; i++)
+    {
+        if (transform.position.y > _container.GetChild(i).position.y)
+        {
+            newSiblingIndex = i;
+
+            // 핵심 보정: Placeholder가 이 인덱스보다 앞에 있으면
+            // Placeholder 자체가 인덱스를 1 올려놓은 상태
+            // → 실제 목표 슬롯은 1 뒤
+            if (_placeholder.transform.GetSiblingIndex() < newSiblingIndex)
+                newSiblingIndex--;
+
+            break;
+        }
+    }
+
+    _placeholder.transform.SetSiblingIndex(newSiblingIndex);
+}
+```
+
+이 보정이 없으면 드래그 중 Placeholder가 항상 포인터 위치보다 1 칸 위에 표시된다. **Xander93/draganddrop-unity3d와 ItO210/educational-coding-game 모두 이 보정을 적용**한다.
+
+---
+
+### 2.12 오픈소스 레퍼런스 정리 (구 2.11)
 
 | 저장소 | 특징 | 접근 방식 |
 |---|---|---|
@@ -705,6 +873,8 @@ public class TaskListPresenter : IDisposable
 - [ ] VerticalLayoutGroup padding을 크게 설정 (마커/위치 계산 오차 발생)
 - [ ] IPointerDownHandler와 IDropHandler를 동일 오브젝트에 함께 구현 (알려진 버그, Unity 2020.1 이하)
 - [ ] EventTrigger 컴포넌트 사용 (이벤트가 예측 불가하게 사라지는 문제)
+- [ ] EndDrag에서 아이템 reparent 후 Placeholder Destroy (off-by-one 버그) — Placeholder 먼저 Destroy할 것 (섹션 2.11)
+- [ ] OnDrag 삽입 인덱스 계산에서 Placeholder 자신의 인덱스 보정 누락 (`newSiblingIndex--`) — 드래그 중 Placeholder가 1칸 위에 표시되는 버그 발생
 
 ### CONSIDER (상황별)
 - [ ] 항목 높이가 불균일하면 GetWorldCorners 방식으로 각 항목 중간점 개별 계산
@@ -799,6 +969,9 @@ Placeholder Prefab:
 12. [TantzyGames: Unity UGUI Button Long Press](https://www.tantzygames.com/blog/unity-ugui-button-long-press/)
 13. [Unity Forum: Tweening elements in a layout group](https://discussions.unity.com/t/tweening-elements-in-a-layout-group/550463)
 14. [Unity Scripting API: Transform.SetSiblingIndex](https://docs.unity3d.com/ScriptReference/Transform.SetSiblingIndex.html)
+15. [GitHub: Xander93/draganddrop-unity3d — 표준 Placeholder 패턴 구현 (OnDrag newSiblingIndex-- 보정 포함)](https://github.com/Xander93/draganddrop-unity3d)
+16. [GitHub: ItO210/educational-coding-game — VerticalLayoutGroup Placeholder 패턴 (OnDrag 보정 동일)](https://github.com/ItO210/educational-coding-game)
+17. [GitHub: MagicSmokeIndustries/InfernalRobotics GroupDragHandler — EndDrag reparent 후 SetSiblingIndex 후 Destroy 순서](https://github.com/MagicSmokeIndustries/InfernalRobotics)
 
 ---
 
@@ -808,3 +981,4 @@ Placeholder Prefab:
 - [ ] Unity 6의 Canvas 새 렌더링 파이프라인에서 DragLayer reparent 시 렌더 순서 보장 확인
 - [ ] ScrollRect와 SortableList 동시 드래그 시 이벤트 전파 충돌 재현 테스트
 - [ ] R3 Subject vs ReactiveProperty: 드래그 상태(bool isDragging)를 ReactiveProperty로 관리하는 게 더 나은지 검토
+- [x] EndDrag Placeholder off-by-one 버그 원인 및 수정 패턴 확인 완료 → 섹션 2.11 참조
