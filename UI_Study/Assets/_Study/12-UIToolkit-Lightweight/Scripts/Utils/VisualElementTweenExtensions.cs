@@ -21,13 +21,12 @@ namespace UIStudy.UIToolkitLightweight
         /// <summary>translate X 트위닝 (px)</summary>
         public static Tween DOTranslateX(this VisualElement el, float endValue, float duration)
         {
-            var current = el.resolvedStyle.translate;
             return DOTween.To(
-                () => current.x,
+                () => el.resolvedStyle.translate.x,
                 x =>
                 {
-                    current.x = x;
-                    el.style.translate = new Translate(x, current.y);
+                    var cur = el.resolvedStyle.translate;
+                    el.style.translate = new Translate(x, cur.y);
                 },
                 endValue, duration);
         }
@@ -35,13 +34,12 @@ namespace UIStudy.UIToolkitLightweight
         /// <summary>translate Y 트위닝 (px)</summary>
         public static Tween DOTranslateY(this VisualElement el, float endValue, float duration)
         {
-            var current = el.resolvedStyle.translate;
             return DOTween.To(
-                () => current.y,
+                () => el.resolvedStyle.translate.y,
                 y =>
                 {
-                    current.y = y;
-                    el.style.translate = new Translate(current.x, y);
+                    var cur = el.resolvedStyle.translate;
+                    el.style.translate = new Translate(cur.x, y);
                 },
                 endValue, duration);
         }

@@ -10,14 +10,20 @@ namespace UIStudy.UIToolkitLightweight
     [Serializable]
     public class BuildingData
     {
-        [field: SerializeField] public string Name { get; set; } = "Building";
-        [field: SerializeField] public string Description { get; set; } = "A building.";
-        [field: SerializeField] public int GoldCost { get; set; } = 100;
-        [field: SerializeField] public int WoodCost { get; set; } = 50;
-        [field: SerializeField] public int Level { get; set; } = 1;
-        [field: SerializeField] public int MaxLevel { get; set; } = 5;
+        [field: SerializeField] public string Name { get; private set; } = "Building";
+        [field: SerializeField] public string Description { get; private set; } = "A building.";
+        [field: SerializeField] public int GoldCost { get; private set; } = 100;
+        [field: SerializeField] public int WoodCost { get; private set; } = 50;
+        [field: SerializeField] public int Level { get; private set; } = 1;
+        [field: SerializeField] public int MaxLevel { get; private set; } = 5;
 
         public bool IsMaxLevel => Level >= MaxLevel;
+
+        /// <summary>레벨을 1 증가시킨다. MaxLevel 이상이면 무시.</summary>
+        public void LevelUp()
+        {
+            if (!IsMaxLevel) Level++;
+        }
 
         public BuildingData() { }
 

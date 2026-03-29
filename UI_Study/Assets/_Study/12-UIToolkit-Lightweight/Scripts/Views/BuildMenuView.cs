@@ -156,6 +156,7 @@ namespace UIStudy.UIToolkitLightweight
         private void HandleCardPointerLeave(PointerLeaveEvent evt)
         {
             OnCardHoverExit?.Invoke();
+            // NOTE: OnBuildingSelected, OnCardHoverEnter는 이미 null-conditional 사용 중.
         }
 
         private void OnDisable()

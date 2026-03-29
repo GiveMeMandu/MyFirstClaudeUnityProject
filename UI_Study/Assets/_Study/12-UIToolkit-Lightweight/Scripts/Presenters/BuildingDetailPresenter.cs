@@ -47,7 +47,7 @@ namespace UIStudy.UIToolkitLightweight
             _resourceModel.SpendGold(goldCost);
             _resourceModel.SpendWood(woodCost);
 
-            _currentBuilding.Level++;
+            _currentBuilding.LevelUp();
 
             _view.DisplayBuilding(_currentBuilding);
             UpdateAffordability();

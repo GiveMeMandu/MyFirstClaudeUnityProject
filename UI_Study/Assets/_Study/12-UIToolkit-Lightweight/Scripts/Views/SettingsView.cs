@@ -20,7 +20,6 @@ namespace UIStudy.UIToolkitLightweight
         private DropdownField _difficultyDropdown;
         private Button _applyBtn;
         private Button _cancelBtn;
-        private Label _statusLabel;
 
         // Events for Presenter
         public event Action<int> OnQualityChanged;

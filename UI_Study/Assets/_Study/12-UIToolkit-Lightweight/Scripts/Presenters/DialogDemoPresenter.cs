@@ -50,13 +50,19 @@ namespace UIStudy.UIToolkitLightweight
         {
             _loading.Show();
 
-            // IProgress<float> 패턴으로 진행률 보고
-            var progress = new Progress<float>(v => _loading.SetProgress(v));
+            try
+            {
+                // IProgress<float> 패턴으로 진행률 보고
+                var progress = new Progress<float>(v => _loading.SetProgress(v));
 
-            await SimulateWorkAsync(progress, ct);
+                await SimulateWorkAsync(progress, ct);
 
-            _loading.Hide();
-            _demoView.SetResult("Loading complete!");
+                _demoView.SetResult("Loading complete!");
+            }
+            finally
+            {
+                _loading.Hide();
+            }
         }
 
         private async UniTask SimulateWorkAsync(IProgress<float> progress,

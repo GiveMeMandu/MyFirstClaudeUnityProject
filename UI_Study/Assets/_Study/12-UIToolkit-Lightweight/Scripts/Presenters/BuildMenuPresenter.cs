@@ -66,7 +66,7 @@ namespace UIStudy.UIToolkitLightweight
 
             // 비용 차감
             _resourceModel.SpendBuildCost(building.GoldCost, building.WoodCost);
-            building.Level++;
+            building.LevelUp();
 
             _menuView.SetStatus($"Built {building.Name} (Lv.{building.Level})!");
             RefreshAllCardStates();

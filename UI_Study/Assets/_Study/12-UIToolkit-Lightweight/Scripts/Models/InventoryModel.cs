@@ -19,7 +19,9 @@ namespace UIStudy.UIToolkitLightweight
     {
         private readonly List<ItemData> _items = new();
 
+#pragma warning disable CS0067 // 현재 미사용이나 Model API 계약상 유지
         public event Action ItemsChanged;
+#pragma warning restore CS0067
 
         public IReadOnlyList<ItemData> Items => _items;
 
@@ -71,7 +73,7 @@ namespace UIStudy.UIToolkitLightweight
                 _items.Add(new ItemData(name, rarity, desc, icon));
             }
 
-            ItemsChanged?.Invoke();
+            // NOTE: 생성자에서 호출되므로 구독자 없음 — 이벤트 발화 제거.
         }
     }
 }

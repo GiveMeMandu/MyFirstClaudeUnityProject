@@ -7,6 +7,8 @@ namespace UIStudy.UIToolkitLightweight
     /// Step 1: UI Toolkit 기초 — UIDocument에서 요소 쿼리 + 텍스트 변경.
     /// UXML로 선언한 UI에 C#으로 데이터를 연결하는 최소 패턴.
     /// </summary>
+    // NOTE: Step 1은 MVP 도입 전이므로 의도적으로 View에 로직을 포함한다.
+    // Step 2부터 Model/Presenter 분리 패턴을 적용한다.
     public class ProfileCardView : MonoBehaviour
     {
         [SerializeField] private UIDocument _document;
