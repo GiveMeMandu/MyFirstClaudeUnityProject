@@ -23,17 +23,20 @@ namespace UIStudy.GameUI.Views
         private RectTransform _rectTransform;
         private Sequence _activeSequence;
 
-        private void Awake()
+        private void EnsureComponents()
         {
-            _canvasGroup = GetComponent<CanvasGroup>();
-            _rectTransform = GetComponent<RectTransform>();
+            if (_canvasGroup == null) _canvasGroup = GetComponent<CanvasGroup>();
+            if (_rectTransform == null) _rectTransform = GetComponent<RectTransform>();
         }
+
+        private void Awake() => EnsureComponents();
 
         /// <summary>
         /// 풀에서 꺼낼 때 초기화.
         /// </summary>
         public void ResetView()
         {
+            EnsureComponents();
             _activeSequence?.Kill();
             _canvasGroup.alpha = 1f;
             _rectTransform.localScale = Vector3.one;
@@ -45,6 +48,7 @@ namespace UIStudy.GameUI.Views
         /// </summary>
         public void Animate(DamageModel data, Vector2 anchoredPosition, System.Action onComplete)
         {
+            EnsureComponents();
             _rectTransform.anchoredPosition = anchoredPosition;
             _canvasGroup.alpha = 1f;
             _rectTransform.localScale = Vector3.one;
