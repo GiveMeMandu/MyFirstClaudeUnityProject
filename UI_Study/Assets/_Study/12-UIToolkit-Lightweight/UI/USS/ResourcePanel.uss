@@ -1,0 +1,113 @@
+.root {
+    flex-grow: 1;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(25, 25, 35);
+    padding: 30px;
+}
+
+.title {
+    font-size: 18px;
+    color: rgb(180, 180, 200);
+    margin-bottom: 24px;
+    -unity-font-style: bold;
+}
+
+.resources {
+    flex-direction: row;
+    margin-bottom: 24px;
+}
+
+.resource-item {
+    align-items: center;
+    margin-left: 16px;
+    margin-right: 16px;
+    padding: 12px 20px;
+    background-color: rgb(40, 40, 55);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(60, 60, 80);
+    min-width: 100px;
+
+    transition-property: border-color;
+    transition-duration: 0.3s;
+}
+
+.resource-item:hover {
+    border-color: rgb(100, 140, 255);
+}
+
+.resource-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 18px;
+    background-color: rgb(255, 200, 50);
+    color: rgb(40, 30, 0);
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-bottom: 6px;
+}
+
+.resource-icon--wood {
+    background-color: rgb(139, 90, 43);
+    color: rgb(255, 230, 200);
+}
+
+.resource-icon--food {
+    background-color: rgb(76, 175, 80);
+    color: rgb(255, 255, 255);
+}
+
+.resource-value {
+    font-size: 24px;
+    color: rgb(240, 240, 255);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+}
+
+.resource-name {
+    font-size: 11px;
+    color: rgb(130, 130, 160);
+    -unity-text-align: upper-center;
+}
+
+.actions {
+    flex-direction: row;
+}
+
+.btn {
+    height: 36px;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-left: 8px;
+    margin-right: 8px;
+    border-radius: 6px;
+    font-size: 14px;
+    -unity-font-style: bold;
+    border-width: 0;
+
+    transition-property: background-color, scale;
+    transition-duration: 0.15s;
+}
+
+.btn:active { scale: 0.95; }
+
+.btn-gain {
+    background-color: rgb(56, 142, 60);
+    color: white;
+}
+.btn-gain:hover { background-color: rgb(76, 175, 80); }
+
+.btn-spend {
+    background-color: rgb(198, 40, 40);
+    color: white;
+}
+.btn-spend:hover { background-color: rgb(229, 57, 53); }
+
+.status-label {
+    font-size: 13px;
+    color: rgb(255, 200, 50);
+    margin-top: 16px;
+    -unity-text-align: upper-center;
+}

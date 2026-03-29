@@ -1,0 +1,35 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/ResourcePanel.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <ui:Label class="title" text="Resource Panel — Simple MVP" />
+
+        <!-- Resource display -->
+        <ui:VisualElement class="resources">
+            <ui:VisualElement class="resource-item">
+                <ui:Label class="resource-icon" text="G" />
+                <ui:Label name="gold-label" class="resource-value" text="0" />
+                <ui:Label class="resource-name" text="Gold" />
+            </ui:VisualElement>
+            <ui:VisualElement class="resource-item">
+                <ui:Label class="resource-icon resource-icon--wood" text="W" />
+                <ui:Label name="wood-label" class="resource-value" text="0" />
+                <ui:Label class="resource-name" text="Wood" />
+            </ui:VisualElement>
+            <ui:VisualElement class="resource-item">
+                <ui:Label class="resource-icon resource-icon--food" text="F" />
+                <ui:Label name="food-label" class="resource-value" text="0" />
+                <ui:Label class="resource-name" text="Food" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Action buttons -->
+        <ui:VisualElement class="actions">
+            <ui:Button name="btn-gain" class="btn btn-gain" text="Gain +10" />
+            <ui:Button name="btn-spend" class="btn btn-spend" text="Spend -5" />
+        </ui:VisualElement>
+
+        <!-- Status -->
+        <ui:Label name="status-label" class="status-label" text="" />
+    </ui:VisualElement>
+</ui:UXML>
