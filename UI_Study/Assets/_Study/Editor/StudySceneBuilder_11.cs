@@ -111,14 +111,18 @@ namespace UIStudy.Editor
             rpRT.anchorMax = new Vector2(0, 0);
             rpRT.pivot = new Vector2(0, 0);
             rpRT.anchoredPosition = new Vector2(15, 15);
-            rpRT.sizeDelta = new Vector2(200, 120);
+            rpRT.sizeDelta = new Vector2(200, 0); // width only, height from ContentSizeFitter
             var rpVLG = resourcePanel.GetComponent<VerticalLayoutGroup>();
             rpVLG.spacing = 4;
+            rpVLG.padding = new RectOffset(8, 8, 6, 6);
             rpVLG.childAlignment = TextAnchor.LowerLeft;
             rpVLG.childControlWidth = true;
-            rpVLG.childControlHeight = false;
+            rpVLG.childControlHeight = true; // LayoutElement.preferredHeight 사용
             rpVLG.childForceExpandWidth = true;
             rpVLG.childForceExpandHeight = false;
+            // 패널 높이 자동 계산
+            var rpCSF = resourcePanel.AddComponent<ContentSizeFitter>();
+            rpCSF.verticalFit = ContentSizeFitter.FitMode.PreferredSize;
 
             // Add a semi-transparent background
             var rpBG = resourcePanel.AddComponent<Image>();
