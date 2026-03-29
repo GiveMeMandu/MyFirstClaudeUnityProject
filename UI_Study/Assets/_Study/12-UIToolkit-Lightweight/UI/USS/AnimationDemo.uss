@@ -26,6 +26,7 @@
     margin-bottom: 16px;
 }
 
+/* --- Button 1: "Hover Me" — 부드러운 배경+스케일 전환 (기본) --- */
 .css-btn {
     height: 40px;
     padding-left: 24px;
@@ -40,39 +41,68 @@
     background-color: rgb(40, 40, 60);
     color: rgb(200, 210, 255);
 
-    /* CSS Transition: hover/active 시 자동 전환 */
+    /* 기본 transition — hover 시 색+크기 부드럽게 */
     transition-property: background-color, border-color, scale, color;
-    transition-duration: 0.2s, 0.2s, 0.12s, 0.2s;
+    transition-duration: 0.25s;
     transition-timing-function: ease-out;
 }
 
 .css-btn:hover {
     background-color: rgb(80, 130, 255);
     color: white;
-    scale: 1.05;
+    scale: 1.08;
 }
 
 .css-btn:active {
-    background-color: rgb(60, 100, 220);
-    scale: 0.95;
+    scale: 0.92;
 }
 
+/* --- Button 2: "Click Me" — 느린 색 전환 + 빠른 눌림 (대비) --- */
 .css-btn--accent {
     border-color: rgb(255, 180, 50);
     color: rgb(255, 220, 150);
+    border-radius: 20px;
+
+    /* 느린 색 전환(0.5s) + 빠른 스케일(0.1s) — 속도 대비 학습 */
+    transition-property: background-color, color, border-color, scale, border-radius;
+    transition-duration: 0.5s, 0.5s, 0.5s, 0.1s, 0.3s;
+    transition-timing-function: ease-in-out;
 }
+
 .css-btn--accent:hover {
     background-color: rgb(255, 180, 50);
     color: rgb(40, 30, 0);
+    border-color: rgb(255, 220, 100);
+    border-radius: 8px;
+    scale: 1.05;
 }
 
+.css-btn--accent:active {
+    background-color: rgb(200, 140, 30);
+    scale: 0.88;
+}
+
+/* --- Button 3: "Press" — 길게 누르면 확대 유지 (active 강조) --- */
 .css-btn--danger {
     border-color: rgb(220, 60, 60);
     color: rgb(255, 150, 150);
+
+    /* hover는 빠르게, active는 느리게 — 누르고 있는 동안 커지는 효과 */
+    transition-property: background-color, color, scale, border-width;
+    transition-duration: 0.15s, 0.15s, 0.4s, 0.3s;
+    transition-timing-function: ease-out, ease-out, ease-out-back, ease-out;
 }
+
 .css-btn--danger:hover {
     background-color: rgb(220, 60, 60);
     color: white;
+    scale: 1.03;
+}
+
+.css-btn--danger:active {
+    background-color: rgb(180, 30, 30);
+    scale: 1.15;
+    border-width: 4px;
 }
 
 /* === Panel === */

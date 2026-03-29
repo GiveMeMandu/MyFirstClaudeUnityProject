@@ -7,9 +7,9 @@
         <!-- Section 1: CSS Transition buttons -->
         <ui:Label class="section-title" text="CSS Transitions (no code)" />
         <ui:VisualElement class="button-row">
-            <ui:Button class="css-btn" text="Hover Me" />
-            <ui:Button class="css-btn css-btn--accent" text="Click Me" />
-            <ui:Button class="css-btn css-btn--danger" text="Press" />
+            <ui:Button class="css-btn" text="Smooth Scale" />
+            <ui:Button class="css-btn css-btn--accent" text="Slow Color" />
+            <ui:Button class="css-btn css-btn--danger" text="Hold to Grow" />
         </ui:VisualElement>
 
         <!-- Section 2: DOTween Panel -->
