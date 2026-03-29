@@ -174,7 +174,7 @@ namespace UIStudy.Editor
             listVLG.padding = new RectOffset(10, 10, 10, 10);
             listVLG.childAlignment = TextAnchor.UpperLeft;
             listVLG.childControlWidth = true;
-            listVLG.childControlHeight = false;
+            listVLG.childControlHeight = true;
             listVLG.childForceExpandWidth = true;
             listVLG.childForceExpandHeight = false;
 
@@ -205,7 +205,7 @@ namespace UIStudy.Editor
                 itemHLG.spacing = 10f;
                 itemHLG.padding = new RectOffset(10, 10, 5, 5);
                 itemHLG.childAlignment = TextAnchor.MiddleLeft;
-                itemHLG.childControlWidth = false;
+                itemHLG.childControlWidth = true;
                 itemHLG.childControlHeight = true;
                 itemHLG.childForceExpandWidth = false;
                 itemHLG.childForceExpandHeight = true;
@@ -501,7 +501,7 @@ namespace UIStudy.Editor
             demoVLG.padding = new RectOffset(20, 20, 20, 20);
             demoVLG.childAlignment = TextAnchor.MiddleCenter;
             demoVLG.childControlWidth = true;
-            demoVLG.childControlHeight = false;
+            demoVLG.childControlHeight = true;
             demoVLG.childForceExpandWidth = true;
             demoVLG.childForceExpandHeight = false;
 
@@ -528,7 +528,7 @@ namespace UIStudy.Editor
             overlayVLG.padding = new RectOffset(60, 60, 100, 60);
             overlayVLG.childAlignment = TextAnchor.MiddleCenter;
             overlayVLG.childControlWidth = true;
-            overlayVLG.childControlHeight = false;
+            overlayVLG.childControlHeight = true;
             overlayVLG.childForceExpandWidth = true;
             overlayVLG.childForceExpandHeight = false;
 
@@ -646,7 +646,7 @@ namespace UIStudy.Editor
                 new Vector2(10, -55), new Vector2(-10, -195));
             topBar.GetComponent<HorizontalLayoutGroup>().spacing = 8;
             topBar.GetComponent<HorizontalLayoutGroup>().childAlignment = TextAnchor.UpperCenter;
-            topBar.GetComponent<HorizontalLayoutGroup>().childControlWidth = false;
+            topBar.GetComponent<HorizontalLayoutGroup>().childControlWidth = true;
             topBar.GetComponent<HorizontalLayoutGroup>().childControlHeight = true;
             topBar.GetComponent<HorizontalLayoutGroup>().childForceExpandWidth = true;
             topBar.GetComponent<HorizontalLayoutGroup>().childForceExpandHeight = true;
@@ -744,7 +744,7 @@ namespace UIStudy.Editor
             rootVLG.padding = new RectOffset(5, 5, 5, 5);
             rootVLG.childAlignment = TextAnchor.UpperCenter;
             rootVLG.childControlWidth = true;
-            rootVLG.childControlHeight = false;
+            rootVLG.childControlHeight = true;
             rootVLG.childForceExpandWidth = true;
             rootVLG.childForceExpandHeight = false;
 

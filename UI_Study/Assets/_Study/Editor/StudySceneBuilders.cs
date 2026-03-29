@@ -56,7 +56,7 @@ namespace UIStudy.Editor
             vlg.padding = new RectOffset(20, 20, 15, 15);
             vlg.childAlignment = TextAnchor.UpperLeft;
             vlg.childControlWidth = true;
-            vlg.childControlHeight = false;
+            vlg.childControlHeight = true;
             vlg.childForceExpandWidth = true;
             vlg.childForceExpandHeight = false;
 
@@ -102,7 +102,7 @@ namespace UIStudy.Editor
             previewVLG.padding = new RectOffset(30, 30, 25, 25);
             previewVLG.childAlignment = TextAnchor.UpperLeft;
             previewVLG.childControlWidth = true;
-            previewVLG.childControlHeight = false;
+            previewVLG.childControlHeight = true;
             previewVLG.childForceExpandWidth = true;
             previewVLG.childForceExpandHeight = false;
 
@@ -361,7 +361,7 @@ namespace UIStudy.Editor
             contentVLG.padding = new RectOffset(20, 20, 40, 20);
             contentVLG.childAlignment = TextAnchor.UpperCenter;
             contentVLG.childControlWidth = true;
-            contentVLG.childControlHeight = false;
+            contentVLG.childControlHeight = true;
             contentVLG.childForceExpandWidth = true;
             contentVLG.childForceExpandHeight = false;
 
@@ -514,7 +514,7 @@ namespace UIStudy.Editor
             var hlg = go.GetComponent<HorizontalLayoutGroup>();
             hlg.spacing = 10;
             hlg.childAlignment = TextAnchor.MiddleLeft;
-            hlg.childControlWidth = false;
+            hlg.childControlWidth = true;
             hlg.childControlHeight = true;
             hlg.childForceExpandWidth = false;
             hlg.childForceExpandHeight = true;

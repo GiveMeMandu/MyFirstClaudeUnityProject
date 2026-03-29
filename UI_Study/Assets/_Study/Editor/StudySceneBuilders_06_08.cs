@@ -86,7 +86,7 @@ namespace UIStudy.Editor
             infoVLG.padding = new RectOffset(20, 20, 15, 15);
             infoVLG.childAlignment = TextAnchor.UpperCenter;
             infoVLG.childControlWidth = true;
-            infoVLG.childControlHeight = false;
+            infoVLG.childControlHeight = true;
             infoVLG.childForceExpandWidth = true;
             infoVLG.childForceExpandHeight = false;
 
@@ -183,7 +183,7 @@ namespace UIStudy.Editor
             resultsVLG.padding = new RectOffset(15, 15, 10, 10);
             resultsVLG.childAlignment = TextAnchor.UpperLeft;
             resultsVLG.childControlWidth = true;
-            resultsVLG.childControlHeight = false;
+            resultsVLG.childControlHeight = true;
             resultsVLG.childForceExpandWidth = true;
             resultsVLG.childForceExpandHeight = false;
 
@@ -246,7 +246,7 @@ namespace UIStudy.Editor
             contentVLG.padding = new RectOffset(20, 20, 15, 15);
             contentVLG.childAlignment = TextAnchor.UpperLeft;
             contentVLG.childControlWidth = true;
-            contentVLG.childControlHeight = false;
+            contentVLG.childControlHeight = true;
             contentVLG.childForceExpandWidth = true;
             contentVLG.childForceExpandHeight = false;
 
@@ -361,7 +361,7 @@ namespace UIStudy.Editor
                 cellVLG.spacing = 6f;
                 cellVLG.childAlignment = TextAnchor.MiddleCenter;
                 cellVLG.childControlWidth = true;
-                cellVLG.childControlHeight = false;
+                cellVLG.childControlHeight = true;
                 cellVLG.childForceExpandWidth = true;
                 cellVLG.childForceExpandHeight = false;
 
@@ -442,7 +442,7 @@ namespace UIStudy.Editor
             itemsVLG.padding = new RectOffset(10, 10, 10, 10);
             itemsVLG.childAlignment = TextAnchor.UpperLeft;
             itemsVLG.childControlWidth = true;
-            itemsVLG.childControlHeight = false;
+            itemsVLG.childControlHeight = true;
             itemsVLG.childForceExpandWidth = true;
             itemsVLG.childForceExpandHeight = false;
 
@@ -739,7 +739,7 @@ namespace UIStudy.Editor
             dialogVLG.padding = new RectOffset(20, 20, 15, 15);
             dialogVLG.childAlignment = TextAnchor.UpperLeft;
             dialogVLG.childControlWidth = true;
-            dialogVLG.childControlHeight = false;
+            dialogVLG.childControlHeight = true;
             dialogVLG.childForceExpandWidth = true;
             dialogVLG.childForceExpandHeight = false;
 
@@ -929,7 +929,7 @@ namespace UIStudy.Editor
             detailVLG.padding = new RectOffset(15, 15, 15, 15);
             detailVLG.childAlignment = TextAnchor.UpperLeft;
             detailVLG.childControlWidth = true;
-            detailVLG.childControlHeight = false;
+            detailVLG.childControlHeight = true;
             detailVLG.childForceExpandWidth = true;
             detailVLG.childForceExpandHeight = false;
 
