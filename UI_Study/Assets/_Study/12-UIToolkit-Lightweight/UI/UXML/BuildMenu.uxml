@@ -1,0 +1,9 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/BuildMenu.uss" />
+
+    <ui:VisualElement name="build-menu-root" class="build-menu-root">
+        <ui:Label class="menu-title" text="Build Menu" />
+        <ui:VisualElement name="card-container" class="card-container" />
+        <ui:Label name="build-status" class="build-status" text="" />
+    </ui:VisualElement>
+</ui:UXML>

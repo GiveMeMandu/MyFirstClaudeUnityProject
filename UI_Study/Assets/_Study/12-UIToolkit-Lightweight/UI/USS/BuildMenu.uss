@@ -1,0 +1,132 @@
+/* Build menu container */
+.build-menu-root {
+    padding: 12px;
+    margin-top: 8px;
+}
+
+.menu-title {
+    font-size: 16px;
+    color: rgb(200, 200, 220);
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+    padding-left: 4px;
+}
+
+/* Card grid — flex-wrap for multi-column */
+.card-container {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+/* Individual building card */
+.build-card {
+    width: 120px;
+    padding: 10px;
+    margin: 4px;
+    background-color: rgb(40, 40, 58);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(60, 60, 80);
+    align-items: center;
+
+    transition-property: border-color, background-color, scale;
+    transition-duration: 0.15s;
+}
+
+.build-card:hover {
+    border-color: rgb(100, 140, 255);
+    background-color: rgb(50, 50, 70);
+    scale: 1.03;
+}
+
+/* Affordable state (default) */
+.build-card--affordable {
+    border-color: rgb(60, 140, 70);
+}
+.build-card--affordable:hover {
+    border-color: rgb(80, 180, 90);
+}
+
+/* Too expensive */
+.build-card--expensive {
+    border-color: rgb(140, 50, 50);
+    opacity: 0.7;
+}
+.build-card--expensive:hover {
+    border-color: rgb(180, 60, 60);
+}
+
+/* Locked (max level) */
+.build-card--locked {
+    opacity: 0.4;
+    border-color: rgb(50, 50, 60);
+}
+.build-card--locked:hover {
+    border-color: rgb(50, 50, 60);
+    scale: 1;
+}
+
+/* Card icon */
+.card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 6px;
+    background-color: rgb(60, 60, 85);
+    font-size: 18px;
+    color: rgb(200, 180, 100);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-bottom: 6px;
+}
+
+/* Card name */
+.card-name {
+    font-size: 12px;
+    color: rgb(220, 220, 240);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 4px;
+}
+
+/* Card cost row */
+.card-cost-row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.card-cost-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 7px;
+    font-size: 8px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-right: 2px;
+}
+
+.card-cost-icon--gold {
+    background-color: rgb(255, 200, 50);
+    color: rgb(40, 30, 0);
+}
+
+.card-cost-icon--wood {
+    background-color: rgb(139, 90, 43);
+    color: rgb(255, 230, 200);
+}
+
+.card-cost-value {
+    font-size: 10px;
+    color: rgb(180, 180, 200);
+    margin-right: 6px;
+}
+
+/* Build status */
+.build-status {
+    font-size: 12px;
+    color: rgb(255, 200, 50);
+    margin-top: 8px;
+    padding-left: 4px;
+    min-height: 16px;
+}

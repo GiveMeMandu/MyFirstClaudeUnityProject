@@ -1,0 +1,67 @@
+/* Top bar */
+.hud-bar {
+    flex-direction: row;
+    justify-content: center;
+    padding: 8px 16px;
+    background-color: rgba(15, 15, 25, 0.85);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(50, 50, 70);
+}
+
+/* Each resource item */
+.hud-item {
+    flex-direction: row;
+    align-items: center;
+    margin-left: 12px;
+    margin-right: 12px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background-color: rgba(40, 40, 60, 0.6);
+}
+
+/* Resource icon */
+.hud-icon {
+    width: 22px;
+    height: 22px;
+    border-radius: 11px;
+    font-size: 11px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    margin-right: 6px;
+}
+
+.hud-icon--gold {
+    background-color: rgb(255, 200, 50);
+    color: rgb(40, 30, 0);
+}
+
+.hud-icon--wood {
+    background-color: rgb(139, 90, 43);
+    color: rgb(255, 230, 200);
+}
+
+.hud-icon--food {
+    background-color: rgb(76, 175, 80);
+    color: rgb(255, 255, 255);
+}
+
+.hud-icon--pop {
+    background-color: rgb(100, 140, 255);
+    color: rgb(255, 255, 255);
+}
+
+/* Value label */
+.hud-value {
+    font-size: 15px;
+    color: rgb(230, 230, 245);
+    -unity-font-style: bold;
+    min-width: 40px;
+
+    transition-property: color;
+    transition-duration: 0.4s;
+}
+
+/* Flash class — toggled on value change, removed after short delay */
+.hud-value--flash {
+    color: rgb(255, 255, 100);
+}

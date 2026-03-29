@@ -1,0 +1,14 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/Tooltip.uss" />
+
+    <ui:VisualElement name="tooltip-root" class="tooltip-root">
+        <ui:Label name="tooltip-name" class="tooltip-name" text="Building" />
+        <ui:VisualElement class="tooltip-cost-row">
+            <ui:Label class="tooltip-cost-icon tooltip-cost-icon--gold" text="G" />
+            <ui:Label name="tooltip-gold" class="tooltip-cost-value" text="0" />
+            <ui:Label class="tooltip-cost-icon tooltip-cost-icon--wood" text="W" />
+            <ui:Label name="tooltip-wood" class="tooltip-cost-value" text="0" />
+        </ui:VisualElement>
+        <ui:Label name="tooltip-desc" class="tooltip-desc" text="Description" />
+    </ui:VisualElement>
+</ui:UXML>

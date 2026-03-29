@@ -1,0 +1,22 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/ResourceHUD.uss" />
+
+    <ui:VisualElement name="hud-bar" class="hud-bar">
+        <ui:VisualElement name="resource-gold" class="hud-item">
+            <ui:Label class="hud-icon hud-icon--gold" text="G" />
+            <ui:Label name="hud-gold-value" class="hud-value" text="0" />
+        </ui:VisualElement>
+        <ui:VisualElement name="resource-wood" class="hud-item">
+            <ui:Label class="hud-icon hud-icon--wood" text="W" />
+            <ui:Label name="hud-wood-value" class="hud-value" text="0" />
+        </ui:VisualElement>
+        <ui:VisualElement name="resource-food" class="hud-item">
+            <ui:Label class="hud-icon hud-icon--food" text="F" />
+            <ui:Label name="hud-food-value" class="hud-value" text="0" />
+        </ui:VisualElement>
+        <ui:VisualElement name="resource-pop" class="hud-item">
+            <ui:Label class="hud-icon hud-icon--pop" text="P" />
+            <ui:Label name="hud-pop-value" class="hud-value" text="0" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
