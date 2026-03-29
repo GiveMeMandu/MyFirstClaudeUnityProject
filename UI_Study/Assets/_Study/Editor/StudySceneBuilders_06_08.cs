@@ -836,21 +836,23 @@ namespace UIStudy.Editor
             mainRowHLG.spacing = 15;
             mainRowHLG.childControlWidth = true;
             mainRowHLG.childControlHeight = true;
-            mainRowHLG.childForceExpandWidth = false;
+            mainRowHLG.childForceExpandWidth = false; // flexibleWidth=0인 그리드가 늘어나지 않도록
             mainRowHLG.childForceExpandHeight = true;
             // Remove fixed LayoutElement height so it stretches
             var mainRowLE = mainRow.GetComponent<LayoutElement>();
             if (mainRowLE != null) Object.DestroyImmediate(mainRowLE);
 
-            // === Grid container (left side) ===
+            // === Grid container (left side, 고정 너비) ===
+            // 4열 × 80px + spacing 6×3 + padding 10×2 = 358px
             var gridContainer = new GameObject("GridContainer", typeof(RectTransform), typeof(Image),
                 typeof(GridLayoutGroup));
             gridContainer.transform.SetParent(mainRow.transform, false);
             gridContainer.GetComponent<Image>().color = new Color(0.1f, 0.1f, 0.1f, 0.6f);
             gridContainer.GetComponent<Image>().raycastTarget = false;
             var gridContainerLE = gridContainer.AddComponent<LayoutElement>();
-            gridContainerLE.flexibleWidth = 3;
-            gridContainerLE.flexibleHeight = 1;
+            gridContainerLE.minWidth = 358;
+            gridContainerLE.preferredWidth = 358;
+            gridContainerLE.flexibleWidth = 0; // 고정 — 디테일 패널 표시와 무관하게 크기 유지
 
             var gridLayout = gridContainer.GetComponent<GridLayoutGroup>();
             gridLayout.cellSize = new Vector2(80, 80);
@@ -921,8 +923,9 @@ namespace UIStudy.Editor
             detailPanel.GetComponent<Image>().color = new Color(0.12f, 0.12f, 0.18f, 0.8f);
             detailPanel.GetComponent<Image>().raycastTarget = false;
             var detailPanelLE = detailPanel.AddComponent<LayoutElement>();
-            detailPanelLE.flexibleWidth = 2;
-            detailPanelLE.flexibleHeight = 1;
+            detailPanelLE.minWidth = 200;
+            detailPanelLE.preferredWidth = 280;
+            detailPanelLE.flexibleWidth = 1; // 남은 공간을 채움
 
             var detailVLG = detailPanel.GetComponent<VerticalLayoutGroup>();
             detailVLG.spacing = 10f;
@@ -952,7 +955,7 @@ namespace UIStudy.Editor
             detailDescLE.preferredHeight = 60;
             detailDescLE.flexibleHeight = 1;
 
-            detailPanel.SetActive(false);
+            // 디테일 패널은 항상 표시 (레이아웃 점프 방지 — 빈 상태에서 안내 텍스트 표시)
 
             // === InventoryGridView ===
             var gridViewGO = new GameObject("InventoryGridView");

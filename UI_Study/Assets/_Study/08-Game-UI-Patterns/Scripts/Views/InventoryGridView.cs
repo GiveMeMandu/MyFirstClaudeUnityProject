@@ -48,19 +48,16 @@ namespace UIStudy.GameUI.Views
         }
 
         /// <summary>
-        /// 디테일 패널에 아이템 정보 표시. null이면 패널 숨김.
+        /// 디테일 패널에 아이템 정보 표시. null이면 빈 상태(안내 텍스트) 표시.
+        /// 패널 자체는 항상 표시 (레이아웃 점프 방지).
         /// </summary>
         public void ShowDetail(InventoryItem item)
         {
             if (item == null)
             {
-                if (_detailPanel != null)
-                    _detailPanel.SetActive(false);
+                ShowEmptyState();
                 return;
             }
-
-            if (_detailPanel != null)
-                _detailPanel.SetActive(true);
 
             _detailName.text = item.Name;
             _detailRarity.text = item.Rarity.ToString();
@@ -83,12 +80,20 @@ namespace UIStudy.GameUI.Views
         }
 
         /// <summary>
-        /// 디테일 패널 숨김.
+        /// 빈 상태 — 아이템 미선택 시 안내 텍스트.
         /// </summary>
         public void HideDetail()
         {
-            if (_detailPanel != null)
-                _detailPanel.SetActive(false);
+            ShowEmptyState();
+        }
+
+        private void ShowEmptyState()
+        {
+            _detailName.text = "Select an Item";
+            _detailRarity.text = "";
+            _detailRarity.color = Color.white;
+            _detailDescription.text = "Click a slot to see details.";
+            if (_detailIcon != null) _detailIcon.text = "?";
         }
 
         private static Color GetRarityTextColor(ItemRarity rarity) => rarity switch
