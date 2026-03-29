@@ -8,6 +8,9 @@ namespace UIStudy.Animation.Views
     /// <summary>
     /// 8개 리스트 아이템의 시차(stagger) 애니메이션을 시연하는 View.
     /// Show 시 각 아이템이 슬라이드 인 + 페이드 인, Hide 시 역순 애니메이션.
+    ///
+    /// LayoutGroup 충돌 방지:
+    /// Start()에서 VLG로 위치 계산 → 캐싱 → VLG 비활성화 → DOTween 자유 애니메이션
     /// </summary>
     public class StaggerListView : MonoBehaviour
     {
@@ -26,6 +29,7 @@ namespace UIStudy.Animation.Views
         private readonly List<CanvasGroup> _itemCanvasGroups = new();
         private readonly List<Vector2> _itemOriginalPositions = new();
         private Sequence _currentSequence;
+        private bool _initialized;
 
         // Read-only accessors for Presenter
         public Button ToggleButton => _toggleButton;
@@ -33,20 +37,41 @@ namespace UIStudy.Animation.Views
 
         private void Awake()
         {
-            // 각 아이템의 CanvasGroup과 원래 위치를 캐싱
             foreach (var item in _items)
             {
                 var cg = item.GetComponent<CanvasGroup>();
                 if (cg == null) cg = item.gameObject.AddComponent<CanvasGroup>();
                 _itemCanvasGroups.Add(cg);
+            }
+        }
+
+        private void Start()
+        {
+            // VLG가 레이아웃을 계산한 후 위치 캐싱
+            var parentVLG = _items[0].parent.GetComponent<VerticalLayoutGroup>();
+
+            // 레이아웃 강제 재계산 (Start 시점에 VLG 위치 확정)
+            if (parentVLG != null)
+                LayoutRebuilder.ForceRebuildLayoutImmediate(parentVLG.GetComponent<RectTransform>());
+
+            // 원래 위치 캐싱
+            foreach (var item in _items)
                 _itemOriginalPositions.Add(item.anchoredPosition);
 
-                // 초기 상태: 숨김
-                cg.alpha = 0f;
-                item.anchoredPosition = new Vector2(
-                    item.anchoredPosition.x - _slideDistance,
-                    item.anchoredPosition.y);
+            // VLG 비활성화 — 이후 DOTween이 anchoredPosition을 자유롭게 제어
+            if (parentVLG != null)
+                parentVLG.enabled = false;
+
+            // 초기 상태: 숨김 (왼쪽으로 밀려남 + 투명)
+            for (int i = 0; i < _items.Count; i++)
+            {
+                _itemCanvasGroups[i].alpha = 0f;
+                _items[i].anchoredPosition = new Vector2(
+                    _itemOriginalPositions[i].x - _slideDistance,
+                    _itemOriginalPositions[i].y);
             }
+
+            _initialized = true;
         }
 
         /// <summary>
@@ -55,6 +80,7 @@ namespace UIStudy.Animation.Views
         /// <param name="speedMultiplier">애니메이션 속도 배율 (1 = 기본).</param>
         public void ShowItems(float speedMultiplier)
         {
+            if (!_initialized) return;
             KillCurrentSequence();
 
             var duration = _baseDuration / Mathf.Max(speedMultiplier, 0.1f);
@@ -89,6 +115,7 @@ namespace UIStudy.Animation.Views
         /// <param name="speedMultiplier">애니메이션 속도 배율 (1 = 기본).</param>
         public void HideItems(float speedMultiplier)
         {
+            if (!_initialized) return;
             KillCurrentSequence();
 
             var duration = _baseDuration / Mathf.Max(speedMultiplier, 0.1f);
