@@ -18,6 +18,9 @@
 | 012 | [UGUI 성능 최적화 기법 종합](ugui-performance-optimization.md) | performance | 2026-03-28 | 조사완료 |
 | 013 | [R3 UI 데이터 바인딩 패턴](r3-ui-binding-patterns.md) | library / practice | 2026-03-28 | 조사완료 |
 | 014 | [UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) | practice | 2026-03-28 | 조사완료 |
+| 015 | [UGUI World Space UI 패턴](ugui-world-space-ui.md) | pattern / practice | 2026-03-28 | 조사완료 |
+| 016 | [UGUI Drag & Drop 구현 패턴](ugui-drag-drop-patterns.md) | practice | 2026-03-28 | 조사완료 |
+| 017 | [UGUI 고급 HUD 패턴 — Radial Menu / Minimap / Loading Screen](ugui-advanced-hud-patterns.md) | practice / pattern | 2026-03-28 | 조사완료 |
 
 ---
 
@@ -44,6 +47,9 @@
 - [008 - UGUI Tooltip 위치 계산 시스템](ugui-tooltip-positioning.md) — RectTransformUtility, Canvas 모드별 카메라, anchoredPosition, 경계 클램핑, ScaleMode, New Input System
 - [011 - UGUI ScrollView 풀링 & 버추얼 스크롤](ugui-scrollview-pooling.md) — LoopScrollRect/FancyScrollView/EnhancedScroller 비교, ObservableCollections.R3 통합, Canvas 성능, LayoutGroup 대안, 무한스크롤/페이지네이션
 - [014 - UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) — CanvasScaler 3모드/Match 공식, SafeAreaPanel, AspectRatioFitter, SpriteAtlas Variant, 방향전환(R3), TMP auto-size, DeviceProfile, UIScaleService, DPI-Aware, Unity6 변경사항
+- [015 - UGUI World Space UI 패턴](ugui-world-space-ui.md) — World Space Canvas 설정, 빌보딩 3종, HP 바(자식Canvas/GPU Instancing), Screen Space 대안(WorldToScreenPoint), 상호작용 프롬프트, 플로팅 전투 텍스트, 네임 플레이트, 오클루전 레이캐스트, 거리 LOD, 성능 최적화
+- [016 - UGUI Drag & Drop 구현 패턴](ugui-drag-drop-patterns.md) — IBeginDragHandler 트리오, Ghost DragLayer, CanvasGroup.blocksRaycasts, 드롭 존 하이라이트, 그리드 슬롯 교환, Sortable List, 카드 Fan 레이아웃, Canvas 좌표 변환, R3 Observable 드래그 체인, 터치/멀티터치
+- [017 - UGUI 고급 HUD 패턴](ugui-advanced-hud-patterns.md) — Radial Menu(Atan2/Radial360/R3), Minimap(RenderTexture/orthographic/아이콘 추적/Compass uvRect), Loading Screen(AsyncOperation/Addressables 집계/UniTask IProgress/Lerp/최소 표시 시간/tips R3)
 
 ### performance
 - [012 - UGUI 성능 최적화 기법 종합](ugui-performance-optimization.md) — Canvas Rebuild 비용/트리거, Canvas 분리 전략, 드로우콜 배칭, Overdraw 감소, LayoutGroup 대안, TMP 최적화, RaycastTarget, SetActive vs CanvasGroup, 오브젝트 풀링, 프로파일러 도구, 대규모 UI, 메모리 최적화
