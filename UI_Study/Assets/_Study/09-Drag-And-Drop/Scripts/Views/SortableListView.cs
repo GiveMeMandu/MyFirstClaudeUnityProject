@@ -1,11 +1,14 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 namespace UIStudy.DragDrop.Views
 {
     /// <summary>
-    /// 정렬 가능 리스트 View — VerticalLayoutGroup 기반 리스트 + 삽입 인디케이터.
+    /// 정렬 가능 리스트 View — Placeholder 방식 라이브 리오더.
+    /// 드래그 중 Placeholder의 SiblingIndex를 실시간 변경하여
+    /// VerticalLayoutGroup이 다른 항목을 자동으로 밀어주는 원리.
     /// </summary>
     public class SortableListView : MonoBehaviour
     {
@@ -28,48 +31,51 @@ namespace UIStudy.DragDrop.Views
                 _insertionLine.gameObject.SetActive(false);
         }
 
-        /// <summary>
-        /// 전체 아이템 바인딩.
-        /// </summary>
         public void BindAll(string[] itemTexts)
         {
             for (int i = 0; i < _items.Length && i < itemTexts.Length; i++)
-            {
                 _items[i].Bind(i, itemTexts[i]);
-            }
         }
 
         /// <summary>
-        /// 삽입 인디케이터를 지정 인덱스 위치에 표시.
+        /// 드래그 중 포인터 Y 위치 → Placeholder의 SiblingIndex를 실시간 갱신.
+        /// VerticalLayoutGroup이 다른 항목을 자동으로 밀어줌.
         /// </summary>
-        public void ShowInsertionIndicator(int index)
+        public void UpdatePlaceholderIndex(SortableItemView draggedItem, PointerEventData eventData)
         {
-            if (_insertionLine == null || _listContainer == null) return;
+            var placeholder = draggedItem.Placeholder;
+            if (placeholder == null) return;
 
-            _insertionLine.gameObject.SetActive(true);
+            int newIndex = CalculateInsertIndex(eventData);
 
-            // 인덱스에 해당하는 Y 위치 계산
-            if (index >= 0 && index <= _items.Length)
+            if (placeholder.transform.GetSiblingIndex() != newIndex)
+                placeholder.transform.SetSiblingIndex(newIndex);
+        }
+
+        /// <summary>
+        /// 포인터 Y 좌표 → 삽입 인덱스 계산 (GetWorldCorners 중간점 비교).
+        /// </summary>
+        public int CalculateInsertIndex(PointerEventData eventData)
+        {
+            // 스크린 Y를 월드 Y로 변환할 필요 없이, 각 자식의 world position.y와 비교
+            float pointerScreenY = eventData.position.y;
+            Camera cam = eventData.pressEventCamera;
+
+            for (int i = 0; i < _listContainer.childCount; i++)
             {
-                float yPos;
-                if (index < _items.Length)
-                {
-                    // 해당 아이템의 상단에 배치
-                    var itemRect = _items[index].RectTransform;
-                    var itemPos = itemRect.localPosition;
-                    yPos = itemPos.y + itemRect.rect.height * 0.5f;
-                }
-                else
-                {
-                    // 마지막 아이템 하단에 배치
-                    var lastItemRect = _items[_items.Length - 1].RectTransform;
-                    var lastPos = lastItemRect.localPosition;
-                    yPos = lastPos.y - lastItemRect.rect.height * 0.5f;
-                }
+                var child = _listContainer.GetChild(i) as RectTransform;
+                if (child == null) continue;
 
-                _insertionLine.localPosition = new Vector3(
-                    _insertionLine.localPosition.x, yPos, 0f);
+                // 자식의 월드 중심 Y를 스크린 좌표로 변환
+                Vector3 screenPos = RectTransformUtility.WorldToScreenPoint(cam, child.position);
+                float childScreenCenterY = screenPos.y;
+
+                // 포인터가 이 자식의 중심보다 위에 있으면 이 위치에 삽입
+                if (pointerScreenY > childScreenCenterY)
+                    return i;
             }
+
+            return _listContainer.childCount - 1;
         }
 
         /// <summary>
@@ -82,26 +88,7 @@ namespace UIStudy.DragDrop.Views
         }
 
         /// <summary>
-        /// 드래그 중 포인터 Y 위치로부터 삽입 인덱스 계산.
-        /// </summary>
-        public int CalculateInsertIndex(Vector2 screenPosition, Camera eventCamera)
-        {
-            for (int i = 0; i < _items.Length; i++)
-            {
-                var itemRect = _items[i].RectTransform;
-                RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                    _listContainer, screenPosition, eventCamera, out var localPoint);
-
-                var itemLocalPos = itemRect.localPosition;
-                if (localPoint.y > itemLocalPos.y)
-                    return i;
-            }
-
-            return _items.Length - 1;
-        }
-
-        /// <summary>
-        /// 리오더 후 아이템 sibling 순서 + 인덱스 갱신.
+        /// 리오더 후 아이템 인덱스 갱신.
         /// </summary>
         public void RefreshOrder(string[] itemTexts)
         {
@@ -112,9 +99,6 @@ namespace UIStudy.DragDrop.Views
             }
         }
 
-        /// <summary>
-        /// 상태 텍스트 갱신.
-        /// </summary>
         public void SetStatus(string text)
         {
             if (_statusText != null)

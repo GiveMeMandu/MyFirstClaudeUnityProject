@@ -23,6 +23,7 @@
 | 017 | [UGUI 고급 HUD 패턴 — Radial Menu / Minimap / Loading Screen](ugui-advanced-hud-patterns.md) | practice / pattern | 2026-03-28 | 조사완료 |
 | 018 | [UGUI 패널 슬라이드 트랜지션 — 클리핑, 캐러셀, 깜빡임 방지](ugui-panel-slide-transition.md) | practice | 2026-03-28 | 조사완료 |
 | 019 | [UGUI 인벤토리 그리드 + 디테일 패널 레이아웃](ugui-inventory-grid-detail-panel-layout.md) | practice | 2026-03-28 | 조사완료 |
+| 020 | [UGUI Drag-to-Reorder Sortable List](ugui-sortable-list-reorder.md) | practice | 2026-03-28 | 조사완료 |
 
 ---
 
@@ -53,6 +54,7 @@
 - [014 - UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) — CanvasScaler 3모드/Match 공식, SafeAreaPanel, AspectRatioFitter, SpriteAtlas Variant, 방향전환(R3), TMP auto-size, DeviceProfile, UIScaleService, DPI-Aware, Unity6 변경사항
 - [015 - UGUI World Space UI 패턴](ugui-world-space-ui.md) — World Space Canvas 설정, 빌보딩 3종, HP 바(자식Canvas/GPU Instancing), Screen Space 대안(WorldToScreenPoint), 상호작용 프롬프트, 플로팅 전투 텍스트, 네임 플레이트, 오클루전 레이캐스트, 거리 LOD, 성능 최적화
 - [016 - UGUI Drag & Drop 구현 패턴](ugui-drag-drop-patterns.md) — IBeginDragHandler 트리오, Ghost DragLayer, CanvasGroup.blocksRaycasts, 드롭 존 하이라이트, 그리드 슬롯 교환, Sortable List, 카드 Fan 레이아웃, Canvas 좌표 변환, R3 Observable 드래그 체인, 터치/멀티터치
+- [020 - UGUI Drag-to-Reorder Sortable List](ugui-sortable-list-reorder.md) — Placeholder 방식 표준 알고리즘, 삽입 인덱스 계산(GetWorldCorners/중간점), LayoutGroup 충돌 해소 3전략, DOTween 리프트/랜딩 효과, 자동 스크롤, Long-Press 모바일, R3 Observable 통합, 오픈소스 레퍼런스 5종
 - [017 - UGUI 고급 HUD 패턴](ugui-advanced-hud-patterns.md) — Radial Menu(Atan2/Radial360/R3), Minimap(RenderTexture/orthographic/아이콘 추적/Compass uvRect), Loading Screen(AsyncOperation/Addressables 집계/UniTask IProgress/Lerp/최소 표시 시간/tips R3)
 
 ### performance
