@@ -2,7 +2,10 @@
     <ui:Style src="../USS/Settings.uss" />
 
     <ui:VisualElement name="root" class="root">
-        <ui:Label class="title" text="Settings — TabView Demo" />
+        <ui:VisualElement class="title-bar">
+            <ui:Label class="title" text="Settings — TabView Demo" />
+            <ui:Button name="btn-close-settings" class="btn-close" text="X" />
+        </ui:VisualElement>
 
         <ui:VisualElement class="settings-container">
             <ui:TabView name="settings-tabs" class="settings-tabs">

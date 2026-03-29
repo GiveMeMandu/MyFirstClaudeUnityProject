@@ -21,6 +21,8 @@ namespace UIStudy.UIToolkitLightweight
         private Button _applyBtn;
         private Button _cancelBtn;
 
+        private VisualElement _rootElement;
+
         // Events for Presenter
         public event Action<int> OnQualityChanged;
         public event Action<bool> OnFullscreenChanged;
@@ -42,6 +44,7 @@ namespace UIStudy.UIToolkitLightweight
         private void OnEnable()
         {
             var root = _document.rootVisualElement;
+            _rootElement = root;
 
             _qualityDropdown    = root.Q<DropdownField>("quality-dropdown");
             _fullscreenToggle   = root.Q<Toggle>("fullscreen-toggle");
@@ -72,6 +75,9 @@ namespace UIStudy.UIToolkitLightweight
             if (_applyBtn != null)  _applyBtn.clicked  -= HandleApplyClicked;
             if (_cancelBtn != null) _cancelBtn.clicked -= HandleCancelClicked;
         }
+
+        public void Show() => _rootElement.style.display = DisplayStyle.Flex;
+        public void Hide() => _rootElement.style.display = DisplayStyle.None;
 
         /// <summary>
         /// SetValueWithoutNotify로 이벤트 발화 없이 UI 상태 설정 (Cancel 복구용).

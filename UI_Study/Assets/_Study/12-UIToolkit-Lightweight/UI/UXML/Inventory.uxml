@@ -4,11 +4,12 @@
     <ui:VisualElement name="root" class="root">
         <ui:Label class="title" text="Inventory — ListView Virtualization" />
 
-        <!-- Top bar: search + sort -->
+        <!-- Top bar: search + sort + settings toggle -->
         <ui:VisualElement class="toolbar">
             <ui:TextField name="search-field" class="search-field" label="Search" />
             <ui:DropdownField name="sort-dropdown" class="sort-dropdown" label="Sort"
                 choices="Name,Rarity Asc,Rarity Desc" index="0" />
+            <ui:Button name="btn-toggle-settings" class="btn-settings" text="Settings" />
         </ui:VisualElement>
 
         <!-- Two-column layout -->

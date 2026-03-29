@@ -149,7 +149,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UIStudy.UIToolkitLightweight.InventorySettingsBootstrapper
   _inventoryView: {fileID: 502580958}
+  _inventoryDoc: {fileID: 502580959}
   _settingsView: {fileID: 1184601602}
+  _settingsDoc: {fileID: 1184601603}
 --- !u!4 &53272519
 Transform:
   m_ObjectHideFlags: 0

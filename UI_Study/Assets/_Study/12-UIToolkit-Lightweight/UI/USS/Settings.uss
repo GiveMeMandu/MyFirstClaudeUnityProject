@@ -6,13 +6,34 @@
     justify-content: center;
 }
 
+.title-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 500px;
+    margin-bottom: 8px;
+}
+
 .title {
     font-size: 18px;
     color: rgb(180, 180, 200);
-    margin-bottom: 16px;
     -unity-font-style: bold;
-    -unity-text-align: upper-center;
 }
+
+.btn-close {
+    width: 28px;
+    height: 28px;
+    background-color: rgb(70, 70, 90);
+    color: rgb(200, 200, 220);
+    border-width: 0;
+    border-radius: 14px;
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+.btn-close:hover { background-color: rgb(220, 60, 60); color: white; }
 
 .settings-container {
     width: 500px;
