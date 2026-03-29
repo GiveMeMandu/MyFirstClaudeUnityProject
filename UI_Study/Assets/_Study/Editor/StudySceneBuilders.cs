@@ -411,6 +411,14 @@ namespace UIStudy.Editor
         internal static void AddEventSystem()
         {
             var go = new GameObject("EventSystem", typeof(EventSystem), typeof(InputSystemUIInputModule));
+
+            // UI-only 씬에서 프레임 버퍼 클리어용 카메라 (잔상 방지)
+            var camGO = new GameObject("BackgroundCamera", typeof(Camera));
+            var cam = camGO.GetComponent<Camera>();
+            cam.clearFlags = CameraClearFlags.SolidColor;
+            cam.backgroundColor = new Color(0.12f, 0.12f, 0.18f);
+            cam.cullingMask = 0; // 아무것도 렌더링하지 않음 — 클리어만 수행
+            cam.depth = -100;
         }
 
         internal static GameObject AddCanvas(string name)
