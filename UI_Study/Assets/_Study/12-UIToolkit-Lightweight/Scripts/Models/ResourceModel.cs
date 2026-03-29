@@ -61,5 +61,30 @@ namespace UIStudy.UIToolkitLightweight
             Food -= amount;
             return true;
         }
+
+        public bool SpendGold(int amount)
+        {
+            if (_gold < amount) return false;
+            Gold -= amount;
+            return true;
+        }
+
+        public bool SpendWood(int amount)
+        {
+            if (_wood < amount) return false;
+            Wood -= amount;
+            return true;
+        }
+
+        public bool SpendFood(int amount)
+        {
+            if (_food < amount) return false;
+            Food -= amount;
+            return true;
+        }
+
+        public void GainGold(int amount) => Gold += amount;
+        public void GainWood(int amount) => Wood += amount;
+        public void GainFood(int amount) => Food += amount;
     }
 }

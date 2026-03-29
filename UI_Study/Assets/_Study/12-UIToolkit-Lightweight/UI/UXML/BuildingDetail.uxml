@@ -1,0 +1,48 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/BuildingDetail.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <!-- Backdrop overlay -->
+        <ui:VisualElement name="backdrop" class="backdrop">
+
+            <!-- Card panel -->
+            <ui:VisualElement name="detail-card" class="detail-card">
+                <!-- Header -->
+                <ui:VisualElement class="card-header">
+                    <ui:VisualElement class="building-icon-container">
+                        <ui:Label name="building-icon" class="building-icon" text="B" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="header-info">
+                        <ui:Label name="building-name" class="building-name" text="Building Name" />
+                        <ui:Label name="building-level" class="building-level" text="Level 1 / 5" />
+                    </ui:VisualElement>
+                    <ui:Button name="btn-close" class="btn-close" text="X" />
+                </ui:VisualElement>
+
+                <!-- Description -->
+                <ui:Label name="building-desc" class="building-desc"
+                    text="Building description goes here." />
+
+                <!-- Separator -->
+                <ui:VisualElement class="separator" />
+
+                <!-- Cost section -->
+                <ui:Label class="section-title" text="Upgrade Cost" />
+                <ui:VisualElement class="cost-row">
+                    <ui:VisualElement class="cost-item">
+                        <ui:Label class="cost-icon cost-icon--gold" text="G" />
+                        <ui:Label name="gold-cost" class="cost-value" text="100" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="cost-item">
+                        <ui:Label class="cost-icon cost-icon--wood" text="W" />
+                        <ui:Label name="wood-cost" class="cost-value" text="50" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+
+                <!-- Upgrade button -->
+                <ui:Button name="btn-upgrade" class="btn-upgrade" text="Upgrade" />
+                <ui:Label name="status-label" class="status-label" text="" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>
