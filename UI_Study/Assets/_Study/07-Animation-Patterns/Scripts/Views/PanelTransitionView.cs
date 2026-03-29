@@ -74,24 +74,26 @@ namespace UIStudy.Animation.Views
 
         /// <summary>
         /// Slide Left 전환 — 현재 패널이 왼쪽으로 빠지고 새 패널이 오른쪽에서 들어옴.
+        /// 뷰포트(부모) 너비 기준 슬라이드 + RectMask2D 클리핑으로 영역 밖 자동 숨김.
         /// </summary>
         public void TransitionSlideLeft()
         {
             var (outPanel, outCg, inPanel, inCg) = GetTransitionTargets();
             KillCurrentTransition();
 
-            float panelWidth = ((RectTransform)transform).rect.width;
-            if (panelWidth <= 0f) panelWidth = 800f;
+            // 뷰포트(패널 부모) 너비 기준 — 해상도 독립적
+            var viewport = _panelA.parent as RectTransform ?? (RectTransform)transform;
+            float slideDistance = viewport.rect.width;
+            if (slideDistance <= 0f) slideDistance = 800f;
 
-            // 나가는 패널은 현재 위치에서 왼쪽으로
-            // 들어오는 패널은 오른쪽에서 시작
-            inPanel.gameObject.SetActive(true);
+            // 위치 초기화 BEFORE SetActive (깜빡임 방지)
+            inPanel.anchoredPosition = new Vector2(slideDistance, 0f);
             inCg.alpha = 1f;
             inPanel.localScale = Vector3.one;
-            inPanel.anchoredPosition = new Vector2(panelWidth, 0f);
+            inPanel.gameObject.SetActive(true);
 
             _currentTransition = DOTween.Sequence()
-                .Join(outPanel.DOAnchorPos(new Vector2(-panelWidth, 0f), _transitionDuration)
+                .Join(outPanel.DOAnchorPos(new Vector2(-slideDistance, 0f), _transitionDuration)
                     .SetEase(Ease.InOutCubic))
                 .Join(inPanel.DOAnchorPos(Vector2.zero, _transitionDuration)
                     .SetEase(Ease.InOutCubic))

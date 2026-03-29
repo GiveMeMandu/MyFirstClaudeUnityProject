@@ -21,6 +21,7 @@
 | 015 | [UGUI World Space UI 패턴](ugui-world-space-ui.md) | pattern / practice | 2026-03-28 | 조사완료 |
 | 016 | [UGUI Drag & Drop 구현 패턴](ugui-drag-drop-patterns.md) | practice | 2026-03-28 | 조사완료 |
 | 017 | [UGUI 고급 HUD 패턴 — Radial Menu / Minimap / Loading Screen](ugui-advanced-hud-patterns.md) | practice / pattern | 2026-03-28 | 조사완료 |
+| 018 | [UGUI 패널 슬라이드 트랜지션 — 클리핑, 캐러셀, 깜빡임 방지](ugui-panel-slide-transition.md) | practice | 2026-03-28 | 조사완료 |
 
 ---
 
@@ -44,6 +45,7 @@
 
 ### practice
 - [007 - UGUI 코드 기반 레이아웃 (code-first)](ugui-programmatic-layout.md) — RectTransform 앵커 치트시트, DefaultControls, LayoutGroup, Editor 스크립트 씬 빌더, unity-cli 검증 루틴
+- [018 - UGUI 패널 슬라이드 트랜지션](ugui-panel-slide-transition.md) — RectMask2D vs Mask 클리핑 비교, 캐러셀 계층 구조, 슬라이드 거리 계산(rect.width), 깜빡임 방지(SetActive 타이밍), DOTween Sequence Join 패턴
 - [008 - UGUI Tooltip 위치 계산 시스템](ugui-tooltip-positioning.md) — RectTransformUtility, Canvas 모드별 카메라, anchoredPosition, 경계 클램핑, ScaleMode, New Input System
 - [011 - UGUI ScrollView 풀링 & 버추얼 스크롤](ugui-scrollview-pooling.md) — LoopScrollRect/FancyScrollView/EnhancedScroller 비교, ObservableCollections.R3 통합, Canvas 성능, LayoutGroup 대안, 무한스크롤/페이지네이션
 - [014 - UGUI 반응형/적응형 디자인 패턴](ugui-responsive-design.md) — CanvasScaler 3모드/Match 공식, SafeAreaPanel, AspectRatioFitter, SpriteAtlas Variant, 방향전환(R3), TMP auto-size, DeviceProfile, UIScaleService, DPI-Aware, Unity6 변경사항

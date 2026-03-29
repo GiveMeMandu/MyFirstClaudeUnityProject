@@ -535,8 +535,8 @@ namespace UIStudy.Editor
             var flipYButton = AddButton(btnRow.transform, "FlipYButton", "Flip Y", new Vector2(0, 40));
             flipYButton.AddComponent<LayoutElement>().flexibleWidth = 1;
 
-            // === Panel container area ===
-            var panelArea = new GameObject("PanelArea", typeof(RectTransform));
+            // === Panel container area (RectMask2D로 슬라이드 시 영역 밖 패널 클��핑) ===
+            var panelArea = new GameObject("PanelArea", typeof(RectTransform), typeof(RectMask2D));
             panelArea.transform.SetParent(canvas.transform, false);
             var panelAreaRT = panelArea.GetComponent<RectTransform>();
             Anchor(panelAreaRT, AnchorPreset.StretchAll,
