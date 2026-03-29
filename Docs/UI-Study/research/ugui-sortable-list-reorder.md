@@ -1,8 +1,9 @@
 # UGUI Drag-to-Reorder Sortable List 리서치 리포트
 
 - **작성일**: 2026-03-28
+- **최종 업데이트**: 2026-03-29
 - **카테고리**: practice
-- **상태**: 조사완료
+- **상태**: 조사완료 (v2 — 4개 심층 질문 추가)
 - **관련 문서**: [ugui-drag-drop-patterns.md](ugui-drag-drop-patterns.md) (기본 Drag & Drop 패턴)
 
 ---
@@ -10,6 +11,11 @@
 ## 1. 요약
 
 Unity UGUI에서 iOS/Android 수준의 Live Reorder(드래그 중 다른 항목이 실시간으로 슬라이드) 구현은 **Placeholder(더미 오브젝트) 방식**이 표준이다. 드래그된 아이템을 Canvas 루트로 reparent해 렌더 최상위에 올리고, 원래 위치에 투명 Placeholder를 남긴 뒤, 드래그 Y 좌표 기반 삽입 인덱스 계산으로 Placeholder의 SiblingIndex를 실시간 갱신한다. VerticalLayoutGroup과의 충돌은 Placeholder를 통해 레이아웃이 갭을 자연스럽게 유지하도록 우회하며, DOTween을 통한 스케일 업/그림자 효과로 "떠 있는" 시각적 피드백을 제공한다. 모바일에서는 Long-Press로 드래그를 개시하고, `Handheld.Vibrate()`로 햅틱 피드백을 준다.
+
+**v2 핵심 추가 발견 (2026-03-29)**:
+- Placeholder 방식에는 두 가지 독립적인 off-by-one이 존재한다 — OnDrag 삽입 인덱스 계산 시 Placeholder 자신의 점유 인덱스 미보정, EndDrag에서 Placeholder Destroy 순서 오류.
+- 시각적 sibling 순서 → 데이터 모델 인덱스 매핑에는 "fromIndex/toIndex로 List.RemoveAt+Insert 호출" 방식이 업계 표준이다. 최종 hierarchy를 전체 순회하는 방식은 복잡도를 높이고 데이터 불일치를 유발한다.
+- Unity 자체 ReorderableList(에디터)는 `m_NonDragTargetIndices` 방식으로 placeholder 위치를 최종 인덱스로 쓴다.
 
 ---
 
@@ -38,7 +44,7 @@ VerticalLayoutGroup은 자식 오브젝트의 anchoredPosition을 매 프레임 
 
 ```
 OnBeginDrag:
-  1. 현재 SiblingIndex 저장
+  1. 현재 SiblingIndex 저장 (_originalSiblingIndex)
   2. Placeholder GameObject 생성 (동일 크기, 투명/반투명)
   3. Placeholder를 원래 위치의 SiblingIndex에 삽입
   4. 드래그 항목을 Canvas 루트(DragLayer)로 reparent
@@ -48,19 +54,20 @@ OnBeginDrag:
 OnDrag:
   1. 드래그 항목 위치를 포인터를 따라 갱신
   2. 포인터 Y 좌표 → 삽입 인덱스 계산
-  3. 계산된 인덱스가 현재 Placeholder.SiblingIndex와 다르면:
+  3. **newSiblingIndex 보정** (섹션 2.11 참조): Placeholder가 이미 해당 인덱스 앞에 있으면 --
+  4. 계산된 인덱스가 현재 Placeholder.SiblingIndex와 다르면:
      → Placeholder.SetSiblingIndex(newIndex)
      → LayoutGroup이 자동으로 다른 항목을 슬라이드
-  4. (선택) 스크롤뷰 경계 자동 스크롤
+  5. (선택) 스크롤뷰 경계 자동 스크롤
 
 OnEndDrag:
-  1. Placeholder의 SiblingIndex를 먼저 저장
-  2. Placeholder 먼저 제거 (컨테이너에서 슬롯 해방)  ← 순서 중요 (섹션 2.11 참조)
+  1. Placeholder의 SiblingIndex를 먼저 저장 (finalIndex)
+  2. **Placeholder 먼저 Destroy** ← 순서 중요 (섹션 2.11 참조)
   3. 드래그 항목을 원래 컨테이너로 reparent
-  4. 저장한 인덱스로 SetSiblingIndex
+  4. 저장한 finalIndex로 SetSiblingIndex
   5. CanvasGroup.blocksRaycasts = true
   6. DOTween으로 scale 1.05 → 1.0, 그림자 비활성화
-  7. DOTween으로 anchoredPosition → LayoutGroup이 계산한 최종 위치로 스냅
+  7. 모델 업데이트: _model.MoveItem(_originalSiblingIndex, finalIndex) 호출 (섹션 2.13 참조)
 ```
 
 ---
@@ -830,7 +837,7 @@ public void OnDrag(PointerEventData eventData)
 
 ---
 
-### 2.12 오픈소스 레퍼런스 정리 (구 2.11)
+### 2.12 오픈소스 레퍼런스 정리
 
 | 저장소 | 특징 | 접근 방식 |
 |---|---|---|
@@ -852,6 +859,158 @@ public void OnDrag(PointerEventData eventData)
 
 ---
 
+### 2.13 시각 SiblingIndex → 데이터 모델 인덱스 매핑 (심층 분석)
+
+이것은 생산 품질 구현에서 가장 자주 논쟁되는 설계 결정이다.
+
+#### 두 가지 접근 방식의 비교
+
+**방식 1: fromIndex/toIndex로 MoveItem 호출 (권장)**
+
+드롭이 완료되면 `(originalSiblingIndex, finalPlaceholderIndex)` 쌍을 전달해 모델의 단일 `MoveItem` 연산을 호출한다.
+
+```csharp
+// 모델 MoveItem 구현
+public void MoveItem(int fromIndex, int toIndex)
+{
+    if (fromIndex == toIndex) return;
+
+    var item = _items[fromIndex];
+    _items.RemoveAt(fromIndex);
+
+    // 중요: RemoveAt 후 toIndex가 fromIndex보다 크면 -1 보정 필요
+    int adjustedTo = toIndex > fromIndex ? toIndex - 1 : toIndex;
+    _items.Insert(adjustedTo, item);
+}
+```
+
+**방식 2: 최종 hierarchy를 전체 순회해 모델 재구성**
+
+드롭 완료 후 컨테이너의 모든 자식을 순회해 각 아이템의 데이터를 새 List로 수집.
+
+```csharp
+// OnEndDrag 후:
+private void RebuildModelFromHierarchy()
+{
+    _model.Items.Clear();
+    for (int i = 0; i < _container.childCount; i++)
+    {
+        var item = _container.GetChild(i).GetComponent<SortableListItem>();
+        if (item != null)
+            _model.Items.Add(item.Data);
+    }
+}
+```
+
+**비교 표**:
+
+| 기준 | fromIndex/toIndex (방식 1) | hierarchy 전체 순회 (방식 2) |
+|---|---|---|
+| 코드 단순성 | 중간 (MoveItem 구현 필요) | 단순하지만 전체 재구성 |
+| 데이터 신뢰성 | 높음 — 모델이 항상 truth | 낮음 — 시각과 모델 사이 불일치 가능 |
+| 성능 | O(n) RemoveAt+Insert | O(n) 전체 순회 (항목 수에 따라 차이 없음) |
+| 취소/undo 지원 | 용이 (fromIndex, toIndex 저장) | 어려움 (이전 state 별도 저장 필요) |
+| Placeholder 계산 오류 전파 | 제한적 — 한 번만 적용 | 시각이 이미 올바르면 OK |
+| 업계 표준 | Unity 공식 ReorderableList, R3 패턴 | 단순 프로토타입에 적합 |
+
+**권장**: **방식 1 (fromIndex/toIndex + MoveItem)**. Unity의 공식 Editor ReorderableList도 `onReorderCallbackWithDetails(list, oldIndex, newIndex)` 형태로 두 인덱스를 전달한다. 이 방식이 Undo/Redo, 네트워크 동기화, 저장에 모두 적합하다.
+
+#### fromIndex → toIndex 관계에서 주의할 RemoveAt+Insert 보정
+
+List.RemoveAt(fromIndex) 후 toIndex가 fromIndex보다 큰 경우, 리스트가 이미 1만큼 줄어들었으므로 Insert 위치도 1 감소시켜야 한다:
+
+```csharp
+// 올바른 MoveItem:
+public void MoveItem(int from, int to)
+{
+    var item = _items[from];
+    _items.RemoveAt(from);
+    int insertAt = to > from ? to - 1 : to;
+    _items.Insert(insertAt, item);
+}
+```
+
+**단 이것은 SiblingIndex 기준 finalIndex를 그대로 사용할 때 적용**된다. 섹션 2.11의 Placeholder-먼저-Destroy 방식을 사용하면, 드롭 시 컨테이너에 Placeholder가 없으므로 finalIndex는 이미 Placeholder를 제외한 정수(0-based, 항목만 계산) 순서다. 이 경우 보정 없이 `_items.RemoveAt(from); _items.Insert(to, item)`이 정확하다.
+
+---
+
+### 2.14 Unity 공식 ReorderableList의 내부 방식 (에디터 참조)
+
+Unity `UnityEditor.IMGUI.Controls.ReorderableList`는 UGUI가 아닌 IMGUI 기반이지만 같은 개념 문제를 해결한다:
+
+```csharp
+// Unity 내부 (UnityCsReference 참조):
+var targetIndex = CalculateRowIndex(listRect);  // 드래그 중인 마우스 위치 → 삽입 인덱스
+m_NonDragTargetIndices.Clear();
+for (var i = 0; i < m_Count; i++) {
+    if (i != index)                              // 원본 드래그 항목 제외
+        m_NonDragTargetIndices.Add(i);
+}
+m_NonDragTargetIndices.Insert(targetIndex, -1); // -1이 "placeholder" 역할
+
+// 드롭 완료 시:
+onReorderCallbackWithDetails?.Invoke(this, index, targetIndex);
+// index = 원본 fromIndex
+// targetIndex = Placeholder가 있는 위치 (= finalIndex)
+```
+
+Unity가 선택한 방법: **placeholder의 최종 인덱스를 직접 toIndex로 사용**, 전체 hierarchy 재구성은 하지 않는다. 이것이 방식 1이 더 표준임을 뒷받침한다.
+
+---
+
+### 2.15 Placeholder SiblingIndex vs 모델 인덱스 불일치 시나리오
+
+아래는 헷갈리기 쉬운 시나리오와 정확한 매핑을 보여주는 예시다:
+
+**시나리오**: 리스트에 항목 [A(0), B(1), C(2), D(3)] 이 있을 때 C(2)를 A(0) 뒤로 이동.
+
+```
+OnBeginDrag (C 드래그 시작):
+  컨테이너: [A(0), B(1), Placeholder(2), D(3)]
+  _originalSiblingIndex = 2
+
+OnDrag (C를 A 아래로 이동):
+  포인터가 A 중간점 아래, B 중간점 위 → insertIndex = 1
+  Placeholder.GetSiblingIndex() = 2, newSiblingIndex = 1
+  → Placeholder.SetSiblingIndex(1)
+  컨테이너: [A(0), Placeholder(1), B(2), D(3)]
+
+OnEndDrag:
+  finalIndex = Placeholder.GetSiblingIndex() = 1
+  Destroy(Placeholder)
+  컨테이너: [A(0), B(1), D(2)]  ← Placeholder 제거 후 재인덱싱
+  SetParent(originalParent) + SetSiblingIndex(1)
+  컨테이너: [A(0), C(1), B(2), D(3)]  ← 정확!
+
+모델 업데이트:
+  _model.MoveItem(from: 2, to: 1)
+  → items.RemoveAt(2): [A, B, D]
+  → insertAt = 1 (to=1 < from=2이므로 보정 없음)
+  → items.Insert(1, C): [A, C, B, D]  ← 정확!
+```
+
+**역방향 시나리오**: B(1)를 D(3) 뒤로 이동.
+
+```
+OnBeginDrag (B 드래그 시작):
+  컨테이너: [A(0), Placeholder(1), C(2), D(3)]
+  _originalSiblingIndex = 1
+
+OnEndDrag:
+  finalIndex = 3 (Placeholder가 D 뒤에 있음)
+  Destroy(Placeholder)
+  컨테이너: [A(0), C(1), D(2)]  ← 재인덱싱
+  SetSiblingIndex(3) → [A(0), C(1), D(2), B(3)]  ← 정확!
+
+모델 업데이트:
+  _model.MoveItem(from: 1, to: 3)
+  → items.RemoveAt(1): [A, C, D]
+  → insertAt = 3 - 1 = 2 (to=3 > from=1이므로 -1 보정)
+  → items.Insert(2, B): [A, C, B, D]  ← 정확!
+```
+
+---
+
 ## 3. 베스트 프랙티스
 
 ### DO (권장)
@@ -865,6 +1024,10 @@ public void OnDrag(PointerEventData eventData)
 - [x] 모바일: Long-Press (0.3~0.5s) + `Handheld.Vibrate()` 햅틱
 - [x] ScrollView 안: 경계 감지 자동 스크롤 구현
 - [x] IBeginDragHandler 없이 IDragHandler만 구현하지 않기 (EventSystem 요구사항)
+- [x] OnEndDrag에서 반드시 Placeholder를 먼저 Destroy 후 reparent (off-by-one 방지)
+- [x] OnDrag 삽입 인덱스 계산 시 `if (placeholder.siblingIndex < newIndex) newIndex--` 보정 포함
+- [x] 모델 업데이트는 fromIndex/toIndex 쌍으로 MoveItem 호출 (hierarchy 전체 순회 금지)
+- [x] MoveItem에서 `to > from`이면 insertAt = `to - 1`로 보정 (단 Placeholder-먼저-Destroy 방식에서는 불필요)
 
 ### DON'T (금지)
 - [ ] 드래그 중 LayoutGroup 컨테이너 안에서 anchoredPosition 직접 수정 (LayoutGroup이 덮어씀)
@@ -875,12 +1038,14 @@ public void OnDrag(PointerEventData eventData)
 - [ ] EventTrigger 컴포넌트 사용 (이벤트가 예측 불가하게 사라지는 문제)
 - [ ] EndDrag에서 아이템 reparent 후 Placeholder Destroy (off-by-one 버그) — Placeholder 먼저 Destroy할 것 (섹션 2.11)
 - [ ] OnDrag 삽입 인덱스 계산에서 Placeholder 자신의 인덱스 보정 누락 (`newSiblingIndex--`) — 드래그 중 Placeholder가 1칸 위에 표시되는 버그 발생
+- [ ] 드롭 후 hierarchy 전체를 순회해 모델 재구성 (신뢰성 낮음, Undo/Redo 불가)
 
 ### CONSIDER (상황별)
 - [ ] 항목 높이가 불균일하면 GetWorldCorners 방식으로 각 항목 중간점 개별 계산
 - [ ] 부드러운 슬라이드가 필요하면 LayoutGroup 비활성화 + DOTween 수동 위치 갱신 (복잡도 증가)
 - [ ] 리스트 간 이동이 필요하면 FullStackForger/ifup-ui-sortable-list 참조
 - [ ] Unity UI Extensions ReorderableList는 수직/수평/그리드 모두 필요할 때 적합
+- [ ] MoveItem의 insertAt 보정이 헷갈리면 ObservableCollection.Move(from, to) 처럼 이동 전후 순서를 명시적으로 추적하는 방식 사용
 
 ---
 
@@ -972,6 +1137,7 @@ Placeholder Prefab:
 15. [GitHub: Xander93/draganddrop-unity3d — 표준 Placeholder 패턴 구현 (OnDrag newSiblingIndex-- 보정 포함)](https://github.com/Xander93/draganddrop-unity3d)
 16. [GitHub: ItO210/educational-coding-game — VerticalLayoutGroup Placeholder 패턴 (OnDrag 보정 동일)](https://github.com/ItO210/educational-coding-game)
 17. [GitHub: MagicSmokeIndustries/InfernalRobotics GroupDragHandler — EndDrag reparent 후 SetSiblingIndex 후 Destroy 순서](https://github.com/MagicSmokeIndustries/InfernalRobotics)
+18. [GitHub: Unity-Technologies/UnityCsReference ReorderableList.cs — m_NonDragTargetIndices 방식, onReorderCallbackWithDetails(oldIndex, newIndex)](https://github.com/Unity-Technologies/UnityCsReference/blob/master/Editor/Mono/GUI/ReorderableList.cs)
 
 ---
 
@@ -982,3 +1148,5 @@ Placeholder Prefab:
 - [ ] ScrollRect와 SortableList 동시 드래그 시 이벤트 전파 충돌 재현 테스트
 - [ ] R3 Subject vs ReactiveProperty: 드래그 상태(bool isDragging)를 ReactiveProperty로 관리하는 게 더 나은지 검토
 - [x] EndDrag Placeholder off-by-one 버그 원인 및 수정 패턴 확인 완료 → 섹션 2.11 참조
+- [x] fromIndex/toIndex → 모델 MoveItem 보정 공식 확인 완료 → 섹션 2.13, 2.15 참조
+- [x] Unity 공식 ReorderableList 내부 접근 방식 확인 완료 → 섹션 2.14 참조

@@ -21,10 +21,10 @@
 | R3 + R3.Unity | NuGet + Git URL | Step 8에서만 사용 (이미 설치됨) |
 
 ### 추가 필수 작업
-- [ ] Unity Editor에서 UI_Study 프로젝트 열기
-- [ ] PanelSettings 에셋 생성 확인 (Scale With Screen Size, 1920x1080 기준)
-- [ ] `UNITASK_DOTWEEN_SUPPORT` 스크립팅 디파인 확인
-- [ ] 컴파일 에러 없이 프로젝트 정상 로드 확인
+- [x] Unity Editor에서 UI_Study 프로젝트 열기
+- [x] PanelSettings 에셋 생성 확인 (Scale With Screen Size, 1920x1080 기준) — DefaultPanelSettings.asset
+- [x] `UNITASK_DOTWEEN_SUPPORT` 스크립팅 디파인 확인
+- [x] 컴파일 에러 없이 프로젝트 정상 로드 확인
 
 ### 프로젝트 구조
 
@@ -310,7 +310,7 @@ UI_Study/Assets/_Study/12-UIToolkit-Lightweight/
 ## 완료 후 다음 단계
 
 - [x] `/ui-review 12-UIToolkit-Lightweight`로 코드 리뷰 — A- 등급, Warning 6건 수정
-- [ ] 패턴 문서화 (`Docs/UI-Study/patterns/uitoolkit-simple-mvp.md`)
-- [ ] UGUI 풀 스택(01~05) vs UI Toolkit 경량 스택(06) 비교 회고 작성
-- [ ] 프로덕션 적용 계획: Project_Sun에 UI Toolkit 경량 스택 도입 여부 결정
-- [ ] 하이브리드 전략 실습: UI Toolkit(스크린 UI) + UGUI(월드 공간 UI) 공존 테스트
+- [x] 패턴 문서화 (`Docs/UI-Study/patterns/uitoolkit-simple-mvp.md`)
+- [x] UGUI 풀 스택(01~05) vs UI Toolkit 경량 스택(06) 비교 회고 작성
+- [x] 프로덕션 적용 계획: Project_Sun에 UI Toolkit 경량 스택 도입 여부 결정 (권고 문서 작성)
+- [x] 하이브리드 전략 문서: UI Toolkit(스크린 UI) + UGUI(월드 공간 UI) 공존 패턴
