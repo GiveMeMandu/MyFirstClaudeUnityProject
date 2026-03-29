@@ -1,0 +1,37 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/AnimationDemo.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <ui:Label class="title" text="Animation Demo — CSS vs DOTween" />
+
+        <!-- Section 1: CSS Transition buttons -->
+        <ui:Label class="section-title" text="CSS Transitions (no code)" />
+        <ui:VisualElement class="button-row">
+            <ui:Button class="css-btn" text="Hover Me" />
+            <ui:Button class="css-btn css-btn--accent" text="Click Me" />
+            <ui:Button class="css-btn css-btn--danger" text="Press" />
+        </ui:VisualElement>
+
+        <!-- Section 2: DOTween Panel -->
+        <ui:Label class="section-title" text="DOTween Panel (Sequence)" />
+        <ui:VisualElement class="panel-controls">
+            <ui:Button name="btn-show-panel" class="ctrl-btn" text="Show Panel" />
+            <ui:Button name="btn-hide-panel" class="ctrl-btn" text="Hide Panel" />
+        </ui:VisualElement>
+        <ui:VisualElement name="animated-panel" class="animated-panel">
+            <ui:Label class="panel-text" text="This panel uses DOTween" />
+            <ui:Label class="panel-sub" text="Scale + Fade Sequence" />
+        </ui:VisualElement>
+
+        <!-- Section 3: Stagger List -->
+        <ui:Label class="section-title" text="DOTween Stagger (0.05s delay)" />
+        <ui:Button name="btn-stagger" class="ctrl-btn" text="Play Stagger" />
+        <ui:VisualElement name="stagger-list" class="stagger-list">
+            <ui:VisualElement class="stagger-item"><ui:Label text="Item 1" /></ui:VisualElement>
+            <ui:VisualElement class="stagger-item"><ui:Label text="Item 2" /></ui:VisualElement>
+            <ui:VisualElement class="stagger-item"><ui:Label text="Item 3" /></ui:VisualElement>
+            <ui:VisualElement class="stagger-item"><ui:Label text="Item 4" /></ui:VisualElement>
+            <ui:VisualElement class="stagger-item"><ui:Label text="Item 5" /></ui:VisualElement>
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

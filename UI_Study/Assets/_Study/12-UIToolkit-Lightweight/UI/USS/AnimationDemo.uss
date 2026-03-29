@@ -1,0 +1,145 @@
+.root {
+    flex-grow: 1;
+    align-items: center;
+    padding: 30px;
+    background-color: rgb(25, 25, 35);
+}
+
+.title {
+    font-size: 20px;
+    color: rgb(240, 240, 255);
+    -unity-font-style: bold;
+    margin-bottom: 24px;
+}
+
+.section-title {
+    font-size: 14px;
+    color: rgb(140, 140, 170);
+    margin-top: 20px;
+    margin-bottom: 10px;
+    -unity-font-style: bold;
+}
+
+/* === CSS Transition Buttons === */
+.button-row {
+    flex-direction: row;
+    margin-bottom: 16px;
+}
+
+.css-btn {
+    height: 40px;
+    padding-left: 24px;
+    padding-right: 24px;
+    margin-left: 6px;
+    margin-right: 6px;
+    border-radius: 8px;
+    font-size: 14px;
+    -unity-font-style: bold;
+    border-width: 2px;
+    border-color: rgb(80, 130, 255);
+    background-color: rgb(40, 40, 60);
+    color: rgb(200, 210, 255);
+
+    /* CSS Transition: hover/active 시 자동 전환 */
+    transition-property: background-color, border-color, scale, color;
+    transition-duration: 0.2s, 0.2s, 0.12s, 0.2s;
+    transition-timing-function: ease-out;
+}
+
+.css-btn:hover {
+    background-color: rgb(80, 130, 255);
+    color: white;
+    scale: 1.05;
+}
+
+.css-btn:active {
+    background-color: rgb(60, 100, 220);
+    scale: 0.95;
+}
+
+.css-btn--accent {
+    border-color: rgb(255, 180, 50);
+    color: rgb(255, 220, 150);
+}
+.css-btn--accent:hover {
+    background-color: rgb(255, 180, 50);
+    color: rgb(40, 30, 0);
+}
+
+.css-btn--danger {
+    border-color: rgb(220, 60, 60);
+    color: rgb(255, 150, 150);
+}
+.css-btn--danger:hover {
+    background-color: rgb(220, 60, 60);
+    color: white;
+}
+
+/* === Panel === */
+.panel-controls {
+    flex-direction: row;
+    margin-bottom: 10px;
+}
+
+.ctrl-btn {
+    height: 32px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-left: 4px;
+    margin-right: 4px;
+    border-radius: 6px;
+    font-size: 12px;
+    background-color: rgb(60, 60, 80);
+    color: rgb(200, 200, 220);
+    border-width: 0;
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+.ctrl-btn:hover { background-color: rgb(80, 80, 110); }
+
+.animated-panel {
+    background-color: rgb(50, 50, 75);
+    border-radius: 10px;
+    padding: 20px 30px;
+    border-width: 1px;
+    border-color: rgb(100, 140, 255);
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.panel-text {
+    font-size: 16px;
+    color: rgb(240, 240, 255);
+    -unity-font-style: bold;
+}
+
+.panel-sub {
+    font-size: 12px;
+    color: rgb(140, 140, 170);
+    margin-top: 4px;
+}
+
+/* === Stagger List === */
+.stagger-list {
+    width: 300px;
+}
+
+.stagger-item {
+    background-color: rgb(45, 45, 65);
+    padding: 10px 16px;
+    margin-bottom: 4px;
+    border-radius: 6px;
+    border-left-width: 3px;
+    border-left-color: rgb(100, 140, 255);
+    transition-property: background-color;
+    transition-duration: 0.15s;
+}
+
+.stagger-item:hover {
+    background-color: rgb(55, 55, 80);
+}
+
+.stagger-item Label {
+    color: rgb(200, 210, 240);
+    font-size: 14px;
+}
