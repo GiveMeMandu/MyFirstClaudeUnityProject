@@ -1,0 +1,42 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
+    <ui:Style src="../USS/ProfileCard.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <!-- Profile Card -->
+        <ui:VisualElement name="profile-card" class="card">
+            <!-- Avatar area -->
+            <ui:VisualElement name="avatar" class="avatar">
+                <ui:Label name="avatar-initial" class="avatar-initial" text="P" />
+            </ui:VisualElement>
+
+            <!-- Info area -->
+            <ui:VisualElement name="info" class="info">
+                <ui:Label name="player-name" class="player-name" text="Player Name" />
+                <ui:Label name="player-level" class="player-level" text="Lv. 1" />
+                <ui:VisualElement name="stats-row" class="stats-row">
+                    <ui:VisualElement class="stat">
+                        <ui:Label class="stat-label" text="HP" />
+                        <ui:Label name="stat-hp" class="stat-value" text="100" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat">
+                        <ui:Label class="stat-label" text="ATK" />
+                        <ui:Label name="stat-atk" class="stat-value" text="25" />
+                    </ui:VisualElement>
+                    <ui:VisualElement class="stat">
+                        <ui:Label class="stat-label" text="DEF" />
+                        <ui:Label name="stat-def" class="stat-value" text="10" />
+                    </ui:VisualElement>
+                </ui:VisualElement>
+            </ui:VisualElement>
+        </ui:VisualElement>
+
+        <!-- Action buttons -->
+        <ui:VisualElement name="button-row" class="button-row">
+            <ui:Button name="btn-level-up" class="btn btn-primary" text="Level Up" />
+            <ui:Button name="btn-reset" class="btn btn-secondary" text="Reset" />
+        </ui:VisualElement>
+
+        <!-- Status label -->
+        <ui:Label name="status-label" class="status-label" text="Ready" />
+    </ui:VisualElement>
+</ui:UXML>
