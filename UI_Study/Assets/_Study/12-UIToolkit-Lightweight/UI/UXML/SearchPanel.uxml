@@ -1,0 +1,38 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements">
+    <ui:Style src="../USS/SearchPanel.uss" />
+
+    <ui:VisualElement name="root" class="root">
+        <ui:Label class="title" text="Complexity Decision — C# Event vs R3" />
+
+        <!-- Mode toggle -->
+        <ui:VisualElement class="mode-bar">
+            <ui:Label name="mode-label" class="mode-label" text="Mode: C# Event (Manual Debounce)" />
+            <ui:Button name="btn-toggle-mode" class="btn btn-toggle" text="Switch to R3" />
+        </ui:VisualElement>
+
+        <!-- Search area -->
+        <ui:VisualElement class="search-area">
+            <ui:TextField name="search-field" class="search-field" label="Search" />
+            <ui:Label name="search-status" class="search-status" text="" />
+        </ui:VisualElement>
+
+        <!-- Results -->
+        <ui:VisualElement class="results-area">
+            <ui:Label name="result-count" class="result-count" text="0 results" />
+            <ui:ListView name="results-list" class="results-list" fixed-item-height="28" />
+        </ui:VisualElement>
+
+        <!-- Build button (throttle demo) -->
+        <ui:VisualElement class="build-area">
+            <ui:Button name="btn-build" class="btn btn-build" text="Build Fast (Throttle Demo)" />
+            <ui:Label name="build-status" class="build-status" text="Click rapidly to test throttle" />
+            <ui:Label name="build-count" class="build-count" text="Build count: 0" />
+        </ui:VisualElement>
+
+        <!-- Log area -->
+        <ui:VisualElement class="log-area">
+            <ui:Label class="log-title" text="Event Log" />
+            <ui:Label name="log-label" class="log-label" text="" />
+        </ui:VisualElement>
+    </ui:VisualElement>
+</ui:UXML>

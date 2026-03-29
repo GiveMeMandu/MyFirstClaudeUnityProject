@@ -1,0 +1,158 @@
+.root {
+    flex-grow: 1;
+    background-color: rgb(25, 25, 35);
+    padding: 20px;
+}
+
+.title {
+    font-size: 18px;
+    color: rgb(180, 180, 200);
+    margin-bottom: 16px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+}
+
+/* Mode bar */
+.mode-bar {
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    padding: 10px;
+    background-color: rgb(30, 30, 42);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(50, 50, 70);
+}
+
+.mode-label {
+    font-size: 14px;
+    color: rgb(255, 200, 50);
+    -unity-font-style: bold;
+    margin-right: 16px;
+}
+
+/* Search area */
+.search-area {
+    margin-bottom: 12px;
+}
+
+.search-field {
+    margin-bottom: 4px;
+}
+
+.search-field > .unity-text-field__input {
+    background-color: rgb(40, 40, 55);
+    border-color: rgb(60, 60, 80);
+    border-radius: 4px;
+    color: rgb(220, 220, 240);
+    padding: 6px 10px;
+    font-size: 14px;
+}
+
+.search-status {
+    font-size: 11px;
+    color: rgb(100, 180, 255);
+    padding-left: 4px;
+    min-height: 16px;
+}
+
+/* Results */
+.results-area {
+    flex-grow: 1;
+    margin-bottom: 12px;
+    background-color: rgb(30, 30, 42);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(50, 50, 70);
+    padding: 8px;
+    min-height: 160px;
+}
+
+.result-count {
+    font-size: 11px;
+    color: rgb(130, 130, 160);
+    margin-bottom: 6px;
+}
+
+.results-list {
+    flex-grow: 1;
+}
+
+/* Build area */
+.build-area {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 10px;
+    background-color: rgb(30, 30, 42);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(50, 50, 70);
+}
+
+.build-status {
+    font-size: 12px;
+    color: rgb(130, 130, 160);
+    margin-left: 12px;
+    flex-grow: 1;
+}
+
+.build-count {
+    font-size: 12px;
+    color: rgb(255, 200, 50);
+    -unity-font-style: bold;
+}
+
+/* Log area */
+.log-area {
+    background-color: rgb(20, 20, 28);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(40, 40, 60);
+    padding: 10px;
+    min-height: 80px;
+    max-height: 120px;
+}
+
+.log-title {
+    font-size: 11px;
+    color: rgb(100, 100, 130);
+    margin-bottom: 6px;
+    -unity-font-style: bold;
+}
+
+.log-label {
+    font-size: 11px;
+    color: rgb(160, 160, 180);
+    white-space: normal;
+}
+
+/* Buttons */
+.btn {
+    height: 34px;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-radius: 6px;
+    font-size: 13px;
+    -unity-font-style: bold;
+    border-width: 0;
+
+    transition-property: background-color, scale;
+    transition-duration: 0.15s;
+}
+
+.btn:active { scale: 0.95; }
+
+.btn-toggle {
+    background-color: rgb(100, 140, 255);
+    color: white;
+}
+.btn-toggle:hover { background-color: rgb(120, 160, 255); }
+
+.btn-build {
+    background-color: rgb(56, 142, 60);
+    color: white;
+    flex-shrink: 0;
+}
+.btn-build:hover { background-color: rgb(76, 175, 80); }
