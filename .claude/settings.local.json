@@ -40,17 +40,6 @@
         ]
       }
     ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash $CLAUDE_PROJECT_DIR/.claude/hooks/unity-compile-check.sh",
-            "timeout": 30,
-            "statusMessage": "Unity 컴파일 에러 체크 중..."
-          }
-        ]
-      }
-    ]
+    "Stop": []
   }
 }

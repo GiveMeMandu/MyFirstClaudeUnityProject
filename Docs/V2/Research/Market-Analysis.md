@@ -129,7 +129,7 @@ Quantic Foundry 플레이어 동기 모델 (https://quanticfoundry.com/gamer-mot
 | **Mastery** | Strategy (전략적 사고) | 매우 높음 — 내정/탐사/방어 3기둥 의사결정 |
 | **Mastery** | Challenge (도전) | 높음 — 압도적 물량 공세 대비 생존 |
 | **Achievement** | Completion (완성) | 높음 — 기지 완성, 웨이브 방어 성공 카타르시스 |
-| **Achievement** | Power (성장) | 높음 — 방벽 확장, 기술 트리 해금 |
+| **Achievement** | Power (성장) | 높음 — 건물 업그레이드 분기, 기술 트리 해금 |
 | **Creativity** | Design (설계) | 중간 — 고정 슬롯 배치, 인력 최적화 |
 | **Immersion** | Discovery (발견) | 중간 — 탐사/정찰, 적 정보 수집 |
 | **Action** | Excitement (긴장감) | 중간 — 밤 웨이브 방어 순간 |

@@ -2,143 +2,25 @@
   "version": "1.0.0",
   "description": "Unity 게임 개발 스킬 자동 활성화 설정",
   "skills": {
-    "unity-dev-guidelines": {
+    "game-planning-v2": {
       "type": "domain",
       "enforcement": "suggest",
       "priority": "high",
-      "description": "Unity C# 개발 패턴 및 베스트 프랙티스",
+      "description": "V2 기획 에이전트 팀 기반 종합 기획 워크플로우",
       "promptTriggers": {
         "keywords": [
-          "monobehaviour", "스크립트", "컴포넌트", "coroutine",
-          "inspector", "serialize", "update", "awake", "start",
-          "instantiate", "destroy", "prefab"
+          "기획 v2", "plan", "시장 분석", "밸런스 설계",
+          "경제 설계", "콘텐츠 설계", "ux 플로우", "기술 평가",
+          "design critic", "에이전트 평가", "문서 리뷰"
         ],
         "intentPatterns": [
-          "(만들어|작성|추가|수정).*?(스크립트|컴포넌트)",
-          "(고쳐|디버그|오류|에러).*?(스크립트|코드)"
+          "(plan|기획).*(init|market|vision|system|balance|economy|ux|content|assess|wbs|status|review|eval)"
         ]
       },
       "fileTriggers": {
         "pathPatterns": [
-          "Project_Sun/Assets/Scripts/**/*.cs",
-          "Project_Sun/Assets/**/*.cs"
-        ],
-        "pathExclusions": [
-          "Project_Sun/Assets/**/Editor/**/*.cs",
-          "Project_Sun/Assets/**/Tests/**/*.cs",
-          "Project_Sun/Assets/Plugins/**/*.cs"
-        ],
-        "contentPatterns": [
-          "MonoBehaviour",
-          "using UnityEngine",
-          "\\[SerializeField\\]",
-          "void (Start|Update|Awake|OnEnable|OnDisable)\\(\\)"
+          "Docs/V2/**/*.md"
         ]
-      },
-      "skipConditions": {
-        "sessionSkillUsed": true,
-        "fileMarkers": ["@skip-unity-check"],
-        "envOverride": "SKIP_UNITY_GUIDELINES"
-      }
-    },
-    "game-design-doc": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "게임 기획 문서 작성 가이드",
-      "promptTriggers": {
-        "keywords": [
-          "기획서", "gdd", "핵심 재미", "시스템 설계",
-          "밸런스", "플레이 루프", "기획"
-        ],
-        "intentPatterns": [
-          "(작성|만들어|써줘).*?(문서|기획|gdd)",
-          "(게임|시스템).*?(설계|기획|구조)"
-        ]
-      },
-      "fileTriggers": {
-        "pathPatterns": [
-          "Docs/GDD/**/*.md",
-          "Docs/Sprints/**/*.md"
-        ],
-        "pathExclusions": [
-          "Docs/Study/**"
-        ]
-      }
-    },
-    "vision-doc": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "프로젝트 비전/제작 방향성 문서 작성. 핵심 재미, 디자인 필터, 시스템 분석표, 플레이 루프",
-      "promptTriggers": {
-        "keywords": [
-          "비전", "제작 방향", "방향성", "핵심 재미", "디자인 필터",
-          "vision", "판단 기준", "핵심 컨셉", "플레이 루프"
-        ],
-        "intentPatterns": [
-          "(작성|만들어|써줘|갱신).*?(비전|방향성|vision)",
-          "(비전|방향성).*?(문서|작성|갱신)"
-        ]
-      },
-      "fileTriggers": {
-        "pathPatterns": [
-          "Docs/GDD/Vision.md"
-        ]
-      }
-    },
-    "ui-dev-guidelines": {
-      "type": "domain",
-      "enforcement": "suggest",
-      "priority": "high",
-      "description": "Unity UGUI 개발 시 MV(R)P + VContainer + R3 + UniTask 패턴 가이드",
-      "promptTriggers": {
-        "keywords": [
-          "ui", "ugui", "canvas", "panel", "popup", "modal",
-          "presenter", "viewmodel", "mvp", "mvrp",
-          "r3", "reactive", "subscribe", "observable",
-          "unitask", "async", "await",
-          "vcontainer", "lifetimescope", "inject",
-          "dotween", "tween",
-          "screennavigator", "page", "sheet"
-        ],
-        "intentPatterns": [
-          "(만들어|작성|추가|수정).*?(ui|패널|팝업|화면|뷰|프리젠터)",
-          "(ui|패널|뷰).*?(만들어|작성|추가|수정)",
-          "(바인딩|구독|subscribe).*?(ui|뷰|화면)"
-        ]
-      },
-      "fileTriggers": {
-        "pathPatterns": [
-          "UI_Study/Assets/**/*.cs",
-          "Project_Sun/Assets/**/*View.cs",
-          "Project_Sun/Assets/**/*Presenter.cs",
-          "Project_Sun/Assets/**/*LifetimeScope.cs"
-        ],
-        "contentPatterns": [
-          "IInitializable",
-          "IDisposable",
-          "ReactiveProperty",
-          "Observable<",
-          "Subscribe\\(",
-          "LifetimeScope",
-          "RegisterEntryPoint",
-          "RegisterComponent",
-          "OnClickAsObservable",
-          "UniTask",
-          "ModalContainer",
-          "PageContainer",
-          "SheetContainer",
-          "AddressableAssetService",
-          "ScopedAssetLoader",
-          "DOTween",
-          "SubscribeAwait"
-        ]
-      },
-      "skipConditions": {
-        "sessionSkillUsed": true,
-        "fileMarkers": ["@skip-ui-check"],
-        "envOverride": "SKIP_UI_GUIDELINES"
       }
     },
     "skill-developer": {
