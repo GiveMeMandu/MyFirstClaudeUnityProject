@@ -15,10 +15,10 @@
 | 6b | 인력 관리 시스템 GDD | Systems/Workforce.md (v0.2) | system-designer-v2 | approved | 2026-04-03 | Vision, Economy |
 | 6c | 웨이브 방어 시스템 GDD | Systems/WaveDefense.md (v0.3) | system-designer-v2 | approved | 2026-04-03 | Vision, Economy |
 | 6d | 탐사/원정 시스템 GDD | Systems/Exploration.md (v0.2) | system-designer-v2 | approved | 2026-04-03 | Vision |
-| 7 | 밸런스 프레임워크 | Balance.md | balance-designer | missing | — | Systems, Economy |
-| 8 | 콘텐츠/내러티브 | Content.md | content-designer | missing | — | Vision |
-| 9 | UX 플로우 | UX/*.md | ux-flow-designer | missing | — | Systems |
-| 10 | 기술 타당성 | Tech-Assessment.md | technical-assessor | missing | — | Systems, Vision |
+| 7 | 밸런스 프레임워크 | Balance.md (v1.1) | balance-designer | approved | 2026-04-03 | Systems, Economy |
+| 8 | 콘텐츠/내러티브 | Content/Content.md (v1.2) | content-designer | approved | 2026-04-03 | Vision, Exploration |
+| 9 | UX 플로우 | UX/Screen-Flow.md (v1.1) + Wireframes 7종 | ux-flow-designer | approved | 2026-04-03 | Systems |
+| 10 | 기술 타당성 | Tech-Assessment.md (v1.1) | technical-assessor | approved | 2026-04-03 | Systems, Vision |
 | 11 | WBS/마일스톤 | WBS.md | wbs-planner | missing | — | All above |
 
 ## 상태 범례
