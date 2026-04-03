@@ -5,7 +5,7 @@
 - **상태**: draft
 - **버전**: v0.2
 - **우선순위**: P0-core
-- **참조 문서**: Vision.md v2.4 (섹션 3.4, 5.2), Economy-Model.md v1.0 (섹션 4), Per-Turn-Budget.md v1.0 (섹션 6), Cross-Reference-Matrix.md revision-4, Construction.md v1.0
+- **참조 문서**: Vision.md v2.6 (섹션 3.4, 5.2), Economy-Model.md v1.0 (섹션 4), Per-Turn-Budget.md v1.0 (섹션 6), Cross-Reference-Matrix.md revision-4, Construction.md v1.0
 - **수치 안내**: 이 문서의 모든 수치는 Economy-Model.md에서 인용하거나 본 GDD에서 신규 제안한 **후보 수치(밸런스 테스트 시 조정)**이다.
 
 ---

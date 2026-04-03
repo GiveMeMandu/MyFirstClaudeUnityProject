@@ -5,7 +5,7 @@
 - **상태**: draft
 - **버전**: v0.2
 - **우선순위**: P0-core
-- **참조 문서**: Vision.md v2.4, Economy-Model.md v1.0, Per-Turn-Budget.md v1.0, Cross-Reference-Matrix.md revision-4
+- **참조 문서**: Vision.md v2.6, Economy-Model.md v1.0, Per-Turn-Budget.md v1.0, Cross-Reference-Matrix.md revision-4
 - **수치 안내**: 이 문서의 건물 비용/효과 수치는 Economy-Model.md에서 인용한 **후보 수치(밸런스 테스트 시 조정)**이다.
 
 ---
@@ -598,8 +598,8 @@ ExplorationUnlockDefinition {
 
 | 안전판 | 수리 연관 효과 |
 |---|---|
-| **잔해 수거** | 건물 파괴 시 수리비의 40~60%에 해당하는 기초 자원 자동 회수 |
-| **비상 수리 면제** | 기초 자원 0인 상태에서 파괴 발생 시, 1개 건물 수리비 50% 감면 |
+| **잔해 수거** | 건물 손상 시 수리비의 40~60%에 해당하는 기초 자원 자동 회수 |
+| **비상 수리 면제** | 기초 자원 0인 상태에서 손상 발생 시, 1개 건물 수리비 50% 감면 |
 | **건물 자동 가동** | 손상되지 않은 건물은 인력 없이도 기본 생산을 유지하여 경제 붕괴 속도를 완화 |
 
 ---

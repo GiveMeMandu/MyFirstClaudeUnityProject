@@ -1,7 +1,7 @@
 # 레퍼런스 게임 교차 비교 매트릭스
 
 - **작성일**: 2026-04-01
-- **최종 수정**: 2026-04-01 (v2.3 정합성 수정: Rising Demacia 셀 동기화, 시간 모델 확정, 포지셔닝 맵 실시간성/복잡도 조정)
+- **최종 수정**: 2026-04-03 (v2.6 정합성 동기화: Vision.md v2.6 참조 갱신)
 - **담당**: reference-game-analyst
 - **상태**: revision-4
 - **분석 대상**: 8개 레퍼런스 게임 + 3개 참조 처리 (SC2/FTL/Dome Keeper) + Project_Sun 타겟 포지션
@@ -470,7 +470,7 @@ Project_Sun의 핵심 재미 중 하나인 "낮의 준비가 밤에 검증된다
 ## 참고 출처
 
 - 각 게임별 분석 파일: `Docs/V2/Research/RefGames/` 하위 8개 파일 (Scythe.md, RisingDemacia.md 추가)
-- Vision.md: `Docs/V2/Vision.md` (v2.2)
+- Vision.md: `Docs/V2/Vision.md` (v2.6)
 - Market-Analysis.md: `Docs/V2/Research/Market-Analysis.md`
 - Competitive-Analysis.md: `Docs/V2/Research/Competitive-Analysis.md`
 - design-critic 리뷰 보고서: `Docs/V2/Reviews/RefGames-review.md` (NEEDS_REVISION 반영)

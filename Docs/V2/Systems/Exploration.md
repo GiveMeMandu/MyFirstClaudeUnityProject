@@ -5,7 +5,7 @@
 - **slug**: exploration
 - **버전**: v0.2
 - **담당**: system-designer-v2
-- **참조 문서**: Vision.md (v2.5), Economy-Model.md (v0.3), Per-Turn-Budget.md, Workforce.md (v0.1), Construction.md (v0.1), WaveDefense.md (v0.1), Cross-Reference-Matrix.md
+- **참조 문서**: Vision.md (v2.6), Economy-Model.md (v0.3), Per-Turn-Budget.md, Workforce.md (v0.1), Construction.md (v0.1), WaveDefense.md (v0.1), Cross-Reference-Matrix.md
 
 ---
 
