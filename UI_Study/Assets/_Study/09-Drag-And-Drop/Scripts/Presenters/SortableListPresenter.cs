@@ -29,9 +29,9 @@ namespace UIStudy.DragDrop.Presenters
 
         public void Initialize()
         {
-            // 모델 -> 뷰 바인딩
+            // 모델 -> 뷰 바인딩 (RefreshOrder: 텍스트 + SiblingIndex 동기화)
             _model.Items
-                .Subscribe(items => _listView.BindAll(items))
+                .Subscribe(items => _listView.RefreshOrder(items))
                 .AddTo(_disposables);
 
             // 각 아이템의 드래그 이벤트 바인딩
@@ -78,7 +78,7 @@ namespace UIStudy.DragDrop.Presenters
                 // Placeholder 위치로 복귀
                 item.ReturnToPlaceholder();
 
-                // 모델 업데이트
+                // 모델 업데이트 → RefreshOrder가 텍스트+SiblingIndex 동기화
                 if (fromIndex != toIndex)
                 {
                     _model.MoveItem(fromIndex, toIndex);

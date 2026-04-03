@@ -34,6 +34,7 @@
 | 028 | [UI Toolkit 런타임 게임 UI 패턴](uitoolkit-runtime-game-ui-patterns.md) | pattern | 2026-03-29 | 조사완료 |
 | 029 | [UI Toolkit 성능 분석 및 한계](uitoolkit-performance-and-limits.md) | performance | 2026-03-29 | 조사완료 |
 | 030 | [UI Toolkit vs UGUI 최종 판정 매트릭스](uitoolkit-vs-ugui-decision-matrix.md) | integration | 2026-03-29 | 조사완료 |
+| 031 | [AI Critic Agent 패턴 — Devil's Advocate / 품질 게이트키퍼](ai-critic-agent-patterns.md) | practice / pattern | 2026-04-01 | 조사완료 |
 
 ---
 
