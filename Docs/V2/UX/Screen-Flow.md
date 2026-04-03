@@ -1,8 +1,9 @@
 # 화면 플로우 (Screen Flow)
 
-- **버전**: v1.0
+- **버전**: v1.1
 - **상태**: Draft
 - **작성일**: 2026-04-03
+- **최종 수정일**: 2026-04-03
 - **담당**: ux-designer
 - **참조 문서**:
   - Vision.md v2.6 (섹션 6.2 UI/UX 방향)
@@ -217,8 +218,18 @@ Vision.md와 WaveDefense.md의 탐사 연동 정보 공개 정책.
 ## 9. 연결 문서
 
 - 와이어프레임 상세: `Docs/V2/UX/Wireframes/`
-  - [Day-Phase-Hub.md](Wireframes/Day-Phase-Hub.md) — 낮 페이즈 허브 (건설/관리/탐험 탭)
+  - [Day-Phase-Hub.md](Wireframes/Day-Phase-Hub.md) — 낮 페이즈 허브 (건설/관리/탐험 탭 + 수리 패널 PNL-01R)
   - [Night-Phase-HUD.md](Wireframes/Night-Phase-HUD.md) — 밤 페이즈 전투 HUD
-  - [Wave-Preview.md](Wireframes/Wave-Preview.md) — 웨이브 미리보기 화면
+  - [Wave-Preview.md](Wireframes/Wave-Preview.md) — 웨이브 미리보기 화면 (분대 초기 배치 포함)
   - [Combat-Result.md](Wireframes/Combat-Result.md) — 전투 결과 화면
-  - [Encounter-Panel.md](Wireframes/Encounter-Panel.md) — 인카운터 선택지 팝업
+  - [Encounter-Panel.md](Wireframes/Encounter-Panel.md) — 인카운터 선택지 팝업 (발생 시점 흐름 포함)
+  - [Game-Over.md](Wireframes/Game-Over.md) — 게임오버 화면 (SCR-07)
+
+### 9.1 P1 후순위 와이어프레임 (미작성 항목)
+
+아래 화면은 Screen-Flow.md 화면 목록에 등재되었으나 P1(첫 번째 확장 단계) 콘텐츠로 분류되어 와이어프레임 작성을 후순위로 미룬다.
+
+| 화면 ID | 화면명 | 미작성 이유 |
+|---|---|---|
+| SCR-02 | 기지 선택 화면 | P1 후순위. Vision.md 장기 재미 연결이지만 MVP 런 구조에 필수 아님 |
+| PNL-06 | 연구 트리 오버레이 | P1 후순위. 연구소 건설 후 활성화되는 기능으로 P0 검증 범위 밖 |
