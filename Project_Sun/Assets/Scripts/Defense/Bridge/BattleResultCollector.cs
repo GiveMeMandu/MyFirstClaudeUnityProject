@@ -188,9 +188,9 @@ namespace ProjectSun.V2.Defense.Bridge
                     Debug.Log($"[BattleResultCollector] {citizen.displayName} injured " +
                               $"(squad HP: {stats.CurrentHP:F0}/{stats.MaxHP:F0})");
                 }
-                else
+                else if (citizen.state == CitizenState.InCombat)
                 {
-                    // 전투 종료 후 전투 상태에서 원래 상태로 복귀
+                    // 전투 종료 후 InCombat → Idle 복귀 (다른 상태는 보존)
                     citizen.state = CitizenState.Idle;
                 }
             }

@@ -1,6 +1,6 @@
 using Unity.Burst;
-using Unity.Collections;
 using Unity.Entities;
+using Unity.Mathematics;
 
 namespace ProjectSun.Defense.ECS
 {
@@ -22,10 +22,11 @@ namespace ProjectSun.Defense.ECS
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
             bool hasBattleStats = SystemAPI.HasSingleton<BattleStatistics>();
 
-            // Phase 1: HP <= 0인 적에 DeadTag 추가
+            // Phase 1: HP <= 0인 적에 DeadTag 추가 (다음 프레임 시작 시 반영)
             int killCount = 0;
             foreach (var (stats, enemyState, entity) in
                 SystemAPI.Query<RefRO<EnemyStats>, RefRW<EnemyState>>()
@@ -46,17 +47,14 @@ namespace ProjectSun.Defense.ECS
             {
                 var battleStats = SystemAPI.GetSingletonRW<BattleStatistics>();
                 battleStats.ValueRW.TotalEnemiesKilled += killCount;
-                battleStats.ValueRW.RemainingEnemies -= killCount;
+                battleStats.ValueRW.RemainingEnemies = math.max(0, battleStats.ValueRO.RemainingEnemies - killCount);
             }
 
-            // Phase 2: DeadTag가 있는 Entity 제거
+            // Phase 2: 이전 프레임에서 DeadTag가 붙은 Entity 파괴
             foreach (var (_, entity) in SystemAPI.Query<RefRO<DeadTag>>().WithEntityAccess())
             {
                 ecb.DestroyEntity(entity);
             }
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
     }
 }

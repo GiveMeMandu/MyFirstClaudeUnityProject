@@ -130,6 +130,13 @@ namespace ProjectSun.V2.Defense.Bridge
         void CreateSquadEntities(GameState gameState)
         {
             // 전투 배치된 시민 → 분대 엔티티 (SquadDeployed 계약)
+            int combatCitizenCount = 0;
+            for (int i = 0; i < gameState.citizens.Count; i++)
+            {
+                if (gameState.citizens[i].state == CitizenState.InCombat)
+                    combatCitizenCount++;
+            }
+
             int squadIndex = 0;
             for (int i = 0; i < gameState.citizens.Count; i++)
             {
@@ -140,8 +147,8 @@ namespace ProjectSun.V2.Defense.Bridge
                 var entity = _entityManager.CreateEntity();
                 _createdEntities.Add(entity);
 
-                // 분대 위치: 기지 내부 방어선
-                float angle = (float)squadIndex / Mathf.Max(1, 1) * Mathf.PI * 2f;
+                // 분대 위치: 기지 내부 방어선 (균등 배치)
+                float angle = (float)squadIndex / Mathf.Max(combatCitizenCount, 1) * Mathf.PI * 2f;
                 float3 pos = new float3(math.cos(angle) * 10f, 0, math.sin(angle) * 10f);
 
                 _entityManager.AddComponentData(entity, LocalTransform.FromPosition(pos));
