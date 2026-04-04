@@ -91,7 +91,8 @@ namespace ProjectSun.V2.Core
         }
 
         /// <summary>
-        /// Paused -> Normal -> Fast -> Paused 순환.
+        /// Normal -> Fast -> Normal 순환. 일시정지 중이면 Normal로 복귀.
+        /// GDD: 배속 순환은 1x ↔ 2x만 해당, 일시정지는 TogglePause() 전용.
         /// </summary>
         public void CycleSpeed()
         {
@@ -99,7 +100,7 @@ namespace ProjectSun.V2.Core
             {
                 TimeSpeed.Paused => TimeSpeed.Normal,
                 TimeSpeed.Normal => TimeSpeed.Fast,
-                TimeSpeed.Fast => TimeSpeed.Paused,
+                TimeSpeed.Fast => TimeSpeed.Normal,
                 _ => TimeSpeed.Normal
             });
         }

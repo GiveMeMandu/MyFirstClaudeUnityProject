@@ -256,6 +256,7 @@ namespace ProjectSun.V2.Defense.Bridge
         /// <summary>
         /// 분대 ECS 결과를 GameState의 시민 상태에 반영 (CombatResult 계약).
         /// GDD: 분대 HP &lt; 50% = 해당 시민 부상, 분대 HP = 0 = 해당 시민 부상 (전멸).
+        /// TODO: combatExpGained 구현 — 전투 참여 시민 proficiencyLevel 증가 (M2)
         /// </summary>
         void CollectSquadResults(EntityManager em, GameState gameState)
         {
