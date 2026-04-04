@@ -1,0 +1,27 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Components/BuildingCard.uss" />
+
+    <VisualElement name="building-card" class="building-card">
+        <VisualElement class="building-header">
+            <VisualElement name="building-icon" class="building-icon" />
+            <VisualElement style="flex-direction: column;">
+                <Label name="building-title" class="building-title" text="Building" />
+                <Label name="building-category" class="building-category" text="Production" />
+            </VisualElement>
+        </VisualElement>
+
+        <Label name="building-desc" class="building-desc" text="Description" />
+
+        <VisualElement class="cost-row">
+            <VisualElement name="cost-basic" class="cost-item">
+                <VisualElement class="cost-icon resource-icon--basic" />
+                <Label name="cost-basic-value" class="cost-value" text="0" />
+            </VisualElement>
+            <VisualElement name="cost-advanced" class="cost-item">
+                <VisualElement class="cost-icon resource-icon--advanced" />
+                <Label name="cost-advanced-value" class="cost-value" text="0" />
+            </VisualElement>
+        </VisualElement>
+    </VisualElement>
+</UXML>

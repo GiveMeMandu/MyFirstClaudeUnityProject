@@ -1,0 +1,180 @@
+/* === Building Card === */
+
+.building-card {
+    width: 200px;
+    background-color: var(--color-bg-card);
+    border-width: 2px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-md);
+    margin: var(--spacing-sm);
+    flex-direction: column;
+    transition-property: border-color, scale;
+    transition-duration: 0.15s;
+}
+
+.building-card:hover {
+    border-color: var(--color-border-highlight);
+    scale: 1.02;
+}
+
+.building-card--selected {
+    border-color: var(--color-accent);
+    border-width: 3px;
+    background-color: var(--color-bg-selected);
+}
+
+.building-card--built {
+    border-color: var(--color-socket-valid);
+    opacity: 0.6;
+}
+
+.building-header {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: var(--spacing-sm);
+}
+
+.building-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-hover);
+    margin-right: var(--spacing-sm);
+}
+
+.building-icon--production { background-color: rgb(180, 140, 80); }
+.building-icon--defense    { background-color: rgb(220, 80, 80); }
+.building-icon--support    { background-color: rgb(80, 160, 200); }
+.building-icon--special    { background-color: rgb(200, 120, 220); }
+
+.building-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.building-category {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.building-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-sm);
+    white-space: normal;
+}
+
+.cost-row {
+    flex-direction: row;
+    align-items: center;
+    margin-top: var(--spacing-xs);
+}
+
+.cost-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: var(--spacing-md);
+}
+
+.cost-icon {
+    width: 16px;
+    height: 16px;
+    border-radius: 3px;
+    margin-right: var(--spacing-xs);
+}
+
+.cost-value {
+    font-size: var(--font-size-sm);
+    -unity-font-style: bold;
+}
+
+.cost-value--sufficient {
+    color: var(--color-sufficient);
+}
+
+.cost-value--insufficient {
+    color: var(--color-insufficient);
+}
+
+/* Detail panel */
+.building-detail {
+    background-color: var(--color-bg-panel);
+    border-width: 2px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-lg);
+    min-width: 280px;
+}
+
+.detail-title {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: var(--spacing-sm);
+}
+
+.detail-desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--spacing-md);
+    white-space: normal;
+}
+
+.detail-stats {
+    margin-bottom: var(--spacing-md);
+}
+
+.stat-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: var(--spacing-xs) 0;
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+}
+
+.stat-value {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.build-button {
+    background-color: var(--color-accent);
+    color: var(--color-text-primary);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+    border-width: 0;
+    height: 40px;
+    transition-property: background-color, scale;
+    transition-duration: 0.15s;
+}
+
+.build-button:hover {
+    background-color: var(--color-accent-hover);
+    scale: 1.03;
+}
+
+.build-button:disabled {
+    background-color: rgb(60, 55, 70);
+    color: var(--color-text-dim);
+    opacity: 0.7;
+}
+
+/* Build complete flash */
+.build-complete-flash {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(120, 200, 120, 0.3);
+    border-radius: var(--radius-md);
+    opacity: 0;
+}

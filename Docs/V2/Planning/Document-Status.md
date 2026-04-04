@@ -1,6 +1,6 @@
 # V2 기획 문서 현황
 
-최종 갱신: 2026-04-03
+최종 갱신: 2026-04-04 (WBS v1.1 반영)
 
 ## 문서 상태
 
@@ -19,7 +19,7 @@
 | 8 | 콘텐츠/내러티브 | Content/Content.md (v1.2) | content-designer | approved | 2026-04-03 | Vision, Exploration |
 | 9 | UX 플로우 | UX/Screen-Flow.md (v1.1) + Wireframes 7종 | ux-flow-designer | approved | 2026-04-03 | Systems |
 | 10 | 기술 타당성 | Tech-Assessment.md (v1.1) | technical-assessor | approved | 2026-04-03 | Systems, Vision |
-| 11 | WBS/마일스톤 | WBS.md | wbs-planner | missing | — | All above |
+| 11 | WBS/마일스톤 | WBS.md (v1.1) | wbs-planner | approved | 2026-04-04 | All above |
 
 ## 상태 범례
 
