@@ -66,9 +66,8 @@ namespace ProjectSun.UI.Screens
             // 2. Construction Panel — populate with 10 buildings from GDD
             PopulateBuildings();
 
-            // 3. Workforce D&D — populate citizens and sockets
+            // 3. Workforce D&D — populate citizens, sockets start empty
             PopulateCitizens();
-            PopulateSockets();
             _dragDrop = new DragDropManager(_root);
             _dragDrop.OnCitizenPlaced += HandleCitizenPlaced;
             _dragDrop.OnCitizenReturned += HandleCitizenReturned;
@@ -80,6 +79,11 @@ namespace ProjectSun.UI.Screens
             _root.Q<Button>("btn-next-turn").clicked += HandleNextTurn;
             _root.Q<Button>("btn-reset").clicked += HandleReset;
 
+            // Ensure flash overlay never blocks clicks (USS picking-mode may not apply)
+            if (_buildFlash != null)
+                _buildFlash.pickingMode = PickingMode.Ignore;
+
+            Debug.Log($"[PoC] _buildButton found: {_buildButton != null}, enabled: {_buildButton?.enabledSelf}");
             _buildButton.clicked += HandleBuild;
         }
 
@@ -155,14 +159,84 @@ namespace ProjectSun.UI.Screens
             _buildButton.style.display = d.IsBuilt ? DisplayStyle.None : DisplayStyle.Flex;
             _buildButton.SetEnabled(canAfford);
             _buildButton.text = canAfford ? "BUILD" : "Insufficient Resources";
+
+            // Update sockets to match selected building
+            UpdateSocketsForBuilding(d);
+        }
+
+        private void UpdateSocketsForBuilding(BuildingData building)
+        {
+            // Rebuild drag-drop to avoid stale references
+            _dragDrop?.Dispose();
+
+            var area = _root.Q("socket-area");
+
+            // Return all placed citizens to pool before clearing
+            var pool = _root.Q("citizen-pool");
+            foreach (var socket in area.Children())
+            {
+                if (socket.userData is CitizenCardController placed)
+                {
+                    placed.Root.RemoveFromHierarchy();
+                    placed.SetPlaced(false);
+                    placed.Root.style.width = 120;
+                    placed.Root.style.height = 160;
+                    pool.Add(placed.Root);
+                }
+            }
+
+            area.Clear();
+
+            if (building.IsBuilt && building.SocketCount > 0)
+            {
+                for (int i = 0; i < building.SocketCount; i++)
+                {
+                    var socket = new VisualElement();
+                    socket.AddToClassList("socket-zone");
+                    socket.name = $"{building.Name} Slot {i + 1}";
+                    socket.userData = null;
+
+                    var label = new Label($"{building.Name} Slot {i + 1}");
+                    label.AddToClassList("socket-label");
+                    label.name = "socket-label";
+                    socket.Add(label);
+
+                    area.Add(socket);
+                }
+            }
+            else if (!building.IsBuilt)
+            {
+                var hint = new Label($"Build {building.Name} first to assign workers ({building.SocketCount} slots)");
+                hint.style.color = new Color(0.5f, 0.47f, 0.58f);
+                hint.style.fontSize = 13;
+                hint.style.unityTextAlign = TextAnchor.MiddleCenter;
+                hint.style.paddingTop = 40;
+                area.Add(hint);
+            }
+            else
+            {
+                var hint = new Label($"{building.Name} has no worker slots");
+                hint.style.color = new Color(0.5f, 0.47f, 0.58f);
+                hint.style.fontSize = 13;
+                hint.style.unityTextAlign = TextAnchor.MiddleCenter;
+                hint.style.paddingTop = 40;
+                area.Add(hint);
+            }
+
+            // Rebuild drag-drop
+            _dragDrop = new DragDropManager(_root);
+            _dragDrop.OnCitizenPlaced += HandleCitizenPlaced;
+            _dragDrop.OnCitizenReturned += HandleCitizenReturned;
         }
 
         private void HandleBuild()
         {
-            if (_selectedBuilding == null) return;
+            Debug.Log($"[PoC] HandleBuild called. selected={_selectedBuilding?.Data.Name ?? "null"}");
+            if (_selectedBuilding == null) { Debug.Log("[PoC] No building selected"); return; }
             var d = _selectedBuilding.Data;
-            if (d.IsBuilt) return;
-            if (_basic < d.CostBasic || _advanced < d.CostAdvanced) return;
+            if (d.IsBuilt) { Debug.Log($"[PoC] {d.Name} already built"); return; }
+            if (_basic < d.CostBasic || _advanced < d.CostAdvanced) { Debug.Log($"[PoC] Cannot afford {d.Name}: need {d.CostBasic}B/{d.CostAdvanced}A, have {_basic}B/{_advanced}A"); return; }
+            Debug.Log($"[PoC] Building {d.Name}!");
 
             // Deduct resources
             _basic -= d.CostBasic;
@@ -175,6 +249,9 @@ namespace ProjectSun.UI.Screens
             // Update detail panel
             _buildButton.style.display = DisplayStyle.None;
             _detailTitle.text = $"{d.Name} (Built)";
+
+            // Show sockets for the newly built building
+            UpdateSocketsForBuilding(_selectedBuilding.Data);
 
             // Build complete animation — flash + scale pop
             PlayBuildCompleteAnimation();
@@ -263,35 +340,6 @@ namespace ProjectSun.UI.Screens
             }
         }
 
-        private void PopulateSockets()
-        {
-            var area = _root.Q("socket-area");
-            area.Clear();
-
-            string[] socketNames = {
-                "Gathering Post #1",
-                "Gathering Post #2",
-                "Watchtower",
-                "Barracks Slot 1",
-                "Barracks Slot 2",
-            };
-
-            foreach (var sname in socketNames)
-            {
-                var socket = new VisualElement();
-                socket.AddToClassList("socket-zone");
-                socket.name = sname;
-                socket.userData = null; // null = unoccupied
-
-                var label = new Label(sname);
-                label.AddToClassList("socket-label");
-                label.name = "socket-label";
-                socket.Add(label);
-
-                area.Add(socket);
-            }
-        }
-
         private void HandleCitizenPlaced(CitizenData citizen, int socketIndex)
         {
             _statusLog.text = $"{citizen.Name} ({citizen.Aptitude}) placed in socket {socketIndex}.";
@@ -351,7 +399,7 @@ namespace ProjectSun.UI.Screens
             // Repopulate everything
             PopulateBuildings();
             PopulateCitizens();
-            PopulateSockets();
+            _root.Q("socket-area").Clear();
 
             _detailTitle.text = "Select a building";
             _detailDesc.text = "Click a building card to view details.";

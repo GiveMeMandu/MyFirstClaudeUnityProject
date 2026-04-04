@@ -112,15 +112,16 @@ namespace ProjectSun.UI.Components
             _socketArea = root.Q("socket-area");
             _statusLog = root.Q<Label>("status-log");
 
-            // Register on the root to capture all pointer events
-            _rootPanel.RegisterCallback<PointerDownEvent>(OnPointerDown);
+            // Register PointerDown only on citizen-pool (drag source)
+            // PointerMove/Up on root for tracking drag across the whole screen
+            _citizenPool.RegisterCallback<PointerDownEvent>(OnPointerDown);
             _rootPanel.RegisterCallback<PointerMoveEvent>(OnPointerMove);
             _rootPanel.RegisterCallback<PointerUpEvent>(OnPointerUp);
         }
 
         public void Dispose()
         {
-            _rootPanel.UnregisterCallback<PointerDownEvent>(OnPointerDown);
+            _citizenPool?.UnregisterCallback<PointerDownEvent>(OnPointerDown);
             _rootPanel.UnregisterCallback<PointerMoveEvent>(OnPointerMove);
             _rootPanel.UnregisterCallback<PointerUpEvent>(OnPointerUp);
         }

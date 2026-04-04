@@ -69,7 +69,7 @@
 
                         <Button name="build-button" class="build-button" text="BUILD" style="display: none;" />
 
-                        <VisualElement name="build-flash" class="build-complete-flash" />
+                        <VisualElement name="build-flash" class="build-complete-flash" picking-mode="Ignore" />
                     </VisualElement>
                 </VisualElement>
             </VisualElement>
