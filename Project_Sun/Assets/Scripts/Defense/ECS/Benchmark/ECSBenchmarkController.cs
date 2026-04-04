@@ -47,6 +47,10 @@ namespace ProjectSun.Defense.ECS.Benchmark
             // Disable V1 systems to avoid conflicts
             DisableV1Systems();
 
+            // Create FlowFieldConfig singleton so FlowField systems can run
+            // (enemies have FlowFieldAgent but no FlowFieldSetup MonoBehaviour in benchmark scene)
+            CreateFlowFieldConfig();
+
             // Spawn benchmark entities
             SpawnBuildings();
             SpawnTowers();
@@ -73,6 +77,22 @@ namespace ProjectSun.Defense.ECS.Benchmark
             {
                 world.Unmanaged.ResolveSystemStateRef(handle).Enabled = false;
             }
+        }
+
+        void CreateFlowFieldConfig()
+        {
+            // Grid covers (-100,-100) to (100,100) — 200m x 200m, matching FlowFieldSetup defaults.
+            // spawnRadius is 80, so enemies spawn within this range.
+            var entity = _entityManager.CreateEntity();
+            _entityManager.AddComponentData(entity, new FlowFieldConfig
+            {
+                GridWidth = 100,
+                GridHeight = 100,
+                CellSize = 2f,
+                WorldOrigin = new float3(-100, 0, -100),
+                LastComputedFrame = -1,
+                NeedsRecompute = true
+            });
         }
 
         void SpawnBuildings()

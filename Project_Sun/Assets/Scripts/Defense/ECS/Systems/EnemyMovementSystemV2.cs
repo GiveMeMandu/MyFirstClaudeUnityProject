@@ -3,6 +3,7 @@ using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
+using ProjectSun.V2.Defense.ECS; // FlowFieldAgent
 
 namespace ProjectSun.Defense.ECS
 {
@@ -66,7 +67,7 @@ namespace ProjectSun.Defense.ECS
             foreach (var (transform, stats, enemyState, target) in
                 SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyStats>, RefRO<EnemyState>, RefRW<EnemyTarget>>()
                     .WithAll<EnemyTag>()
-                    .WithNone<DeadTag>())
+                    .WithNone<DeadTag, FlowFieldAgent>())
             {
                 if (enemyState.ValueRO.Value == (int)Defense.EnemyState.Attacking ||
                     enemyState.ValueRO.Value == (int)Defense.EnemyState.Dying)
