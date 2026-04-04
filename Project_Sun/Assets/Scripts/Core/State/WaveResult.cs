@@ -10,6 +10,7 @@ namespace ProjectSun.V2.Data
         public int enemiesDefeated;
         public int enemiesTotal;
         public bool isPerfectDefense;
+        public bool headquartersDestroyed;
         public int basicReward;
         public int advancedReward;
         public int relicReward;
