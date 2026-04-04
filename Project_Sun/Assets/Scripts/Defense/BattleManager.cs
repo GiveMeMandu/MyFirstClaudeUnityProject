@@ -81,6 +81,9 @@ namespace ProjectSun.Defense
             // 건물 데이터를 DOTS 세계로 브릿지
             BridgeBuildingsToECS();
 
+            // BattleStatistics 싱글턴 엔티티 생성
+            CreateBattleStatisticsEntity();
+
             SetBattleState(BattleState.InProgress);
 
             // 첫 웨이브 즉시 시작
@@ -361,6 +364,18 @@ namespace ProjectSun.Defense
             OnBattleEnded?.Invoke(statistics);
         }
 
+        private void CreateBattleStatisticsEntity()
+        {
+            var statsEntity = entityManager.CreateEntity();
+            entityManager.AddComponentData(statsEntity, new ECS.BattleStatistics
+            {
+                TotalEnemiesSpawned = 0,
+                TotalEnemiesKilled = 0,
+                RemainingEnemies = 0,
+                TotalDamageToBuildings = 0f
+            });
+        }
+
         private void CleanupECSEntities()
         {
             if (defaultWorld == null || !defaultWorld.IsCreated) return;
@@ -376,6 +391,14 @@ namespace ProjectSun.Defense
 
             var spawnPointQuery = entityManager.CreateEntityQuery(typeof(SpawnPoint));
             entityManager.DestroyEntity(spawnPointQuery);
+
+            // 투사체 엔티티 정리
+            var projectileQuery = entityManager.CreateEntityQuery(typeof(ProjectileTag));
+            entityManager.DestroyEntity(projectileQuery);
+
+            // BattleStatistics 싱글턴 정리
+            var statsQuery = entityManager.CreateEntityQuery(typeof(ECS.BattleStatistics));
+            entityManager.DestroyEntity(statsQuery);
 
             buildingEntityMap.Clear();
         }

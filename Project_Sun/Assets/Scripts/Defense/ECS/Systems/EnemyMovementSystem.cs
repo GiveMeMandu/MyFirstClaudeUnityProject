@@ -10,6 +10,7 @@ namespace ProjectSun.Defense.ECS
     /// 적 유닛을 가장 가까운 건물 방향으로 이동시키는 시스템.
     /// 공중 유닛(EnemyType==2)은 방벽(IsWall) 건물을 타겟에서 제외.
     /// </summary>
+    [DisableAutoCreation] // V1 — EnemyMovementSystemV2로 대체
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(WaveSpawnSystem))]
     public partial struct EnemyMovementSystem : ISystem

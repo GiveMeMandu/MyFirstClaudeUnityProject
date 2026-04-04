@@ -8,8 +8,9 @@ namespace ProjectSun.Defense.ECS
     /// 피격 시 HealthBarTimer를 2초로 설정하고, 매 프레임 감소.
     /// MonoBehaviour 측에서 Timer > 0인 Entity의 체력바를 렌더링.
     /// </summary>
+    [BurstCompile]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    [UpdateAfter(typeof(EnemyCombatSystem))]
+    [UpdateAfter(typeof(EnemyDeathSystemV2))]
     public partial struct HealthBarSystem : ISystem
     {
         public void OnCreate(ref SystemState state)

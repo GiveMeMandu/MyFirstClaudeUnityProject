@@ -7,16 +7,17 @@ using Unity.Transforms;
 namespace ProjectSun.Defense.ECS
 {
     /// <summary>
-    /// V2 적 전투 시스템 — EnemyCombatSystem과 동일 로직, V2 시스템 오더에 맞게 분리.
-    ///
-    /// C-01 수정: BuildingDamageBuffer가 IBufferElementData로 변경됨에 따라
-    /// GetBuffer&lt;BuildingDamageBuffer&gt;로 접근하여 Damage 이벤트를 Append.
-    /// 동일 프레임 멀티 적 동시 공격 시 각각 엔트리로 누적 → 데이터 레이스 해소.
+    /// V2 적 전투 시스템 — 공격 범위 내 건물을 공격.
+    /// BuildingDamageBuffer(IBufferElementData)에 데미지를 누적하여
+    /// BuildingDamageApplySystemV2에서 합산 처리. 동일 프레임 멀티 적 동시 공격 시
+    /// 각각 엔트리로 누적 → 데이터 레이스 해소.
     /// </summary>
+    [BurstCompile]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyMovementSystemV2))]
     public partial struct EnemyCombatSystemV2 : ISystem
     {
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<EnemyTag>();
@@ -34,6 +35,7 @@ namespace ProjectSun.Defense.ECS
             {
                 if (!target.ValueRO.HasTarget) continue;
 
+                // 타겟 건물이 아직 존재하고 HP가 남아있는지 확인
                 bool targetValid = SystemAPI.HasComponent<BuildingData>(target.ValueRO.TargetEntity);
                 if (targetValid)
                 {
@@ -46,6 +48,7 @@ namespace ProjectSun.Defense.ECS
 
                 if (!targetValid)
                 {
+                    // 타겟이 파괴됨 -> Moving 상태로 전환하여 새 타겟 탐색
                     enemyState.ValueRW.Value = (int)Defense.EnemyState.Moving;
                     target.ValueRW.HasTarget = false;
                     attackTimer.ValueRW.TimeSinceLastAttack = 0f;
@@ -82,13 +85,15 @@ namespace ProjectSun.Defense.ECS
     /// <summary>
     /// V2 건물 데미지 적용 시스템.
     /// BuildingDamageBuffer에 누적된 Damage 이벤트를 합산하여 BuildingData.CurrentHP에 반영.
-    /// EnemyCombatSystemV2 이후, EnemyDeathSystemV2 이전에 실행.
+    /// BattleStatistics.TotalDamageToBuildings에도 누적.
     /// </summary>
+    [BurstCompile]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyCombatSystemV2))]
     [UpdateBefore(typeof(TowerAttackSystemV2))]
     public partial struct BuildingDamageApplySystemV2 : ISystem
     {
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<BuildingTag>();
@@ -97,6 +102,8 @@ namespace ProjectSun.Defense.ECS
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
+            bool hasStats = SystemAPI.HasSingleton<BattleStatistics>();
+
             foreach (var (buildingData, damageBuffer) in
                 SystemAPI.Query<RefRW<BuildingData>, DynamicBuffer<BuildingDamageBuffer>>()
                     .WithAll<BuildingTag>())
@@ -109,47 +116,13 @@ namespace ProjectSun.Defense.ECS
 
                 buildingData.ValueRW.CurrentHP = math.max(0f, buildingData.ValueRO.CurrentHP - total);
                 damageBuffer.Clear();
-            }
-        }
-    }
 
-    /// <summary>
-    /// V2 사망 처리 시스템.
-    ///
-    /// C-02 수정: Allocator.Temp ECB → BeginSimulationEntityCommandBufferSystem.Singleton 사용.
-    /// Burst 환경에서 안전한 ECB 패턴.
-    /// </summary>
-    [UpdateInGroup(typeof(SimulationSystemGroup))]
-    [UpdateAfter(typeof(TowerAttackSystemV2))]
-    public partial struct EnemyDeathSystemV2 : ISystem
-    {
-        public void OnCreate(ref SystemState state)
-        {
-            state.RequireForUpdate<EnemyTag>();
-        }
-
-        [BurstCompile]
-        public void OnUpdate(ref SystemState state)
-        {
-            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
-                .CreateCommandBuffer(state.WorldUnmanaged);
-
-            foreach (var (stats, enemyState, entity) in
-                SystemAPI.Query<RefRO<EnemyStats>, RefRW<EnemyState>>()
-                    .WithAll<EnemyTag>()
-                    .WithNone<DeadTag>()
-                    .WithEntityAccess())
-            {
-                if (stats.ValueRO.CurrentHP <= 0f)
+                // BattleStatistics에 건물 데미지 누적
+                if (hasStats)
                 {
-                    enemyState.ValueRW.Value = (int)Defense.EnemyState.Dying;
-                    ecb.AddComponent<DeadTag>(entity);
+                    var battleStats = SystemAPI.GetSingletonRW<BattleStatistics>();
+                    battleStats.ValueRW.TotalDamageToBuildings += total;
                 }
-            }
-
-            foreach (var (_, entity) in SystemAPI.Query<RefRO<DeadTag>>().WithEntityAccess())
-            {
-                ecb.DestroyEntity(entity);
             }
         }
     }

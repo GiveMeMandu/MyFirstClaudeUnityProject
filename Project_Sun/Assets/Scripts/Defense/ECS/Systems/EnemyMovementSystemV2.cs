@@ -11,7 +11,10 @@ namespace ProjectSun.Defense.ECS
     /// V2 적 이동 시스템 — 성능 최적화:
     /// - Persistent NativeList로 매 프레임 할당 제거
     /// - 건물 데이터 한 번 수집 후 재사용
+    /// - FlowFieldAgent를 가진 적은 FlowFieldMovementSystem에서 처리하므로 제외
+    /// - 공중 유닛(EnemyType==2)은 방벽(IsWall) 건물을 타겟에서 제외
     /// </summary>
+    [BurstCompile]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(WaveSpawnSystem))]
     public partial struct EnemyMovementSystemV2 : ISystem
@@ -21,6 +24,7 @@ namespace ProjectSun.Defense.ECS
         NativeList<bool> _buildingIsWall;
         NativeList<float> _buildingHP;
 
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<EnemyTag>();

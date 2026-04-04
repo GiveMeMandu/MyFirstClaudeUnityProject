@@ -10,6 +10,7 @@ namespace ProjectSun.Defense.ECS
     /// 공격 범위 내 건물을 공격하는 적 전투 시스템.
     /// 공격 시 BuildingDamageBuffer에 데미지를 누적.
     /// </summary>
+    [DisableAutoCreation] // V1 — EnemyCombatSystemV2로 대체
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyMovementSystem))]
     public partial struct EnemyCombatSystem : ISystem
@@ -81,6 +82,7 @@ namespace ProjectSun.Defense.ECS
     /// <summary>
     /// HP가 0 이하인 적을 제거하는 시스템.
     /// </summary>
+    [DisableAutoCreation] // V1 — EnemyDeathSystemV2로 대체
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyCombatSystem))]
     public partial struct EnemyDeathSystem : ISystem
