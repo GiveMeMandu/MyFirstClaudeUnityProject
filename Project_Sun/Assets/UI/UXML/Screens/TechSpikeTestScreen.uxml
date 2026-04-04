@@ -1,0 +1,108 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Components/ResourceBar.uss" />
+    <Style src="../../USS/Components/CitizenCard.uss" />
+    <Style src="../../USS/Components/BuildingCard.uss" />
+
+    <VisualElement name="root" style="flex-grow: 1; background-color: rgb(15, 13, 20);">
+
+        <!-- ======= 1. Resource HUD (Top Bar) ======= -->
+        <VisualElement name="resource-hud" class="resource-hud">
+            <VisualElement class="resource-group">
+                <VisualElement name="resource-basic" class="resource-item">
+                    <VisualElement class="resource-icon resource-icon--basic" />
+                    <Label class="resource-name" text="Basic" />
+                    <Label name="basic-value" class="resource-label" text="150" />
+                </VisualElement>
+                <VisualElement name="resource-advanced" class="resource-item">
+                    <VisualElement class="resource-icon resource-icon--advanced" />
+                    <Label class="resource-name" text="Advanced" />
+                    <Label name="advanced-value" class="resource-label" text="50" />
+                </VisualElement>
+                <VisualElement name="resource-relic" class="resource-item">
+                    <VisualElement class="resource-icon resource-icon--relic" />
+                    <Label class="resource-name" text="Relic" />
+                    <Label name="relic-value" class="resource-label" text="3" />
+                </VisualElement>
+            </VisualElement>
+            <VisualElement name="turn-display" class="turn-display">
+                <Label class="turn-label" text="TURN" />
+                <Label name="turn-number" class="turn-number" text="1" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ======= Main Content (below HUD) ======= -->
+        <VisualElement name="main-content" style="flex-grow: 1; flex-direction: row; margin-top: 48px; padding: 12px;">
+
+            <!-- ======= 2. Building Panel (Left) ======= -->
+            <VisualElement name="building-panel" style="width: 45%; flex-direction: column; margin-right: 12px;">
+
+                <Label text="Construction Panel" style="font-size: 20px; color: rgb(230, 225, 240); -unity-font-style: bold; margin-bottom: 8px;" />
+
+                <VisualElement style="flex-direction: row; flex-grow: 1;">
+                    <!-- Building List (ScrollView) -->
+                    <ScrollView name="building-list" style="width: 220px; margin-right: 12px;" />
+
+                    <!-- Building Detail -->
+                    <VisualElement name="building-detail" class="building-detail" style="flex-grow: 1;">
+                        <Label name="detail-title" class="detail-title" text="Select a building" />
+                        <Label name="detail-desc" class="detail-desc" text="Click a building card to view details." />
+
+                        <VisualElement name="detail-stats" class="detail-stats" style="display: none;">
+                            <VisualElement class="stat-row">
+                                <Label class="stat-label" text="Category" />
+                                <Label name="detail-category" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-row">
+                                <Label class="stat-label" text="Basic Cost" />
+                                <Label name="detail-cost-basic" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-row">
+                                <Label class="stat-label" text="Advanced Cost" />
+                                <Label name="detail-cost-advanced" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-row">
+                                <Label class="stat-label" text="Sockets" />
+                                <Label name="detail-sockets" class="stat-value" text="-" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <Button name="build-button" class="build-button" text="BUILD" style="display: none;" />
+
+                        <VisualElement name="build-flash" class="build-complete-flash" picking-mode="Ignore" />
+                    </VisualElement>
+                </VisualElement>
+            </VisualElement>
+
+            <!-- ======= 3. Workforce Socket D&D (Right) ======= -->
+            <VisualElement name="workforce-panel" style="width: 55%; flex-direction: column;">
+
+                <Label text="Workforce Socket Assignment" style="font-size: 20px; color: rgb(230, 225, 240); -unity-font-style: bold; margin-bottom: 8px;" />
+
+                <!-- Unassigned citizens -->
+                <Label text="Unassigned Citizens" style="font-size: 14px; color: rgb(160, 150, 180); margin-bottom: 4px;" />
+                <VisualElement name="citizen-pool" style="flex-direction: row; flex-wrap: wrap; min-height: 180px; background-color: rgb(25, 22, 30); border-radius: 8px; padding: 8px; margin-bottom: 12px; border-width: 1px; border-color: rgb(50, 45, 60);" />
+
+                <!-- Socket zones -->
+                <Label text="Building Sockets" style="font-size: 14px; color: rgb(160, 150, 180); margin-bottom: 4px;" />
+                <VisualElement name="socket-area" style="flex-direction: row; flex-wrap: wrap; min-height: 200px; background-color: rgb(25, 22, 30); border-radius: 8px; padding: 8px; border-width: 1px; border-color: rgb(50, 45, 60);" />
+
+                <!-- Status log -->
+                <Label name="status-log" text="Drag a citizen onto a socket to assign." style="font-size: 12px; color: rgb(100, 95, 115); margin-top: 8px; padding: 4px 8px; background-color: rgb(20, 18, 24); border-radius: 4px;" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ======= Test Controls (Bottom) ======= -->
+        <VisualElement name="test-controls" style="flex-direction: row; padding: 8px 12px; background-color: rgb(20, 18, 24); border-top-width: 1px; border-top-color: rgb(50, 45, 60); justify-content: center;">
+            <Button name="btn-add-basic" text="+20 Basic" style="margin-right: 8px; padding: 6px 16px; background-color: rgb(180, 140, 80); color: rgb(20, 18, 24); border-radius: 4px; border-width: 0; -unity-font-style: bold;" />
+            <Button name="btn-add-advanced" text="+10 Advanced" style="margin-right: 8px; padding: 6px 16px; background-color: rgb(80, 160, 200); color: rgb(20, 18, 24); border-radius: 4px; border-width: 0; -unity-font-style: bold;" />
+            <Button name="btn-add-relic" text="+1 Relic" style="margin-right: 8px; padding: 6px 16px; background-color: rgb(200, 120, 220); color: rgb(20, 18, 24); border-radius: 4px; border-width: 0; -unity-font-style: bold;" />
+            <Button name="btn-next-turn" text="Next Turn" style="margin-right: 8px; padding: 6px 16px; background-color: rgb(240, 200, 80); color: rgb(20, 18, 24); border-radius: 4px; border-width: 0; -unity-font-style: bold;" />
+            <Button name="btn-reset" text="Reset" style="padding: 6px 16px; background-color: rgb(100, 95, 115); color: rgb(230, 225, 240); border-radius: 4px; border-width: 0;" />
+        </VisualElement>
+
+        <!-- Drag ghost (positioned absolutely, moved via C#) -->
+        <VisualElement name="drag-ghost" class="drag-ghost" picking-mode="Ignore" style="display: none;" />
+
+    </VisualElement>
+</UXML>

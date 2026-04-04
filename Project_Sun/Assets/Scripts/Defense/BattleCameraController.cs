@@ -24,7 +24,9 @@ namespace ProjectSun.Defense
         [Header("자유 카메라 설정")]
         [SerializeField] private float moveSpeed = 20f;
         [SerializeField] private float lookSpeed = 2f;
+        #pragma warning disable CS0414
         [SerializeField] private float freeCamHeight = 10f;
+        #pragma warning restore CS0414
 
         [Header("패닝 설정 (탑다운)")]
         [SerializeField] private float panSpeed = 15f;

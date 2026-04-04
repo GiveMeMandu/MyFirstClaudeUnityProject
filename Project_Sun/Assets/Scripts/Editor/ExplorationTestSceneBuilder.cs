@@ -38,7 +38,7 @@ public static class ExplorationTestSceneBuilder
         CreateExplorationBuildingData();
 
         // ExplorationManager 찾기 또는 생성
-        var explorationMgr = Object.FindObjectOfType<ExplorationManager>();
+        var explorationMgr = Object.FindAnyObjectByType<ExplorationManager>();
         if (explorationMgr == null)
         {
             var go = new GameObject("ExplorationManager");
@@ -46,9 +46,9 @@ public static class ExplorationTestSceneBuilder
         }
 
         // 연동 설정
-        var workforceMgr = Object.FindObjectOfType<WorkforceManager>();
-        var buildingMgr = Object.FindObjectOfType<BuildingManager>();
-        var turnMgr = Object.FindObjectOfType<TurnManager>();
+        var workforceMgr = Object.FindAnyObjectByType<WorkforceManager>();
+        var buildingMgr = Object.FindAnyObjectByType<BuildingManager>();
+        var turnMgr = Object.FindAnyObjectByType<TurnManager>();
 
         SetField(explorationMgr, "mapData", mapSO);
         if (workforceMgr != null)
@@ -61,7 +61,7 @@ public static class ExplorationTestSceneBuilder
             SetField(turnMgr, "explorationManager", explorationMgr);
 
         // ExplorationUI
-        var explorationUI = Object.FindObjectOfType<ExplorationUI>();
+        var explorationUI = Object.FindAnyObjectByType<ExplorationUI>();
         if (explorationUI == null)
         {
             var uiGO = new GameObject("ExplorationUI");

@@ -1,0 +1,11 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Components/CitizenCard.uss" />
+
+    <VisualElement name="citizen-card" class="citizen-card">
+        <VisualElement name="portrait" class="citizen-portrait" />
+        <Label name="citizen-name" class="citizen-name" text="Name" />
+        <Label name="citizen-aptitude" class="citizen-aptitude" text="Combat" />
+        <Label name="citizen-proficiency" class="citizen-proficiency" text="Lv.0" />
+    </VisualElement>
+</UXML>

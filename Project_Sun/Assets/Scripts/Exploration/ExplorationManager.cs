@@ -47,7 +47,9 @@ namespace ProjectSun.Exploration
         public bool HasPendingArrivals => arrivalQueue.Count > 0;
 
         public event Action OnMapStateChanged;
+        #pragma warning disable CS0067
         public event Action<ArrivalEvent> OnTeamArrived;
+        #pragma warning restore CS0067
         public event Action OnTeamsChanged;
 
         /// <summary>

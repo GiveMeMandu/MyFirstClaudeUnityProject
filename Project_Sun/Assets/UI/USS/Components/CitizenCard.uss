@@ -1,0 +1,124 @@
+/* === Citizen Card === */
+
+.citizen-card {
+    width: 120px;
+    height: 160px;
+    background-color: var(--color-bg-card);
+    border-width: 2px;
+    border-color: var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-sm);
+    flex-direction: column;
+    align-items: center;
+    margin: var(--spacing-sm);
+    transition-property: scale, border-color;
+    transition-duration: 0.15s;
+}
+
+.citizen-card:hover {
+    border-color: var(--color-border-highlight);
+    scale: 1.05;
+}
+
+.citizen-card--dragging {
+    opacity: 0.85;
+    scale: 1.1;
+    border-color: var(--color-accent);
+    border-width: 3px;
+}
+
+.citizen-card--placed {
+    border-color: var(--color-socket-valid);
+}
+
+.citizen-portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background-color: var(--color-bg-hover);
+    margin-bottom: var(--spacing-sm);
+    border-width: 2px;
+    border-color: var(--color-border);
+}
+
+.citizen-portrait--combat {
+    border-color: rgb(220, 80, 80);
+}
+
+.citizen-portrait--construction {
+    border-color: rgb(180, 140, 80);
+}
+
+.citizen-portrait--exploration {
+    border-color: rgb(80, 160, 200);
+}
+
+.citizen-name {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 110px;
+}
+
+.citizen-aptitude {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    -unity-text-align: middle-center;
+    margin-top: var(--spacing-xs);
+}
+
+.citizen-proficiency {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+    margin-top: var(--spacing-xs);
+}
+
+/* Socket drop zone */
+.socket-zone {
+    width: 130px;
+    height: 170px;
+    background-color: rgba(80, 200, 120, 0.1);
+    border-width: 2px;
+    border-color: rgba(80, 200, 120, 0.3);
+    border-radius: var(--radius-md);
+    margin: var(--spacing-sm);
+    justify-content: center;
+    align-items: center;
+    transition-property: background-color, border-color;
+    transition-duration: 0.2s;
+}
+
+.socket-zone--hover {
+    background-color: rgba(80, 200, 120, 0.25);
+    border-color: var(--color-socket-valid);
+    border-width: 3px;
+}
+
+.socket-zone--invalid {
+    background-color: rgba(200, 80, 80, 0.15);
+    border-color: var(--color-socket-invalid);
+}
+
+.socket-zone--occupied {
+    background-color: rgba(120, 90, 220, 0.15);
+    border-color: var(--color-accent);
+}
+
+.socket-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+}
+
+/* Drag ghost */
+.drag-ghost {
+    position: absolute;
+    width: 120px;
+    height: 160px;
+    opacity: 0.9;
+}

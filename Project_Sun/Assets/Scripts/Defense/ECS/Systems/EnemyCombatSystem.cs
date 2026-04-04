@@ -63,10 +63,10 @@ namespace ProjectSun.Defense.ECS
                     {
                         attackTimer.ValueRW.TimeSinceLastAttack = 0f;
 
-                        if (SystemAPI.HasComponent<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
+                        if (SystemAPI.HasBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
                         {
-                            var damageBuffer = SystemAPI.GetComponentRW<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
-                            damageBuffer.ValueRW.AccumulatedDamage += stats.ValueRO.Damage;
+                            var damageBuffer = SystemAPI.GetBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
+                            damageBuffer.Add(new BuildingDamageBuffer { Damage = stats.ValueRO.Damage });
                         }
                     }
                 }
@@ -93,7 +93,8 @@ namespace ProjectSun.Defense.ECS
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
 
             foreach (var (stats, enemyState, entity) in
                 SystemAPI.Query<RefRO<EnemyStats>, RefRW<EnemyState>>()
@@ -113,9 +114,6 @@ namespace ProjectSun.Defense.ECS
             {
                 ecb.DestroyEntity(entity);
             }
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
     }
 }

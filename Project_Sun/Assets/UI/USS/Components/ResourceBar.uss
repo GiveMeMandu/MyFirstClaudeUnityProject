@@ -1,0 +1,85 @@
+/* === Resource HUD Bar === */
+
+.resource-hud {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--color-bg-dark);
+    padding: var(--spacing-sm) var(--spacing-lg);
+    border-bottom-width: 2px;
+    border-bottom-color: var(--color-border);
+    height: 48px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+
+.resource-group {
+    flex-direction: row;
+    align-items: center;
+}
+
+.resource-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: var(--spacing-xl);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-bg-panel);
+}
+
+.resource-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: var(--spacing-xs);
+    border-radius: 4px;
+}
+
+.resource-icon--basic {
+    background-color: var(--color-resource-basic);
+}
+
+.resource-icon--advanced {
+    background-color: var(--color-resource-advanced);
+}
+
+.resource-icon--relic {
+    background-color: var(--color-resource-relic);
+}
+
+.resource-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    min-width: 40px;
+}
+
+.resource-name {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-right: var(--spacing-xs);
+}
+
+.turn-display {
+    flex-direction: row;
+    align-items: center;
+    padding: var(--spacing-xs) var(--spacing-md);
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-turn);
+}
+
+.turn-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-turn);
+    margin-right: var(--spacing-xs);
+}
+
+.turn-number {
+    font-size: var(--font-size-lg);
+    color: var(--color-turn);
+    -unity-font-style: bold;
+    min-width: 30px;
+}

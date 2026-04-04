@@ -15,7 +15,9 @@ namespace ProjectSun.Construction
         [SerializeField] private ResourceManager resourceManager;
 
         [Header("방어 운영 자원 (레거시 — ResourceManager 사용 시 무시)")]
+        #pragma warning disable CS0414
         [SerializeField] private string defenseResourceId = "ammo";
+        #pragma warning restore CS0414
         [SerializeField] private float currentDefenseResource = 100f;
 
         public IReadOnlyList<BuildingSlot> AllSlots => allSlots;
