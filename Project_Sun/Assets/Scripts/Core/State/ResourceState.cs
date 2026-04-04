@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 
 namespace ProjectSun.V2.Data
 {
@@ -27,11 +28,20 @@ namespace ProjectSun.V2.Data
                 && relicAmount >= relic;
         }
 
-        public void Spend(int basic, int advanced = 0, int relic = 0)
+        // I-06: 잔고 부족 시 false 반환 + 경고 — 음수 방지
+        public bool Spend(int basic, int advanced = 0, int relic = 0)
         {
+            if (!CanAfford(basic, advanced, relic))
+            {
+                Debug.LogWarning(
+                    $"[ResourceState] Spend rejected: insufficient resources. " +
+                    $"Need ({basic},{advanced},{relic}), have ({basicAmount},{advancedAmount},{relicAmount})");
+                return false;
+            }
             basicAmount -= basic;
             advancedAmount -= advanced;
             relicAmount -= relic;
+            return true;
         }
     }
 }

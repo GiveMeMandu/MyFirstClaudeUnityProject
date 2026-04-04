@@ -48,6 +48,10 @@ namespace ProjectSun.V2.Defense.ECS
         InputAction _pauseAction;
         InputAction _pointerPosition;
 
+        // I-05: EntityQuery 캐싱 — SelectSquad/DeselectAll 매 호출마다 생성하지 않음
+        EntityQuery _squadSelectQuery;
+        EntityQuery _squadDeselectQuery;
+
         void OnEnable()
         {
             // New Input System 액션 바인딩
@@ -74,6 +78,14 @@ namespace ProjectSun.V2.Defense.ECS
             _pointerPosition.Enable();
 
             SquadCommandQueue.Initialize();
+
+            // EntityQuery 캐싱 — 1회 생성
+            var em = World.DefaultGameObjectInjectionWorld?.EntityManager ?? default;
+            if (em != default)
+            {
+                _squadSelectQuery = em.CreateEntityQuery(typeof(SquadTag), typeof(SquadId), typeof(SquadSelected));
+                _squadDeselectQuery = em.CreateEntityQuery(typeof(SquadTag), typeof(SquadSelected));
+            }
         }
 
         void OnDisable()
@@ -90,6 +102,10 @@ namespace ProjectSun.V2.Defense.ECS
             _holdAction.Dispose();
             _pauseAction.Dispose();
             _pointerPosition.Dispose();
+
+            // EntityQuery 해제
+            if (_squadSelectQuery != default) _squadSelectQuery.Dispose();
+            if (_squadDeselectQuery != default) _squadDeselectQuery.Dispose();
         }
 
         /// <summary>좌클릭 — 분대 선택</summary>
@@ -170,10 +186,9 @@ namespace ProjectSun.V2.Defense.ECS
             _selectedSquadId = squadId;
             _attackMoveMode = false;
 
-            // ECS 엔티티의 SquadSelected 갱신
+            // I-05: 캐시된 Query 사용
             var em = World.DefaultGameObjectInjectionWorld.EntityManager;
-            var query = em.CreateEntityQuery(typeof(SquadTag), typeof(SquadId), typeof(SquadSelected));
-            var entities = query.ToEntityArray(Unity.Collections.Allocator.Temp);
+            var entities = _squadSelectQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
 
             for (int i = 0; i < entities.Length; i++)
             {
@@ -191,9 +206,9 @@ namespace ProjectSun.V2.Defense.ECS
             _selectedSquadId = -1;
             _attackMoveMode = false;
 
+            // I-05: 캐시된 Query 사용
             var em = World.DefaultGameObjectInjectionWorld.EntityManager;
-            var query = em.CreateEntityQuery(typeof(SquadTag), typeof(SquadSelected));
-            var entities = query.ToEntityArray(Unity.Collections.Allocator.Temp);
+            var entities = _squadDeselectQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
 
             for (int i = 0; i < entities.Length; i++)
             {

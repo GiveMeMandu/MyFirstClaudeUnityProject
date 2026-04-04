@@ -8,7 +8,6 @@ using ProjectSun.Turn;
 using ProjectSun.Workforce;
 using ProjectSun.TechTree;
 using ProjectSun.TechTree.Testing;
-using ProjectSun.Turn;
 using ProjectSun.Turn.Testing;
 using ProjectSun.Workforce.Testing;
 

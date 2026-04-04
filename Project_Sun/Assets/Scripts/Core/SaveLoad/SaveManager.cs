@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using ProjectSun.V2.Data;
 using UnityEngine;
@@ -19,12 +20,19 @@ namespace ProjectSun.V2.Core
                 return false;
             }
 
-            var saveData = SaveData.Create(state);
-            var json = JsonUtility.ToJson(saveData, true);
-
-            File.WriteAllText(SaveFilePath, json);
-            Debug.Log($"[SaveManager] Game saved to {SaveFilePath}");
-            return true;
+            try
+            {
+                var saveData = SaveData.Create(state);
+                var json = JsonUtility.ToJson(saveData, true);
+                File.WriteAllText(SaveFilePath, json);
+                Debug.Log($"[SaveManager] Game saved to {SaveFilePath}");
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SaveManager] Save failed: {e.Message}");
+                return false;
+            }
         }
 
         public static GameState Load()
@@ -35,17 +43,25 @@ namespace ProjectSun.V2.Core
                 return null;
             }
 
-            var json = File.ReadAllText(SaveFilePath);
-            var saveData = JsonUtility.FromJson<SaveData>(json);
-
-            if (saveData == null || saveData.gameState == null)
+            try
             {
-                Debug.LogError("[SaveManager] Failed to deserialize save data.");
+                var json = File.ReadAllText(SaveFilePath);
+                var saveData = JsonUtility.FromJson<SaveData>(json);
+
+                if (saveData == null || saveData.gameState == null)
+                {
+                    Debug.LogError("[SaveManager] Failed to deserialize save data.");
+                    return null;
+                }
+
+                Debug.Log($"[SaveManager] Game loaded from {SaveFilePath} (v{saveData.saveVersion}, saved at {saveData.timestamp})");
+                return saveData.gameState;
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SaveManager] Load failed: {e.Message}");
                 return null;
             }
-
-            Debug.Log($"[SaveManager] Game loaded from {SaveFilePath} (v{saveData.saveVersion}, saved at {saveData.timestamp})");
-            return saveData.gameState;
         }
 
         public static bool HasSave()
@@ -55,10 +71,17 @@ namespace ProjectSun.V2.Core
 
         public static void DeleteSave()
         {
-            if (File.Exists(SaveFilePath))
+            try
             {
-                File.Delete(SaveFilePath);
-                Debug.Log("[SaveManager] Save file deleted.");
+                if (File.Exists(SaveFilePath))
+                {
+                    File.Delete(SaveFilePath);
+                    Debug.Log("[SaveManager] Save file deleted.");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SaveManager] Delete failed: {e.Message}");
             }
         }
     }

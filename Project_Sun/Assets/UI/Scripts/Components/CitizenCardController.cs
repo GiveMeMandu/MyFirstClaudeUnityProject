@@ -2,10 +2,12 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ProjectSun.UI.Util;
+using ProjectSun.V2.Data;
 
 namespace ProjectSun.UI.Components
 {
-    public enum CitizenAptitude { Combat, Construction, Exploration }
+    // C-03: 로컬 CitizenAptitude enum 제거 — ProjectSun.V2.Data.CitizenAptitude 직접 참조.
+    // None, Construction, Combat, Research, Exploration 5개 값 모두 지원.
 
     public struct CitizenData
     {
@@ -52,13 +54,15 @@ namespace ProjectSun.UI.Components
             _portrait.RemoveFromClassList("citizen-portrait--combat");
             _portrait.RemoveFromClassList("citizen-portrait--construction");
             _portrait.RemoveFromClassList("citizen-portrait--exploration");
+            _portrait.RemoveFromClassList("citizen-portrait--research");
 
             string aptitudeClass = Data.Aptitude switch
             {
                 CitizenAptitude.Combat => "citizen-portrait--combat",
                 CitizenAptitude.Construction => "citizen-portrait--construction",
                 CitizenAptitude.Exploration => "citizen-portrait--exploration",
-                _ => ""
+                CitizenAptitude.Research => "citizen-portrait--research",
+                _ => "" // None
             };
             if (!string.IsNullOrEmpty(aptitudeClass))
                 _portrait.AddToClassList(aptitudeClass);

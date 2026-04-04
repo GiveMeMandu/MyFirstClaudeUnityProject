@@ -2,6 +2,7 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Entities;
 using Unity.Mathematics;
+using UnityEngine;
 
 namespace ProjectSun.V2.Defense.ECS
 {
@@ -14,10 +15,25 @@ namespace ProjectSun.V2.Defense.ECS
     /// NativeQueue.ParallelWriter로 메인 스레드에서 안전하게 Enqueue 가능.
     /// 일시정지(timeScale=0) 중에도 Enqueue는 정상 작동 — ECS 시스템은
     /// 재개 시 큐의 명령을 즉시 처리.
+    ///
+    /// I-02: Domain Reload 대응 — [RuntimeInitializeOnLoadMethod]로 Play Mode
+    /// 재진입 시 이전 Persistent NativeQueue 자동 해제 후 재생성.
     /// </summary>
     public static class SquadCommandQueue
     {
         static NativeQueue<SquadCommandEntry> _queue;
+
+        // I-02: SubsystemRegistration은 Domain Reload 직후(Play 버튼 누를 때마다) 실행됨.
+        // 이전 세션에서 Dispose 없이 남은 NativeQueue를 정리한다.
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        static void OnDomainReload()
+        {
+            if (_queue.IsCreated)
+            {
+                _queue.Dispose();
+            }
+            // 재초기화는 Initialize() 명시 호출 시 수행
+        }
 
         /// <summary>큐 초기화. MonoBehaviour.Awake 또는 시스템 OnCreate에서 1회 호출.</summary>
         public static void Initialize()

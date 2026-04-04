@@ -21,10 +21,12 @@ namespace ProjectSun.Defense.ECS
     }
 
     /// <summary>
-    /// 건물이 받은 데미지 누적 (프레임 종료 시 MonoBehaviour에 전달)
+    /// 건물이 받은 데미지 이벤트 버퍼.
+    /// 동일 프레임에 여러 적이 공격 시 각각 엔트리로 기록 → 합산 처리.
+    /// IBufferElementData로 선언하여 멀티 적 동시 공격 데이터 레이스 해소.
     /// </summary>
-    public struct BuildingDamageBuffer : IComponentData
+    public struct BuildingDamageBuffer : IBufferElementData
     {
-        public float AccumulatedDamage;
+        public float Damage;
     }
 }

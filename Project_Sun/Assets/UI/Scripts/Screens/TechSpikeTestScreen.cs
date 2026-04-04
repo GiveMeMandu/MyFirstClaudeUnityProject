@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using ProjectSun.UI.Components;
 using ProjectSun.UI.Util;
+using ProjectSun.V2.Data;
 
 namespace ProjectSun.UI.Screens
 {
@@ -109,16 +110,16 @@ namespace ProjectSun.UI.Screens
             // 10 buildings from Construction.md v0.2
             var buildings = new[]
             {
-                new BuildingData { Id = 0,  Name = "Gathering Post",   Description = "Produces basic resources each turn.",      Category = BuildingCategory.Production, CostBasic = 15, CostAdvanced = 0,  SocketCount = 2 },
-                new BuildingData { Id = 1,  Name = "Refinery",         Description = "Produces advanced resources from basic.",   Category = BuildingCategory.Production, CostBasic = 20, CostAdvanced = 5,  SocketCount = 2 },
-                new BuildingData { Id = 2,  Name = "Storehouse",       Description = "Increases resource storage capacity.",      Category = BuildingCategory.Support,    CostBasic = 18, CostAdvanced = 0,  SocketCount = 1 },
-                new BuildingData { Id = 3,  Name = "Watchtower",       Description = "Ranged defense during night combat.",       Category = BuildingCategory.Defense,    CostBasic = 12, CostAdvanced = 3,  SocketCount = 1 },
-                new BuildingData { Id = 4,  Name = "Wall",             Description = "Delays enemy advance with HP barrier.",     Category = BuildingCategory.Defense,    CostBasic = 15, CostAdvanced = 5,  SocketCount = 0 },
-                new BuildingData { Id = 5,  Name = "Barracks",         Description = "Enables defense squad formation.",          Category = BuildingCategory.Defense,    CostBasic = 25, CostAdvanced = 10, SocketCount = 3 },
-                new BuildingData { Id = 6,  Name = "Research Lab",     Description = "Unlocks technology tree research.",         Category = BuildingCategory.Special,    CostBasic = 30, CostAdvanced = 15, SocketCount = 2 },
-                new BuildingData { Id = 7,  Name = "Medical Station",  Description = "Heals injured citizens over turns.",        Category = BuildingCategory.Special,    CostBasic = 20, CostAdvanced = 8,  SocketCount = 1 },
-                new BuildingData { Id = 8,  Name = "Campfire",         Description = "Attracts new survivors to the base.",       Category = BuildingCategory.Special,    CostBasic = 10, CostAdvanced = 3,  SocketCount = 1 },
-                new BuildingData { Id = 9,  Name = "Outpost",          Description = "Extends exploration range and speed.",      Category = BuildingCategory.Special,    CostBasic = 35, CostAdvanced = 15, SocketCount = 2 },
+                new BuildingData { Id = 0,  Name = "Gathering Post",   Description = "Produces basic resources each turn.",      Category = BuildingCategoryV2.Production, CostBasic = 15, CostAdvanced = 0,  SocketCount = 2 },
+                new BuildingData { Id = 1,  Name = "Refinery",         Description = "Produces advanced resources from basic.",   Category = BuildingCategoryV2.Production, CostBasic = 20, CostAdvanced = 5,  SocketCount = 2 },
+                new BuildingData { Id = 2,  Name = "Storehouse",       Description = "Increases resource storage capacity.",      Category = BuildingCategoryV2.Support,    CostBasic = 18, CostAdvanced = 0,  SocketCount = 1 },
+                new BuildingData { Id = 3,  Name = "Watchtower",       Description = "Ranged defense during night combat.",       Category = BuildingCategoryV2.Defense,    CostBasic = 12, CostAdvanced = 3,  SocketCount = 1 },
+                new BuildingData { Id = 4,  Name = "Wall",             Description = "Delays enemy advance with HP barrier.",     Category = BuildingCategoryV2.Defense,    CostBasic = 15, CostAdvanced = 5,  SocketCount = 0 },
+                new BuildingData { Id = 5,  Name = "Barracks",         Description = "Enables defense squad formation.",          Category = BuildingCategoryV2.Defense,    CostBasic = 25, CostAdvanced = 10, SocketCount = 3 },
+                new BuildingData { Id = 6,  Name = "Research Lab",     Description = "Unlocks technology tree research.",         Category = BuildingCategoryV2.Special,    CostBasic = 30, CostAdvanced = 15, SocketCount = 2 },
+                new BuildingData { Id = 7,  Name = "Medical Station",  Description = "Heals injured citizens over turns.",        Category = BuildingCategoryV2.Special,    CostBasic = 20, CostAdvanced = 8,  SocketCount = 1 },
+                new BuildingData { Id = 8,  Name = "Campfire",         Description = "Attracts new survivors to the base.",       Category = BuildingCategoryV2.Special,    CostBasic = 10, CostAdvanced = 3,  SocketCount = 1 },
+                new BuildingData { Id = 9,  Name = "Outpost",          Description = "Extends exploration range and speed.",      Category = BuildingCategoryV2.Special,    CostBasic = 35, CostAdvanced = 15, SocketCount = 2 },
             };
 
             _buildingList.Clear();

@@ -2,17 +2,19 @@ using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 using ProjectSun.UI.Util;
+using ProjectSun.V2.Data;
 
 namespace ProjectSun.UI.Components
 {
-    public enum BuildingCategory { Production, Defense, Support, Special }
+    // C-03: 로컬 BuildingCategory enum 제거 — ProjectSun.V2.Data.BuildingCategoryV2 직접 참조.
+    // Core, Production, Support, Defense, Special 5개 값 모두 지원.
 
     public struct BuildingData
     {
         public int Id;
         public string Name;
         public string Description;
-        public BuildingCategory Category;
+        public BuildingCategoryV2 Category;
         public int CostBasic;
         public int CostAdvanced;
         public int SocketCount;
@@ -53,10 +55,11 @@ namespace ProjectSun.UI.Components
             _icon.AddToClassList("building-icon");
             string iconClass = data.Category switch
             {
-                BuildingCategory.Production => "building-icon--production",
-                BuildingCategory.Defense => "building-icon--defense",
-                BuildingCategory.Support => "building-icon--support",
-                BuildingCategory.Special => "building-icon--special",
+                BuildingCategoryV2.Production => "building-icon--production",
+                BuildingCategoryV2.Defense => "building-icon--defense",
+                BuildingCategoryV2.Support => "building-icon--support",
+                BuildingCategoryV2.Special => "building-icon--special",
+                BuildingCategoryV2.Core => "building-icon--core",
                 _ => ""
             };
             _icon.AddToClassList(iconClass);

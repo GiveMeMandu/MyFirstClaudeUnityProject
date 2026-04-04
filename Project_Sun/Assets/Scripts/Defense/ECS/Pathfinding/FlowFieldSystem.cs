@@ -54,7 +54,9 @@ namespace ProjectSun.V2.Defense.ECS
             if (_goalIndices.IsCreated) _goalIndices.Dispose();
         }
 
-        [BurstCompile]
+        // I-01: [BurstCompile] 제거 — 첫 프레임 초기화 시 Persistent NativeArray 할당이 필요.
+        // Burst는 관리 코드(new FlowFieldGrid Persistent 할당)를 컴파일하지 못한다.
+        // Job 스케줄 자체는 Burst이므로 성능에 실질적 영향 없음.
         public void OnUpdate(ref SystemState state)
         {
             var config = SystemAPI.GetSingletonRW<FlowFieldConfig>();
@@ -62,6 +64,9 @@ namespace ProjectSun.V2.Defense.ECS
 
             if (!_initialized)
             {
+                // Persistent 할당 — OnUpdate에서 처리하는 이유:
+                // FlowFieldConfig 싱글턴은 FlowFieldSetup.Start()에서 생성되므로
+                // OnCreate 시점에는 존재하지 않음. 첫 프레임에서 1회만 실행.
                 grid = new FlowFieldGrid(
                     config.ValueRO.GridWidth,
                     config.ValueRO.GridHeight,

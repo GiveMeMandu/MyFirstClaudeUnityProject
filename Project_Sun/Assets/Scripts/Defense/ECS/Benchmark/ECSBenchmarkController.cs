@@ -3,6 +3,7 @@ using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
+using ProjectSun.V2.Defense.ECS;
 
 namespace ProjectSun.Defense.ECS.Benchmark
 {
@@ -110,10 +111,7 @@ namespace ProjectSun.Defense.ECS.Benchmark
                 IsWall = isWall,
                 SlotIndex = slotIndex
             });
-            _entityManager.AddComponentData(entity, new BuildingDamageBuffer
-            {
-                AccumulatedDamage = 0f
-            });
+            _entityManager.AddBuffer<BuildingDamageBuffer>(entity);
         }
 
         void SpawnTowers()
@@ -148,10 +146,7 @@ namespace ProjectSun.Defense.ECS.Benchmark
                     IsWall = false,
                     SlotIndex = 100 + i
                 });
-                _entityManager.AddComponentData(entity, new BuildingDamageBuffer
-                {
-                    AccumulatedDamage = 0f
-                });
+                _entityManager.AddBuffer<BuildingDamageBuffer>(entity);
             }
         }
 
@@ -231,6 +226,13 @@ namespace ProjectSun.Defense.ECS.Benchmark
                 _entityManager.AddComponentData(entity, new HealthBarTimer
                 {
                     RemainingTime = 0f
+                });
+
+                // I-04: FlowFieldAgent 추가 — FlowFieldMovementSystem 활성화.
+                // 지상/공중 필드 선택: EnemyType 2(Flying)는 AirField 사용.
+                _entityManager.AddComponentData(entity, new FlowFieldAgent
+                {
+                    UseAirField = (enemyType == 2)
                 });
             }
         }

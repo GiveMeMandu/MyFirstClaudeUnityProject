@@ -8,6 +8,10 @@ namespace ProjectSun.Defense.ECS
 {
     /// <summary>
     /// V2 적 전투 시스템 — EnemyCombatSystem과 동일 로직, V2 시스템 오더에 맞게 분리.
+    ///
+    /// C-01 수정: BuildingDamageBuffer가 IBufferElementData로 변경됨에 따라
+    /// GetBuffer&lt;BuildingDamageBuffer&gt;로 접근하여 Damage 이벤트를 Append.
+    /// 동일 프레임 멀티 적 동시 공격 시 각각 엔트리로 누적 → 데이터 레이스 해소.
     /// </summary>
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyMovementSystemV2))]
@@ -59,10 +63,11 @@ namespace ProjectSun.Defense.ECS
                     {
                         attackTimer.ValueRW.TimeSinceLastAttack = 0f;
 
-                        if (SystemAPI.HasComponent<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
+                        // IBufferElementData Append — 여러 적이 동시 공격해도 각각 기록됨
+                        if (SystemAPI.HasBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
                         {
-                            var damageBuffer = SystemAPI.GetComponentRW<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
-                            damageBuffer.ValueRW.AccumulatedDamage += stats.ValueRO.Damage;
+                            var damageBuffer = SystemAPI.GetBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
+                            damageBuffer.Add(new BuildingDamageBuffer { Damage = stats.ValueRO.Damage });
                         }
                     }
                 }
@@ -75,7 +80,44 @@ namespace ProjectSun.Defense.ECS
     }
 
     /// <summary>
-    /// V2 사망 처리 시스템 — EntityCommandBuffer Persistent 사용.
+    /// V2 건물 데미지 적용 시스템.
+    /// BuildingDamageBuffer에 누적된 Damage 이벤트를 합산하여 BuildingData.CurrentHP에 반영.
+    /// EnemyCombatSystemV2 이후, EnemyDeathSystemV2 이전에 실행.
+    /// </summary>
+    [UpdateInGroup(typeof(SimulationSystemGroup))]
+    [UpdateAfter(typeof(EnemyCombatSystemV2))]
+    [UpdateBefore(typeof(TowerAttackSystemV2))]
+    public partial struct BuildingDamageApplySystemV2 : ISystem
+    {
+        public void OnCreate(ref SystemState state)
+        {
+            state.RequireForUpdate<BuildingTag>();
+        }
+
+        [BurstCompile]
+        public void OnUpdate(ref SystemState state)
+        {
+            foreach (var (buildingData, damageBuffer) in
+                SystemAPI.Query<RefRW<BuildingData>, DynamicBuffer<BuildingDamageBuffer>>()
+                    .WithAll<BuildingTag>())
+            {
+                if (damageBuffer.Length == 0) continue;
+
+                float total = 0f;
+                for (int i = 0; i < damageBuffer.Length; i++)
+                    total += damageBuffer[i].Damage;
+
+                buildingData.ValueRW.CurrentHP = math.max(0f, buildingData.ValueRO.CurrentHP - total);
+                damageBuffer.Clear();
+            }
+        }
+    }
+
+    /// <summary>
+    /// V2 사망 처리 시스템.
+    ///
+    /// C-02 수정: Allocator.Temp ECB → BeginSimulationEntityCommandBufferSystem.Singleton 사용.
+    /// Burst 환경에서 안전한 ECB 패턴.
     /// </summary>
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(TowerAttackSystemV2))]
@@ -89,7 +131,8 @@ namespace ProjectSun.Defense.ECS
         [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
-            var ecb = new EntityCommandBuffer(Allocator.Temp);
+            var ecb = SystemAPI.GetSingleton<BeginSimulationEntityCommandBufferSystem.Singleton>()
+                .CreateCommandBuffer(state.WorldUnmanaged);
 
             foreach (var (stats, enemyState, entity) in
                 SystemAPI.Query<RefRO<EnemyStats>, RefRW<EnemyState>>()
@@ -108,9 +151,6 @@ namespace ProjectSun.Defense.ECS
             {
                 ecb.DestroyEntity(entity);
             }
-
-            ecb.Playback(state.EntityManager);
-            ecb.Dispose();
         }
     }
 }

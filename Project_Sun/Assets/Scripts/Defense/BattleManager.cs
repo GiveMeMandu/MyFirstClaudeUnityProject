@@ -233,10 +233,7 @@ namespace ProjectSun.Defense
                     IsWall = slot.CurrentBuildingData != null && slot.CurrentBuildingData.category == BuildingCategory.Wall,
                     SlotIndex = i
                 });
-                entityManager.AddComponentData(buildingEntity, new BuildingDamageBuffer
-                {
-                    AccumulatedDamage = 0f
-                });
+                entityManager.AddBuffer<BuildingDamageBuffer>(buildingEntity);
 
                 // Defense 카테고리 건물에 타워 컴포넌트 추가
                 var buildingData = slot.CurrentBuildingData;
@@ -274,8 +271,14 @@ namespace ProjectSun.Defense
 
             for (int i = 0; i < entities.Length; i++)
             {
-                var damageBuffer = entityManager.GetComponentData<BuildingDamageBuffer>(entities[i]);
-                if (damageBuffer.AccumulatedDamage <= 0f) continue;
+                // IBufferElementData: 버퍼에서 누적 데미지 합산 후 클리어
+                var damageBuffer = entityManager.GetBuffer<BuildingDamageBuffer>(entities[i]);
+                if (damageBuffer.Length == 0) continue;
+
+                float accumulatedDamage = 0f;
+                for (int j = 0; j < damageBuffer.Length; j++)
+                    accumulatedDamage += damageBuffer[j].Damage;
+                damageBuffer.Clear();
 
                 var buildingData = entityManager.GetComponentData<ECS.BuildingData>(entities[i]);
                 var slots = buildingManager.AllSlots;
@@ -285,12 +288,12 @@ namespace ProjectSun.Defense
                     var slot = slots[buildingData.SlotIndex];
                     if (slot.Health != null)
                     {
-                        slot.Health.TakeDamage(damageBuffer.AccumulatedDamage);
-                        statistics.TotalDamageToBuildings += damageBuffer.AccumulatedDamage;
+                        slot.Health.TakeDamage(accumulatedDamage);
+                        statistics.TotalDamageToBuildings += accumulatedDamage;
 
                         statistics.RecordBuildingDamage(
                             slot.CurrentBuildingData != null ? slot.CurrentBuildingData.buildingName : $"Building {buildingData.SlotIndex}",
-                            damageBuffer.AccumulatedDamage
+                            accumulatedDamage
                         );
 
                         entityManager.SetComponentData(entities[i], new ECS.BuildingData
@@ -309,8 +312,6 @@ namespace ProjectSun.Defense
                         }
                     }
                 }
-
-                entityManager.SetComponentData(entities[i], new BuildingDamageBuffer { AccumulatedDamage = 0f });
             }
 
             entities.Dispose();
