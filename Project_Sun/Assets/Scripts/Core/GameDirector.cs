@@ -7,6 +7,7 @@ using ProjectSun.V2.Construction;
 using ProjectSun.V2.Workforce;
 using ProjectSun.V2.Exploration;
 using ProjectSun.V2.UI;
+using EncounterPopupPresenter = ProjectSun.V2.UI.EncounterPopupPresenter;
 
 namespace ProjectSun.V2.Core
 {
@@ -24,6 +25,7 @@ namespace ProjectSun.V2.Core
         [SerializeField] AutoSaveHandler autoSaveHandler;
         [SerializeField] ResourceFlowLogger resourceFlowLogger;
         [SerializeField] ExplorationBridge explorationBridge;
+        [SerializeField] EncounterBridge encounterBridge;
 
         [Header("Bridge")]
         [SerializeField] BattleInitializer battleInitializer;
@@ -37,6 +39,7 @@ namespace ProjectSun.V2.Core
         [SerializeField] WorkforceTabPresenter workforceTab;
         [SerializeField] ExplorationTabPresenter explorationTab;
         [SerializeField] WavePreviewPresenter wavePreview;
+        [SerializeField] EncounterPopupPresenter encounterPopup;
 
         [Header("Day Phase Tab")]
         [SerializeField] int activeTab; // 0=건설, 1=관리, 2=탐험
@@ -93,6 +96,7 @@ namespace ProjectSun.V2.Core
             phaseManager?.Initialize(_gameState);
             autoSaveHandler?.Initialize(_gameState);
             explorationBridge?.Initialize(_gameState);
+            encounterBridge?.Initialize(_gameState);
             constructionTab?.Initialize(_gameState);
             workforceTab?.Initialize(_gameState);
             explorationTab?.Initialize(_gameState);
@@ -121,6 +125,10 @@ namespace ProjectSun.V2.Core
             HideAllGameUI();
             resourceFlowLogger?.OnTurnStart(_gameState);
             explorationBridge?.ProcessTurn();
+
+            // 턴 2 이후 일상 인카운터 시도
+            if (_gameState.currentTurn >= 2)
+                encounterBridge?.TryDailyEncounter();
 
             // 낮 탭 표시
             ShowDayTab(activeTab);
