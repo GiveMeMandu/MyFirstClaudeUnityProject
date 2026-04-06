@@ -1,0 +1,159 @@
+/* === Menu Screens — Main Menu, Base Select, Game Over (SF-UX-001/002/008) === */
+
+/* ── Shared fullscreen ── */
+.menu-fullscreen {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-bg {
+    background-color: rgb(10, 8, 14);
+}
+
+.menu-panel {
+    width: 420px;
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-lg);
+    border-width: 2px;
+    border-color: var(--color-border);
+    padding: 32px;
+    align-items: center;
+}
+
+.menu-title {
+    font-size: 36px;
+    color: var(--color-turn);
+    -unity-font-style: bold;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+}
+
+.menu-subtitle {
+    font-size: var(--font-size-md);
+    color: var(--color-text-dim);
+    margin-bottom: 32px;
+}
+
+.menu-btn {
+    width: 280px;
+    height: 48px;
+    margin-bottom: 10px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-lg);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-property: background-color, border-color, scale;
+    transition-duration: 150ms;
+}
+
+.menu-btn:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-accent);
+    scale: 1.02;
+}
+
+.menu-btn--primary {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent-hover);
+    color: white;
+}
+
+.menu-btn--primary:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.menu-btn--disabled {
+    opacity: 0.4;
+}
+
+/* ── Base Select ── */
+.base-card {
+    width: 340px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 2px;
+    border-color: var(--color-border);
+}
+
+.base-card:hover {
+    border-color: var(--color-accent);
+    background-color: var(--color-bg-hover);
+}
+
+.base-card--selected {
+    border-color: var(--color-turn);
+    background-color: rgba(240, 200, 80, 0.08);
+}
+
+.base-name {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.base-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    white-space: normal;
+}
+
+.base-difficulty {
+    font-size: var(--font-size-sm);
+    color: var(--color-turn);
+    margin-top: 6px;
+}
+
+/* ── Game Over / Victory ── */
+.gameover-title {
+    font-size: 48px;
+    -unity-font-style: bold;
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+}
+
+.gameover-title--defeat {
+    color: var(--color-insufficient);
+}
+
+.gameover-title--victory {
+    color: var(--color-turn);
+}
+
+.gameover-stats {
+    width: 320px;
+    margin-bottom: 20px;
+}
+
+.gameover-stat-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+}
+
+.gameover-stat-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.gameover-stat-value {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.version-label {
+    font-size: var(--font-size-sm);
+    color: rgb(50, 45, 60);
+    margin-top: 24px;
+}
