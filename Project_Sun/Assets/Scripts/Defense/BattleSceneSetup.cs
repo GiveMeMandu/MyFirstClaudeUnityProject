@@ -203,14 +203,32 @@ namespace ProjectSun.V2.Defense
 
         void CreateFallbackMaterials()
         {
-            var shader = Shader.Find("Universal Render Pipeline/Lit")
-                      ?? Shader.Find("Standard");
+            _matEnemy = CreateURPMaterial(new Color(0.9f, 0.2f, 0.2f));
+            _matBuilding = CreateURPMaterial(new Color(0.5f, 0.5f, 0.6f));
+            _matTower = CreateURPMaterial(new Color(0.3f, 0.6f, 0.9f));
+            _matGround = CreateURPMaterial(new Color(0.15f, 0.12f, 0.1f));
+            _matHQ = CreateURPMaterial(new Color(0.9f, 0.8f, 0.3f));
+        }
 
-            _matEnemy = new Material(shader) { color = new Color(0.9f, 0.2f, 0.2f) };
-            _matBuilding = new Material(shader) { color = new Color(0.5f, 0.5f, 0.6f) };
-            _matTower = new Material(shader) { color = new Color(0.3f, 0.6f, 0.9f) };
-            _matGround = new Material(shader) { color = new Color(0.15f, 0.12f, 0.1f) };
-            _matHQ = new Material(shader) { color = new Color(0.9f, 0.8f, 0.3f) };
+        static Material CreateURPMaterial(Color color)
+        {
+            // URP Lit uses _BaseColor, Standard uses _Color
+            var shader = Shader.Find("Universal Render Pipeline/Lit");
+            if (shader != null)
+            {
+                var mat = new Material(shader);
+                mat.SetColor("_BaseColor", color);
+                return mat;
+            }
+
+            // Fallback to Standard
+            shader = Shader.Find("Standard");
+            if (shader != null)
+                return new Material(shader) { color = color };
+
+            // Last resort: Unlit
+            shader = Shader.Find("Unlit/Color");
+            return new Material(shader) { color = color };
         }
 
         void OnDestroy()

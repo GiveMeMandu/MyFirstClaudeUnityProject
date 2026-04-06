@@ -469,6 +469,7 @@ namespace ProjectSun.V2.Core
 
             _dayHud?.SetDisplay(true);
             _dayContent?.SetDisplay(true);
+            ShowDayTab(0); // 기본 Construction 탭 표시
         }
 
         /// <summary>Switch day tab. 0=Construction, 1=Workforce, 2=Exploration.</summary>

@@ -77,7 +77,7 @@
         <!-- ============================================================ -->
         <!-- 4. DAY CONTENT PANELS (opaque, cover 3D during day)          -->
         <!-- ============================================================ -->
-        <VisualElement name="day-content" style="display: none; flex-grow: 1;" picking-mode="Ignore">
+        <VisualElement name="day-content" style="display: none; flex-grow: 1; margin-top: 44px;" picking-mode="Ignore">
 
             <!-- 4a. Construction Panel -->
             <VisualElement name="construction-panel" class="construction-root" style="display: none;">

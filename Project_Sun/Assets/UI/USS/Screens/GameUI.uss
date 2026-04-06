@@ -281,7 +281,6 @@
     flex-grow: 1;
     flex-direction: row;
     background-color: rgba(15, 13, 20, 0.95);
-    padding-top: 46px;
 }
 
 .slot-panel {
@@ -569,7 +568,6 @@
     flex-grow: 1;
     flex-direction: row;
     background-color: rgba(15, 13, 20, 0.95);
-    padding-top: 46px;
 }
 
 .citizen-panel {
@@ -810,7 +808,6 @@
     flex-grow: 1;
     flex-direction: row;
     background-color: rgba(15, 13, 20, 0.95);
-    padding-top: 46px;
 }
 
 .map-panel {
