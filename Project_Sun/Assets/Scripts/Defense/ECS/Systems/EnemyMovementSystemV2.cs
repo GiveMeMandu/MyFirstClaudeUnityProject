@@ -68,10 +68,11 @@ namespace ProjectSun.Defense.ECS
             int buildingCount = _buildingPositions.Length;
             if (buildingCount == 0) return;
 
-            foreach (var (transform, stats, enemyState, target) in
+            foreach (var (transform, stats, enemyState, target, entity) in
                 SystemAPI.Query<RefRW<LocalTransform>, RefRO<EnemyStats>, RefRO<EnemyState>, RefRW<EnemyTarget>>()
                     .WithAll<EnemyTag>()
-                    .WithNone<DeadTag, FlowFieldAgent>())
+                    .WithNone<DeadTag, FlowFieldAgent>()
+                    .WithEntityAccess())
             {
                 if (enemyState.ValueRO.Value == (int)Defense.EnemyState.Attacking ||
                     enemyState.ValueRO.Value == (int)Defense.EnemyState.Dying)
@@ -79,13 +80,28 @@ namespace ProjectSun.Defense.ECS
 
                 bool isFlying = stats.ValueRO.EnemyType == 2;
 
+                // SF-WD-015: 벽 관련 특수행동 확인
+                bool skipWalls = isFlying; // 비행 유닛은 기본적으로 벽 무시
+                bool preferNonWall = false;
+
+                if (SystemAPI.HasComponent<EnemyAbilities>(entity))
+                {
+                    var abilities = SystemAPI.GetComponentRO<EnemyAbilities>(entity);
+                    // Burrower: 벽을 완전 무시 (비행 유닛처럼)
+                    if (abilities.ValueRO.BypassWalls) skipWalls = true;
+                    // Sprinter: 벽 아닌 건물 우선 (벽만 있으면 벽도 공격)
+                    if (abilities.ValueRO.AttemptsWallBypass) preferNonWall = true;
+                }
+
                 float closestDist = float.MaxValue;
                 int closestIdx = -1;
+                float closestNonWallDist = float.MaxValue;
+                int closestNonWallIdx = -1;
 
                 for (int i = 0; i < buildingCount; i++)
                 {
                     if (_buildingHP[i] <= 0f) continue;
-                    if (isFlying && _buildingIsWall[i]) continue;
+                    if (skipWalls && _buildingIsWall[i]) continue;
 
                     float dist = math.distancesq(transform.ValueRO.Position, _buildingPositions[i]);
                     if (dist < closestDist)
@@ -93,6 +109,19 @@ namespace ProjectSun.Defense.ECS
                         closestDist = dist;
                         closestIdx = i;
                     }
+                    // Sprinter: 비벽 건물 중 가장 가까운 것도 추적
+                    if (preferNonWall && !_buildingIsWall[i] && dist < closestNonWallDist)
+                    {
+                        closestNonWallDist = dist;
+                        closestNonWallIdx = i;
+                    }
+                }
+
+                // Sprinter: 비벽 건물이 있으면 우선 선택
+                if (preferNonWall && closestNonWallIdx >= 0)
+                {
+                    closestIdx = closestNonWallIdx;
+                    closestDist = closestNonWallDist;
                 }
 
                 if (closestIdx >= 0)

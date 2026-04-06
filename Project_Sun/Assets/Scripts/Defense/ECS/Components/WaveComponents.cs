@@ -31,6 +31,14 @@ namespace ProjectSun.Defense.ECS
         public float BaseDamage;
         public float BaseAttackRange;
         public float BaseAttackInterval;
+
+        // 특수행동 데이터 (SO에서 복사, SF-WD-015)
+        public bool BypassWalls;
+        public bool AttemptsWallBypass;
+        public float WallDamageMultiplier;
+        public bool ExplodesOnDeath;
+        public float DeathExplosionRadius;
+        public float DeathExplosionDamage;
     }
 
     /// <summary>
