@@ -1,0 +1,14 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/EncounterPopup.uss" />
+
+    <VisualElement name="encounter-root" style="flex-grow: 1;" picking-mode="Ignore">
+        <VisualElement name="encounter-overlay" class="encounter-overlay" style="display: none;">
+            <VisualElement class="encounter-panel">
+                <Label name="encounter-title" class="encounter-title" text="ENCOUNTER" />
+                <Label name="encounter-desc" class="encounter-desc" text="Something happened..." />
+                <VisualElement name="choice-list" class="choice-list" />
+            </VisualElement>
+        </VisualElement>
+    </VisualElement>
+</UXML>

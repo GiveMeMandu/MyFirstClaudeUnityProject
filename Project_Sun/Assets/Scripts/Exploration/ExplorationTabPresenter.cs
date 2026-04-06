@@ -18,8 +18,8 @@ namespace ProjectSun.V2.Exploration
         [SerializeField] UIDocument uiDocument;
         [SerializeField] ExplorationBridge explorationBridge;
 
-        [Header("Map Stub (5 nodes)")]
-        [SerializeField] int stubNodeCount = 5;
+        [Header("Map Config")]
+        [SerializeField] int stubNodeCount = 20;
 
         VisualElement _root;
         VisualElement _nodeGrid;
