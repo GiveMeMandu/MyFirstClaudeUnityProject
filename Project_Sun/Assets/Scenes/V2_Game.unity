@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &237674377
+--- !u!1 &178761605
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,252 +127,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 237674379}
-  - component: {fileID: 237674378}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &237674378
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237674377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 649742f4934110b4c853ee02ebd7ea01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AudioManager
-  bgmSource: {fileID: 0}
-  sfxSource: {fileID: 0}
-  defaultMasterVolume: 1
-  defaultBGMVolume: 0.7
-  defaultSFXVolume: 1
---- !u!4 &237674379
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 237674377}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &685366042
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 685366045}
-  - component: {fileID: 685366044}
-  - component: {fileID: 685366043}
-  m_Layer: 0
-  m_Name: Main Camera
-  m_TagString: MainCamera
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!81 &685366043
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366042}
-  m_Enabled: 1
---- !u!20 &685366044
-Camera:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366042}
-  m_Enabled: 1
-  serializedVersion: 2
-  m_ClearFlags: 2
-  m_BackGroundColor: {r: 0.06, g: 0.05, b: 0.08, a: 1}
-  m_projectionMatrixMode: 1
-  m_GateFitMode: 2
-  m_FOVAxisMode: 0
-  m_Iso: 200
-  m_ShutterSpeed: 0.005
-  m_Aperture: 16
-  m_FocusDistance: 10
-  m_FocalLength: 50
-  m_BladeCount: 5
-  m_Curvature: {x: 2, y: 11}
-  m_BarrelClipping: 0.25
-  m_Anamorphism: 0
-  m_SensorSize: {x: 36, y: 24}
-  m_LensShift: {x: 0, y: 0}
-  m_NormalizedViewPortRect:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 1
-    height: 1
-  near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 50
-  orthographic: 0
-  orthographic size: 5
-  m_Depth: -1
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingPath: -1
-  m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 0
-  m_TargetEye: 3
-  m_HDR: 1
-  m_AllowMSAA: 1
-  m_AllowDynamicResolution: 0
-  m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
-  m_StereoConvergence: 10
-  m_StereoSeparation: 0.022
---- !u!4 &685366045
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 685366042}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
-  m_LocalPosition: {x: 0, y: 40, z: -30}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &692437897
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 692437903}
-  - component: {fileID: 692437901}
-  - component: {fileID: 692437900}
-  - component: {fileID: 692437898}
-  - component: {fileID: 692437899}
-  - component: {fileID: 692437902}
-  m_Layer: 0
-  m_Name: BridgeLayer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &692437898
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7e3211cf395375459c9a1e44dc13399, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleUIBridge
---- !u!114 &692437899
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8857335ed748b294ca7717544b715fb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.BattleSceneSetup
-  gameDirector: {fileID: 1974815596}
-  battleUIBridge: {fileID: 692437898}
-  minBattleDuration: 3
-  spawnRadius: 45
-  enemySpeed: 5
---- !u!114 &692437900
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d49b2c5241589bc4eac62bd553e72e33, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleResultCollector
---- !u!114 &692437901
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e858e9fbeb8be694c8bc9f822dfc2d62, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleInitializer
-  _nightWaveConfig: {fileID: 0}
---- !u!114 &692437902
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4ddab3b5a8d92d64589164c6e119033c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.Defense.ECS.ECSSystemBootstrap
---- !u!4 &692437903
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 692437897}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &907423291
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 907423294}
-  - component: {fileID: 907423293}
-  - component: {fileID: 907423292}
+  - component: {fileID: 178761608}
+  - component: {fileID: 178761607}
+  - component: {fileID: 178761606}
   m_Layer: 0
   m_Name: GameUI
   m_TagString: Untagged
@@ -380,36 +137,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &907423292
+--- !u!114 &178761606
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907423291}
+  m_GameObject: {fileID: 178761605}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5775c380d5df8984894675407e84eb2f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameUIController
-  uiDocument: {fileID: 907423293}
-  director: {fileID: 1974815596}
-  battleUIBridge: {fileID: 692437898}
-  timeScaleController: {fileID: 1974815595}
-  gameOverManager: {fileID: 1974815594}
-  explorationBridge: {fileID: 1974815593}
-  encounterBridge: {fileID: 1974815592}
-  techTreeBridge: {fileID: 1974815591}
-  policyBridge: {fileID: 1974815590}
+  uiDocument: {fileID: 178761607}
+  director: {fileID: 393614240}
+  battleUIBridge: {fileID: 1478547082}
+  timeScaleController: {fileID: 393614239}
+  gameOverManager: {fileID: 393614238}
+  explorationBridge: {fileID: 393614237}
+  encounterBridge: {fileID: 393614236}
+  techTreeBridge: {fileID: 393614235}
+  policyBridge: {fileID: 393614234}
   soRegistry: {fileID: 0}
   stubNodeCount: 20
---- !u!114 &907423293
+--- !u!114 &178761607
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907423291}
+  m_GameObject: {fileID: 178761605}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
@@ -426,13 +183,13 @@ MonoBehaviour:
   m_PivotReferenceSize: 0
   m_Pivot: 0
   m_WorldSpaceCollider: {fileID: 0}
---- !u!4 &907423294
+--- !u!4 &178761608
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 907423291}
+  m_GameObject: {fileID: 178761605}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -441,7 +198,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1155729893
+--- !u!1 &393614233
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -449,96 +206,196 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1155729895}
-  - component: {fileID: 1155729894}
+  - component: {fileID: 393614244}
+  - component: {fileID: 393614240}
+  - component: {fileID: 393614243}
+  - component: {fileID: 393614239}
+  - component: {fileID: 393614238}
+  - component: {fileID: 393614242}
+  - component: {fileID: 393614241}
+  - component: {fileID: 393614237}
+  - component: {fileID: 393614236}
+  - component: {fileID: 393614235}
+  - component: {fileID: 393614234}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: GameDirector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &1155729894
-Light:
+--- !u!114 &393614234
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155729893}
+  m_GameObject: {fileID: 393614233}
   m_Enabled: 1
-  serializedVersion: 13
-  m_Type: 1
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 0.8
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 0.5, y: 0.5}
-  m_Shadows:
-    m_Type: 0
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShapeRadius: 0.025
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
---- !u!4 &1155729895
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0d0d58b5843424b9fd0639a09483ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PolicyBridge
+--- !u!114 &393614235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd76cae95e1445d45880d4eb63a117a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TechTreeBridge
+--- !u!114 &393614236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452bb08c8806ad040a5772461d3e1d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.EncounterBridge
+  baseChance: 0.4
+  pityIncrement: 0.15
+--- !u!114 &393614237
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00074a5c3167f9049bff7c7b2598f36d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ExplorationBridge
+  defaultTravelTurns: 2
+  bonfireBasicCost: 10
+  bonfireBaseChance: 0.3
+--- !u!114 &393614238
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c49f7a608e95d4f9750fd0caca2f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameOverManager
+  battleUIBridge: {fileID: 1478547082}
+--- !u!114 &393614239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09fd20f98daa2ac4b8b45840c90bd23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TimeScaleController
+  _autoSlowOnDamage: 1
+--- !u!114 &393614240
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7da788193aea3b4fa9630276fb618ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameDirector
+  phaseManager: {fileID: 393614243}
+  timeScaleController: {fileID: 393614239}
+  gameOverManager: {fileID: 393614238}
+  autoSaveHandler: {fileID: 393614242}
+  resourceFlowLogger: {fileID: 393614241}
+  explorationBridge: {fileID: 393614237}
+  encounterBridge: {fileID: 393614236}
+  techTreeBridge: {fileID: 393614235}
+  policyBridge: {fileID: 393614234}
+  battleInitializer: {fileID: 1478547085}
+  resultCollector: {fileID: 1478547084}
+  battleUIBridge: {fileID: 1478547082}
+  battleSceneSetup: {fileID: 1478547083}
+  uiController: {fileID: 178761606}
+--- !u!114 &393614241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5035b93eceab16348bff338ef299d9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ResourceFlowLogger
+--- !u!114 &393614242
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7fba06a7674814ba250e811c04eb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AutoSaveHandler
+  phaseManager: {fileID: 393614243}
+  enableAutoSave: 1
+--- !u!114 &393614243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 393614233}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b364c5acea8a7fe4ba8c0b06fd886e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PhaseManager
+  gameState:
+    currentTurn: 1
+    currentPhase: 0
+    resources:
+      basicAmount: 60
+      basicCap: 100
+      advancedAmount: 20
+      advancedCap: 40
+      relicAmount: 0
+    buildings: []
+    citizens: []
+    explorationNodes: []
+    waveHistory: []
+--- !u!4 &393614244
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1155729893}
+  m_GameObject: {fileID: 393614233}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.10938166, w: 0.8754261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1926616094
+--- !u!1 &482124605
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -546,9 +403,58 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1926616097}
-  - component: {fileID: 1926616096}
-  - component: {fileID: 1926616095}
+  - component: {fileID: 482124607}
+  - component: {fileID: 482124606}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &482124606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482124605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 649742f4934110b4c853ee02ebd7ea01, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AudioManager
+  bgmSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  defaultMasterVolume: 1
+  defaultBGMVolume: 0.7
+  defaultSFXVolume: 1
+--- !u!4 &482124607
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 482124605}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &546983285
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 546983288}
+  - component: {fileID: 546983287}
+  - component: {fileID: 546983286}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -556,13 +462,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1926616095
+--- !u!114 &546983286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926616094}
+  m_GameObject: {fileID: 546983285}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
@@ -585,13 +491,13 @@ MonoBehaviour:
   m_ShadowLayerMask: 1
   m_RenderingLayers: 1
   m_ShadowRenderingLayers: 1
---- !u!108 &1926616096
+--- !u!108 &546983287
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926616094}
+  m_GameObject: {fileID: 546983285}
   m_Enabled: 1
   serializedVersion: 13
   m_Type: 1
@@ -650,13 +556,13 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &1926616097
+--- !u!4 &546983288
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1926616094}
+  m_GameObject: {fileID: 546983285}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
   m_LocalPosition: {x: 0, y: 3, z: 0}
@@ -665,7 +571,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1974815589
+--- !u!1 &1365499731
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -673,190 +579,284 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1974815600}
-  - component: {fileID: 1974815596}
-  - component: {fileID: 1974815599}
-  - component: {fileID: 1974815595}
-  - component: {fileID: 1974815594}
-  - component: {fileID: 1974815598}
-  - component: {fileID: 1974815597}
-  - component: {fileID: 1974815593}
-  - component: {fileID: 1974815592}
-  - component: {fileID: 1974815591}
-  - component: {fileID: 1974815590}
+  - component: {fileID: 1365499733}
+  - component: {fileID: 1365499732}
   m_Layer: 0
-  m_Name: GameDirector
+  m_Name: Directional Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1974815590
-MonoBehaviour:
+--- !u!108 &1365499732
+Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
+  m_GameObject: {fileID: 1365499731}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f0d0d58b5843424b9fd0639a09483ff, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PolicyBridge
---- !u!114 &1974815591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cd76cae95e1445d45880d4eb63a117a0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TechTreeBridge
---- !u!114 &1974815592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452bb08c8806ad040a5772461d3e1d29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.EncounterBridge
-  baseChance: 0.4
-  pityIncrement: 0.15
---- !u!114 &1974815593
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00074a5c3167f9049bff7c7b2598f36d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ExplorationBridge
-  defaultTravelTurns: 2
-  bonfireBasicCost: 10
-  bonfireBaseChance: 0.3
---- !u!114 &1974815594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c49f7a608e95d4f9750fd0caca2f11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameOverManager
-  battleUIBridge: {fileID: 692437898}
---- !u!114 &1974815595
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09fd20f98daa2ac4b8b45840c90bd23b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TimeScaleController
-  _autoSlowOnDamage: 1
---- !u!114 &1974815596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7da788193aea3b4fa9630276fb618ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameDirector
-  phaseManager: {fileID: 1974815599}
-  timeScaleController: {fileID: 1974815595}
-  gameOverManager: {fileID: 1974815594}
-  autoSaveHandler: {fileID: 1974815598}
-  resourceFlowLogger: {fileID: 1974815597}
-  explorationBridge: {fileID: 1974815593}
-  encounterBridge: {fileID: 1974815592}
-  techTreeBridge: {fileID: 1974815591}
-  policyBridge: {fileID: 1974815590}
-  battleInitializer: {fileID: 692437901}
-  resultCollector: {fileID: 692437900}
-  battleUIBridge: {fileID: 692437898}
-  battleSceneSetup: {fileID: 692437899}
-  uiController: {fileID: 907423292}
---- !u!114 &1974815597
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5035b93eceab16348bff338ef299d9ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ResourceFlowLogger
---- !u!114 &1974815598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f7fba06a7674814ba250e811c04eb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AutoSaveHandler
-  phaseManager: {fileID: 1974815599}
-  enableAutoSave: 1
---- !u!114 &1974815599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b364c5acea8a7fe4ba8c0b06fd886e42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PhaseManager
-  gameState:
-    currentTurn: 1
-    currentPhase: 0
-    resources:
-      basicAmount: 60
-      basicCap: 100
-      advancedAmount: 20
-      advancedCap: 40
-      relicAmount: 0
-    buildings: []
-    citizens: []
-    explorationNodes: []
-    waveHistory: []
---- !u!4 &1974815600
+  serializedVersion: 13
+  m_Type: 1
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Intensity: 0.8
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!4 &1365499733
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1974815589}
+  m_GameObject: {fileID: 1365499731}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.10938166, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1478547081
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1478547087}
+  - component: {fileID: 1478547085}
+  - component: {fileID: 1478547084}
+  - component: {fileID: 1478547082}
+  - component: {fileID: 1478547083}
+  - component: {fileID: 1478547086}
+  m_Layer: 0
+  m_Name: BridgeLayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1478547082
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7e3211cf395375459c9a1e44dc13399, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleUIBridge
+--- !u!114 &1478547083
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8857335ed748b294ca7717544b715fb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.BattleSceneSetup
+  gameDirector: {fileID: 393614240}
+  battleUIBridge: {fileID: 1478547082}
+  minBattleDuration: 3
+  spawnRadius: 45
+  enemySpeed: 5
+--- !u!114 &1478547084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d49b2c5241589bc4eac62bd553e72e33, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleResultCollector
+--- !u!114 &1478547085
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e858e9fbeb8be694c8bc9f822dfc2d62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleInitializer
+  _nightWaveConfig: {fileID: 0}
+--- !u!114 &1478547086
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ddab3b5a8d92d64589164c6e119033c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.Defense.ECS.ECSSystemBootstrap
+--- !u!4 &1478547087
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1478547081}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1497802512
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1497802515}
+  - component: {fileID: 1497802514}
+  - component: {fileID: 1497802513}
+  m_Layer: 0
+  m_Name: Main Camera
+  m_TagString: MainCamera
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!81 &1497802513
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497802512}
+  m_Enabled: 1
+--- !u!20 &1497802514
+Camera:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497802512}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.06, g: 0.05, b: 0.08, a: 1}
+  m_projectionMatrixMode: 1
+  m_GateFitMode: 2
+  m_FOVAxisMode: 0
+  m_Iso: 200
+  m_ShutterSpeed: 0.005
+  m_Aperture: 16
+  m_FocusDistance: 10
+  m_FocalLength: 50
+  m_BladeCount: 5
+  m_Curvature: {x: 2, y: 11}
+  m_BarrelClipping: 0.25
+  m_Anamorphism: 0
+  m_SensorSize: {x: 36, y: 24}
+  m_LensShift: {x: 0, y: 0}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: 0.3
+  far clip plane: 1000
+  field of view: 50
+  orthographic: 0
+  orthographic size: 5
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_TargetDisplay: 0
+  m_TargetEye: 3
+  m_HDR: 1
+  m_AllowMSAA: 1
+  m_AllowDynamicResolution: 0
+  m_ForceIntoRT: 0
+  m_OcclusionCulling: 1
+  m_StereoConvergence: 10
+  m_StereoSeparation: 0.022
+--- !u!4 &1497802515
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1497802512}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
+  m_LocalPosition: {x: 0, y: 40, z: -30}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -866,10 +866,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 685366045}
-  - {fileID: 1926616097}
-  - {fileID: 1974815600}
-  - {fileID: 692437903}
-  - {fileID: 237674379}
-  - {fileID: 907423294}
-  - {fileID: 1155729895}
+  - {fileID: 1497802515}
+  - {fileID: 546983288}
+  - {fileID: 393614244}
+  - {fileID: 1478547087}
+  - {fileID: 482124607}
+  - {fileID: 178761608}
+  - {fileID: 1365499733}

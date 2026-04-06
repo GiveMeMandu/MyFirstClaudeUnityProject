@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using ProjectSun.V2.Core;
@@ -217,7 +218,8 @@ namespace ProjectSun.V2.Defense
                     if (enemy.hp <= 0)
                     {
                         enemy.alive = false;
-                        enemy.go.SetActive(false);
+                        // 사망 VFX: 스케일 펀치 + 색상 페이드
+                        StartCoroutine(DeathVFX(enemy.go));
                         _killedCount++;
                     }
                     _enemies[closestIdx] = enemy;
@@ -270,6 +272,29 @@ namespace ProjectSun.V2.Defense
             if (shader != null) { var m = new Material(shader); m.SetColor("_BaseColor", color); return m; }
             shader = Shader.Find("Standard");
             return new Material(shader) { color = color };
+        }
+
+        IEnumerator DeathVFX(GameObject go)
+        {
+            if (go == null) yield break;
+            var renderer = go.GetComponent<Renderer>();
+            float duration = 0.3f;
+            float elapsed = 0f;
+            Vector3 startScale = go.transform.localScale;
+
+            while (elapsed < duration && go != null)
+            {
+                elapsed += Time.deltaTime;
+                float t = elapsed / duration;
+                // 팽창 후 수축
+                float scale = t < 0.3f ? Mathf.Lerp(1f, 1.5f, t / 0.3f) : Mathf.Lerp(1.5f, 0f, (t - 0.3f) / 0.7f);
+                go.transform.localScale = startScale * scale;
+                if (renderer != null)
+                    renderer.material.SetColor("_BaseColor", Color.Lerp(new Color(0.9f, 0.2f, 0.2f), Color.white, t));
+                yield return null;
+            }
+
+            if (go != null) go.SetActive(false);
         }
 
         void OnDestroy() => CleanupScene();
