@@ -1,0 +1,182 @@
+/* === Exploration Tab — Day Phase Expedition UI (SF-EXP-005) === */
+
+.exploration-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+}
+
+/* ── Left: Node Map ── */
+.map-panel {
+    flex-grow: 1;
+    padding: 16px;
+    border-right-width: 1px;
+    border-right-color: var(--color-border);
+}
+
+.map-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+}
+
+.node-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.node-card {
+    width: 100px;
+    height: 100px;
+    margin: 6px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 2px;
+    border-color: var(--color-border);
+    justify-content: center;
+    align-items: center;
+    transition-property: scale;
+    transition-duration: 100ms;
+}
+
+.node-card:hover {
+    scale: 1.05;
+    border-color: var(--color-border-highlight);
+}
+
+.node-card--selected {
+    border-color: var(--color-accent);
+    border-width: 3px;
+    background-color: var(--color-bg-selected);
+}
+
+.node-card--hidden {
+    background-color: rgb(25, 22, 30);
+    border-color: rgb(40, 35, 50);
+    opacity: 0.5;
+}
+
+.node-card--visited {
+    border-color: var(--color-sufficient);
+}
+
+.node-card--base {
+    border-color: var(--color-turn);
+    background-color: rgba(240, 200, 80, 0.1);
+}
+
+.node-icon {
+    font-size: 28px;
+    color: var(--color-text-primary);
+    -unity-text-align: middle-center;
+}
+
+.node-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    -unity-text-align: upper-center;
+    margin-top: 4px;
+}
+
+/* ── Right: Expedition Panel ── */
+.expedition-panel {
+    width: 280px;
+    padding: 16px;
+}
+
+.expedition-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.expedition-status {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: 12px;
+}
+
+.expedition-list {
+    flex-grow: 1;
+}
+
+.expedition-item {
+    padding: 10px;
+    margin-bottom: 6px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-border);
+}
+
+.expedition-citizen {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.expedition-dest {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    margin-top: 2px;
+}
+
+.expedition-turns {
+    font-size: var(--font-size-sm);
+    color: var(--color-turn);
+    margin-top: 2px;
+}
+
+/* Dispatch section */
+.dispatch-section {
+    padding: 12px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    margin-top: 12px;
+}
+
+.dispatch-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+.dispatch-btn {
+    height: 36px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    color: white;
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.dispatch-btn:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.dispatch-btn--disabled {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-dim);
+}
+
+.bonfire-btn {
+    height: 36px;
+    background-color: var(--color-resource-basic);
+    color: var(--color-bg-dark);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+}
+
+.bonfire-btn:hover {
+    background-color: rgb(200, 160, 100);
+}

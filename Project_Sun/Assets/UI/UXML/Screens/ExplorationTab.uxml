@@ -1,0 +1,30 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/ExplorationTab.uss" />
+
+    <VisualElement name="exploration-root" class="exploration-root">
+
+        <!-- ═══ Left: Node Map ═══ -->
+        <VisualElement class="map-panel">
+            <Label class="map-title" text="EXPLORATION MAP" />
+            <VisualElement name="node-grid" class="node-grid" />
+        </VisualElement>
+
+        <!-- ═══ Right: Expedition Panel ═══ -->
+        <VisualElement class="expedition-panel">
+            <Label class="expedition-title" text="EXPEDITIONS" />
+            <Label name="expedition-status" class="expedition-status" text="0 active expeditions" />
+
+            <!-- Active expeditions -->
+            <ScrollView name="expedition-list" class="expedition-list" />
+
+            <!-- Dispatch controls -->
+            <VisualElement class="dispatch-section">
+                <Label class="dispatch-label" text="Select a node to dispatch" />
+                <Button name="btn-dispatch" class="dispatch-btn dispatch-btn--disabled" text="DISPATCH EXPEDITION" />
+                <Button name="btn-bonfire" class="bonfire-btn" text="INVEST BONFIRE (10 Basic)" />
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>
