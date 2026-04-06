@@ -65,21 +65,21 @@ public static class GameSceneBuilder
         var audioGO = new GameObject("AudioManager");
         audioGO.AddComponent<AudioManager>();
 
-        // ── 4. UI Presenters (각각 UIDocument 포함) ──
+        // ── 4. UI Presenters (sortOrder: 콘텐츠=0, HUD=100, 오버레이=200) ──
         var menuPresenter = CreatePresenter<MenuScreenPresenter>(
-            "UI_Menu", "Assets/UI/UXML/Screens/MenuScreens.uxml", panelSettings);
+            "UI_Menu", "Assets/UI/UXML/Screens/MenuScreens.uxml", panelSettings, 200);
         var battleHUD = CreatePresenter<BattleHUDPresenter>(
-            "UI_BattleHUD", "Assets/UI/UXML/Screens/BattleHUD.uxml", panelSettings);
+            "UI_BattleHUD", "Assets/UI/UXML/Screens/BattleHUD.uxml", panelSettings, 100);
         var constructionTab = CreatePresenter<ConstructionTabPresenter>(
-            "UI_ConstructionTab", "Assets/UI/UXML/Screens/ConstructionTab.uxml", panelSettings);
+            "UI_ConstructionTab", "Assets/UI/UXML/Screens/ConstructionTab.uxml", panelSettings, 0);
         var workforceTab = CreatePresenter<WorkforceTabPresenter>(
-            "UI_WorkforceTab", "Assets/UI/UXML/Screens/WorkforceTab.uxml", panelSettings);
+            "UI_WorkforceTab", "Assets/UI/UXML/Screens/WorkforceTab.uxml", panelSettings, 0);
         var explorationTab = CreatePresenter<ExplorationTabPresenter>(
-            "UI_ExplorationTab", "Assets/UI/UXML/Screens/ExplorationTab.uxml", panelSettings);
+            "UI_ExplorationTab", "Assets/UI/UXML/Screens/ExplorationTab.uxml", panelSettings, 0);
         var wavePreview = CreatePresenter<WavePreviewPresenter>(
-            "UI_WavePreview", "Assets/UI/UXML/Screens/WavePreview.uxml", panelSettings);
+            "UI_WavePreview", "Assets/UI/UXML/Screens/WavePreview.uxml", panelSettings, 200);
         var encounterPopup = CreatePresenter<EncounterPopupPresenter>(
-            "UI_EncounterPopup", "Assets/UI/UXML/Screens/EncounterPopup.uxml", panelSettings);
+            "UI_EncounterPopup", "Assets/UI/UXML/Screens/EncounterPopup.uxml", panelSettings, 200);
 
         // Wire presenter refs to director
         SetField(director, "menuPresenter", menuPresenter.GetComponent<MenuScreenPresenter>());
@@ -99,7 +99,7 @@ public static class GameSceneBuilder
 
         // ── 5. Day Tab Controller (UI Toolkit) ──
         var tabPresenter = CreatePresenter<DayTabController>(
-            "UI_DayHUD", "Assets/UI/UXML/Screens/DayHUD.uxml", panelSettings);
+            "UI_DayHUD", "Assets/UI/UXML/Screens/DayHUD.uxml", panelSettings, 100);
         var tabCtrl = tabPresenter.GetComponent<DayTabController>();
         SetField(tabCtrl, "director", director);
         SetField(director, "dayTabController", tabCtrl);
@@ -132,7 +132,7 @@ public static class GameSceneBuilder
             "OK");
     }
 
-    static GameObject CreatePresenter<T>(string name, string uxmlPath, PanelSettings panelSettings)
+    static GameObject CreatePresenter<T>(string name, string uxmlPath, PanelSettings panelSettings, float sortOrder = 0)
         where T : MonoBehaviour
     {
         var go = new GameObject(name);
@@ -144,6 +144,7 @@ public static class GameSceneBuilder
         else Debug.LogWarning($"[GameSceneBuilder] UXML not found: {uxmlPath}");
 
         if (panelSettings != null) uiDoc.panelSettings = panelSettings;
+        uiDoc.sortingOrder = sortOrder;
 
         // Wire UIDocument ref via reflection
         SetField(go.GetComponent<T>(), "uiDocument", uiDoc);
