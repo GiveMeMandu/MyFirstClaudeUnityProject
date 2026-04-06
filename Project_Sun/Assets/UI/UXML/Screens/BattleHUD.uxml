@@ -1,0 +1,66 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/BattleHUD.uss" />
+
+    <VisualElement name="battle-hud-root" style="flex-grow: 1;" picking-mode="Ignore">
+
+        <!-- ═══ Top Bar: Wave Progress + Enemy Count ═══ -->
+        <VisualElement name="top-bar" class="battle-top-bar">
+            <VisualElement class="wave-info">
+                <Label name="wave-label" class="wave-label" text="WAVE 1/3" />
+                <VisualElement class="wave-progress-container">
+                    <VisualElement name="wave-progress-fill" class="wave-progress-fill" />
+                </VisualElement>
+            </VisualElement>
+            <VisualElement class="enemy-count">
+                <Label name="enemy-count-label" class="enemy-count-label" text="0 / 0" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ═══ Left: Squad Status Panel ═══ -->
+        <VisualElement name="squad-panel" class="squad-panel" picking-mode="Ignore">
+            <Label class="squad-panel-title" text="SQUADS" />
+            <Label name="squad-count-label" class="squad-hp-label" text="0 squads" />
+            <VisualElement class="squad-hp-bar-bg">
+                <VisualElement name="squad-hp-fill" class="squad-hp-bar-fill" />
+            </VisualElement>
+            <Label name="squad-hp-label" class="squad-hp-label" text="0 / 0" />
+        </VisualElement>
+
+        <!-- ═══ Right: Building HP Panel ═══ -->
+        <VisualElement name="building-panel" class="building-panel" picking-mode="Ignore">
+            <Label class="building-panel-title" text="BUILDINGS" />
+
+            <!-- HQ HP (highlighted) -->
+            <VisualElement class="hq-section">
+                <Label class="hq-label" text="HEADQUARTERS" />
+                <VisualElement class="hq-hp-bar-bg">
+                    <VisualElement name="hq-hp-fill" class="hq-hp-bar-fill" />
+                </VisualElement>
+                <Label name="hq-hp-label" class="hq-hp-label" text="500 / 500" />
+            </VisualElement>
+
+            <!-- Total Building HP -->
+            <Label class="building-total-label" text="All Buildings" />
+            <VisualElement class="building-hp-bar-bg">
+                <VisualElement name="building-hp-fill" class="building-hp-bar-fill" />
+            </VisualElement>
+            <Label name="building-hp-label" class="squad-hp-label" text="0 / 0" />
+        </VisualElement>
+
+        <!-- ═══ Bottom Right: Speed Controls ═══ -->
+        <VisualElement name="speed-controls" class="speed-controls">
+            <Label class="speed-label" text="SPEED" />
+            <Button name="btn-speed-1x" class="speed-btn speed-btn--active" text="1x" />
+            <Button name="btn-speed-2x" class="speed-btn" text="2x" />
+            <Button name="btn-pause" class="speed-btn" text="II" />
+        </VisualElement>
+
+        <!-- ═══ Game Over Overlay ═══ -->
+        <VisualElement name="game-over-overlay" class="game-over-overlay">
+            <Label class="game-over-text" text="GAME OVER" />
+            <Label name="game-over-sub" class="game-over-sub" text="Headquarters destroyed" />
+        </VisualElement>
+
+    </VisualElement>
+</UXML>
