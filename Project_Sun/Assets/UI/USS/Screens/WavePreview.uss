@@ -1,0 +1,172 @@
+/* === Wave Preview + Battle Result Screens (SF-WD-012, SF-WD-014) === */
+
+/* ── Shared overlay ── */
+.overlay-bg {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-panel {
+    width: 500px;
+    min-height: 300px;
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-lg);
+    border-width: 2px;
+    border-color: var(--color-border);
+    padding: 24px;
+}
+
+.overlay-title {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 16px;
+}
+
+.overlay-close-btn {
+    height: 40px;
+    margin-top: 16px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    color: white;
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+}
+
+.overlay-close-btn:hover {
+    background-color: var(--color-accent-hover);
+}
+
+/* ── Wave Preview specifics ── */
+.wave-direction-row {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 16px;
+}
+
+.direction-indicator {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: var(--color-bg-card);
+    border-width: 2px;
+    border-color: var(--color-border);
+    justify-content: center;
+    align-items: center;
+}
+
+.direction-indicator--active {
+    border-color: var(--color-insufficient);
+    background-color: rgba(220, 80, 80, 0.2);
+}
+
+.direction-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.direction-count {
+    font-size: var(--font-size-lg);
+    color: var(--color-insufficient);
+    -unity-font-style: bold;
+}
+
+.wave-detail-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+}
+
+.wave-detail-label {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.wave-detail-value {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.scout-info {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    -unity-text-align: upper-center;
+    margin-top: 8px;
+    -unity-font-style: italic;
+}
+
+/* ── Battle Result specifics ── */
+.result-grade {
+    font-size: 36px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 12px;
+}
+
+.grade--perfect {
+    color: var(--color-turn);
+}
+
+.grade--minor {
+    color: var(--color-sufficient);
+}
+
+.grade--moderate {
+    color: var(--color-resource-advanced);
+}
+
+.grade--major {
+    color: var(--color-insufficient);
+}
+
+.reward-row {
+    flex-direction: row;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.reward-item {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 12px;
+}
+
+.reward-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+.reward-value {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.damage-list {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+}
+
+.damage-list-title {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    margin-bottom: 4px;
+}
+
+.damage-list-item {
+    font-size: var(--font-size-sm);
+    color: var(--color-insufficient);
+}

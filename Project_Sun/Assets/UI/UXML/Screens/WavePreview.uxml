@@ -1,0 +1,96 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/WavePreview.uss" />
+
+    <VisualElement name="wave-preview-root" style="flex-grow: 1;" picking-mode="Ignore">
+
+        <!-- ═══ Wave Preview Overlay ═══ -->
+        <VisualElement name="wave-preview-overlay" class="overlay-bg" style="display: none;">
+            <VisualElement class="overlay-panel">
+                <Label class="overlay-title" text="INCOMING WAVE" />
+
+                <!-- Direction indicators -->
+                <VisualElement class="wave-direction-row">
+                    <VisualElement name="dir-north" class="direction-indicator">
+                        <Label class="direction-label" text="N" />
+                        <Label name="dir-north-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-east" class="direction-indicator">
+                        <Label class="direction-label" text="E" />
+                        <Label name="dir-east-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-south" class="direction-indicator">
+                        <Label class="direction-label" text="S" />
+                        <Label name="dir-south-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-west" class="direction-indicator">
+                        <Label class="direction-label" text="W" />
+                        <Label name="dir-west-count" class="direction-count" text="0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Wave details -->
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Total Enemies" />
+                    <Label name="preview-total" class="wave-detail-value" text="0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Wave Count" />
+                    <Label name="preview-waves" class="wave-detail-value" text="0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Threat Level" />
+                    <Label name="preview-threat" class="wave-detail-value" text="???" />
+                </VisualElement>
+
+                <Label name="scout-info" class="scout-info" text="Scout level: Unknown — dispatch expedition for details" />
+
+                <Button name="btn-close-preview" class="overlay-close-btn" text="CLOSE" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ═══ Battle Result Overlay ═══ -->
+        <VisualElement name="battle-result-overlay" class="overlay-bg" style="display: none;">
+            <VisualElement class="overlay-panel">
+                <Label class="overlay-title" text="BATTLE RESULT" />
+
+                <Label name="result-grade" class="result-grade grade--perfect" text="PERFECT DEFENSE" />
+
+                <!-- Rewards -->
+                <VisualElement class="reward-row">
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon cost-icon--basic" />
+                        <Label name="reward-basic" class="reward-value" text="+0" />
+                    </VisualElement>
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon cost-icon--advanced" />
+                        <Label name="reward-advanced" class="reward-value" text="+0" />
+                    </VisualElement>
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon" style="background-color: var(--color-resource-relic);" />
+                        <Label name="reward-relic" class="reward-value" text="+0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Stats -->
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Enemies Defeated" />
+                    <Label name="result-killed" class="wave-detail-value" text="0 / 0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Damage Ratio" />
+                    <Label name="result-damage" class="wave-detail-value" text="0%" />
+                </VisualElement>
+
+                <!-- Damaged buildings list -->
+                <VisualElement name="damage-list" class="damage-list" style="display: none;">
+                    <Label class="damage-list-title" text="Damaged Buildings:" />
+                    <Label name="damage-list-items" class="damage-list-item" text="" />
+                </VisualElement>
+
+                <Button name="btn-close-result" class="overlay-close-btn" text="CONTINUE" />
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>
