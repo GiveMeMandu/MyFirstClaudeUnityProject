@@ -28,10 +28,11 @@ namespace ProjectSun.Defense.ECS
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
 
-            foreach (var (transform, stats, enemyState, target, attackTimer) in
+            foreach (var (transform, stats, enemyState, target, attackTimer, entity) in
                 SystemAPI.Query<RefRO<LocalTransform>, RefRO<EnemyStats>, RefRW<EnemyState>, RefRW<EnemyTarget>, RefRW<AttackTimer>>()
                     .WithAll<EnemyTag>()
-                    .WithNone<DeadTag>())
+                    .WithNone<DeadTag>()
+                    .WithEntityAccess())
             {
                 if (!target.ValueRO.HasTarget) continue;
 
@@ -69,8 +70,21 @@ namespace ProjectSun.Defense.ECS
                         // IBufferElementData Append — 여러 적이 동시 공격해도 각각 기록됨
                         if (SystemAPI.HasBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity))
                         {
+                            float damage = stats.ValueRO.Damage;
+
+                            // SF-WD-015: 벽 대상 피해 배율 (Charger)
+                            if (SystemAPI.HasComponent<BuildingData>(target.ValueRO.TargetEntity))
+                            {
+                                var bData = SystemAPI.GetComponentRO<BuildingData>(target.ValueRO.TargetEntity);
+                                if (bData.ValueRO.IsWall && SystemAPI.HasComponent<EnemyAbilities>(entity))
+                                {
+                                    var abilities = SystemAPI.GetComponentRO<EnemyAbilities>(entity);
+                                    damage *= abilities.ValueRO.WallDamageMultiplier;
+                                }
+                            }
+
                             var damageBuffer = SystemAPI.GetBuffer<BuildingDamageBuffer>(target.ValueRO.TargetEntity);
-                            damageBuffer.Add(new BuildingDamageBuffer { Damage = stats.ValueRO.Damage });
+                            damageBuffer.Add(new BuildingDamageBuffer { Damage = damage });
                         }
                     }
                 }

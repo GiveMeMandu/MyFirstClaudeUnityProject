@@ -1,0 +1,124 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/ConstructionTab.uss" />
+
+    <VisualElement name="construction-root" class="construction-root">
+
+        <!-- ═══ Left: Building Slot List ═══ -->
+        <VisualElement class="slot-panel">
+            <Label class="slot-panel-title" text="BUILDING SLOTS" />
+            <ScrollView name="slot-list" class="slot-list" />
+        </VisualElement>
+
+        <!-- ═══ Right: Detail Panel ═══ -->
+        <VisualElement name="detail-panel" class="detail-panel">
+
+            <!-- Empty state (no selection) -->
+            <VisualElement name="empty-prompt" class="empty-prompt">
+                <Label class="empty-prompt-text" text="Select a slot to view details" />
+            </VisualElement>
+
+            <!-- Detail content (hidden by default) -->
+            <VisualElement name="detail-content" style="display: none; flex-grow: 1;">
+
+                <!-- Header -->
+                <VisualElement class="detail-header">
+                    <Label name="detail-name" class="detail-name" text="Building Name" />
+                    <Label name="detail-category" class="detail-category" text="Category" />
+                </VisualElement>
+
+                <Label name="detail-desc" class="detail-desc" text="Description" />
+
+                <!-- HP bar -->
+                <VisualElement name="hp-section" class="hp-bar-container">
+                    <Label name="hp-label" class="hp-bar-label" text="HP: 100 / 100" />
+                    <VisualElement class="hp-bar-bg">
+                        <VisualElement name="hp-fill" class="hp-bar-fill" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Stats -->
+                <VisualElement name="stats-grid" class="stats-grid">
+                    <VisualElement class="stat-box">
+                        <Label class="stat-label" text="Production" />
+                        <Label name="stat-production" class="stat-value" text="-" />
+                    </VisualElement>
+                    <VisualElement class="stat-box">
+                        <Label class="stat-label" text="Storage Bonus" />
+                        <Label name="stat-storage" class="stat-value" text="-" />
+                    </VisualElement>
+                    <VisualElement class="stat-box">
+                        <Label class="stat-label" text="Attack" />
+                        <Label name="stat-attack" class="stat-value" text="-" />
+                    </VisualElement>
+                    <VisualElement class="stat-box">
+                        <Label class="stat-label" text="Range" />
+                        <Label name="stat-range" class="stat-value" text="-" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Build cost (for empty slots) -->
+                <VisualElement name="build-section" style="display: none;">
+                    <Label text="Build Cost" class="hp-bar-label" />
+                    <VisualElement class="cost-row">
+                        <VisualElement class="cost-item">
+                            <VisualElement class="cost-icon cost-icon--basic" />
+                            <Label name="build-cost-basic" class="cost-value" text="0" />
+                        </VisualElement>
+                        <VisualElement class="cost-item">
+                            <VisualElement class="cost-icon cost-icon--advanced" />
+                            <Label name="build-cost-advanced" class="cost-value" text="0" />
+                        </VisualElement>
+                    </VisualElement>
+                    <VisualElement class="action-row">
+                        <Button name="btn-build" class="action-btn" text="BUILD" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Upgrade section (for active buildings) -->
+                <VisualElement name="upgrade-section" style="display: none;">
+                    <Label text="Upgrade Path" class="hp-bar-label" />
+                    <VisualElement name="branch-row" class="branch-row">
+                        <VisualElement name="branch-a" class="branch-card">
+                            <Label name="branch-a-name" class="branch-name" text="Branch A" />
+                            <Label name="branch-a-desc" class="branch-desc" text="" />
+                            <VisualElement class="cost-row">
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--basic" />
+                                    <Label name="branch-a-cost-basic" class="cost-value" text="0" />
+                                </VisualElement>
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--advanced" />
+                                    <Label name="branch-a-cost-advanced" class="cost-value" text="0" />
+                                </VisualElement>
+                            </VisualElement>
+                        </VisualElement>
+                        <VisualElement name="branch-b" class="branch-card">
+                            <Label name="branch-b-name" class="branch-name" text="Branch B" />
+                            <Label name="branch-b-desc" class="branch-desc" text="" />
+                            <VisualElement class="cost-row">
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--basic" />
+                                    <Label name="branch-b-cost-basic" class="cost-value" text="0" />
+                                </VisualElement>
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--advanced" />
+                                    <Label name="branch-b-cost-advanced" class="cost-value" text="0" />
+                                </VisualElement>
+                            </VisualElement>
+                        </VisualElement>
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Repair section (for damaged buildings) -->
+                <VisualElement name="repair-section" style="display: none;">
+                    <VisualElement class="action-row">
+                        <Button name="btn-repair" class="action-btn action-btn--repair" text="REPAIR" />
+                    </VisualElement>
+                </VisualElement>
+
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>

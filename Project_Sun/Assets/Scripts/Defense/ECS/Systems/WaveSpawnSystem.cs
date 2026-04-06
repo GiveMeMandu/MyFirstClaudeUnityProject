@@ -104,6 +104,22 @@ namespace ProjectSun.Defense.ECS
                         RemainingTime = 0f
                     });
 
+                    // 특수행동 컴포넌트 (SF-WD-015)
+                    bool hasAbility = group.BypassWalls || group.AttemptsWallBypass
+                        || group.ExplodesOnDeath || group.WallDamageMultiplier > 1f;
+                    if (hasAbility)
+                    {
+                        ecb.AddComponent(enemyEntity, new EnemyAbilities
+                        {
+                            BypassWalls = group.BypassWalls,
+                            AttemptsWallBypass = group.AttemptsWallBypass,
+                            WallDamageMultiplier = group.WallDamageMultiplier,
+                            ExplodesOnDeath = group.ExplodesOnDeath,
+                            DeathExplosionRadius = group.DeathExplosionRadius,
+                            DeathExplosionDamage = group.DeathExplosionDamage
+                        });
+                    }
+
                     totalSpawnedThisFrame++;
                 }
 

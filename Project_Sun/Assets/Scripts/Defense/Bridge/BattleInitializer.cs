@@ -380,6 +380,10 @@ namespace ProjectSun.V2.Defense.Bridge
                     // Map EnemyTier to legacy EnemyType int for WaveSpawnSystem compatibility
                     int enemyTypeInt = MapTierToEnemyType(enemyData.tier);
 
+                    // 특수행동 데이터 추출 (SF-WD-015)
+                    var ability = enemyData.specialAbility;
+                    bool hasAbility = ability != null;
+
                     var entity = _entityManager.CreateEntity();
                     _createdEntities.Add(entity);
                     _entityManager.AddComponentData(entity, new SpawnGroup
@@ -394,7 +398,14 @@ namespace ProjectSun.V2.Defense.Bridge
                         BaseSpeed = enemyData.moveSpeed,
                         BaseDamage = enemyData.attackDamage,
                         BaseAttackRange = enemyData.attackRangeValue,
-                        BaseAttackInterval = enemyData.attackInterval
+                        BaseAttackInterval = enemyData.attackInterval,
+                        // 특수행동 (SO → SpawnGroup → 적 엔티티)
+                        BypassWalls = hasAbility && ability.bypassWalls,
+                        AttemptsWallBypass = hasAbility && ability.attemptsWallBypass,
+                        WallDamageMultiplier = hasAbility ? ability.wallDamageMultiplier : 1f,
+                        ExplodesOnDeath = hasAbility && ability.explodesOnDeath,
+                        DeathExplosionRadius = hasAbility ? ability.deathExplosionRadius : 0f,
+                        DeathExplosionDamage = hasAbility ? ability.deathExplosionDamage : 0f
                     });
                     CreatedEntityCount++;
                 }
