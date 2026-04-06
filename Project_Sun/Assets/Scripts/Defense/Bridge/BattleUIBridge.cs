@@ -89,12 +89,15 @@ namespace ProjectSun.V2.Defense.Bridge
 
         void DisposeQueries()
         {
-            if (_allEnemyQuery.IsValid) _allEnemyQuery.Dispose();
-            if (_aliveEnemyQuery.IsValid) _aliveEnemyQuery.Dispose();
-            if (_buildingQuery.IsValid) _buildingQuery.Dispose();
-            if (_squadQuery.IsValid) _squadQuery.Dispose();
-            if (_waveManagerQuery.IsValid) _waveManagerQuery.Dispose();
-            if (_battleStatsQuery.IsValid) _battleStatsQuery.Dispose();
+            var world = World.DefaultGameObjectInjectionWorld;
+            if (world == null || !world.IsCreated) return;
+
+            _allEnemyQuery.Dispose();
+            _aliveEnemyQuery.Dispose();
+            _buildingQuery.Dispose();
+            _squadQuery.Dispose();
+            _waveManagerQuery.Dispose();
+            _battleStatsQuery.Dispose();
         }
 
         void Update()
