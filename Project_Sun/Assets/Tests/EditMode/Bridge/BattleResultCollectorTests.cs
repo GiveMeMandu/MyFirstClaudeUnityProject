@@ -18,6 +18,7 @@ namespace ProjectSun.Tests.EditMode.Bridge
     [TestFixture]
     public class BattleResultCollectorTests
     {
+        World _testWorld;
         GameObject _go;
         BattleResultCollector _collector;
         EntityManager _em;
@@ -28,9 +29,14 @@ namespace ProjectSun.Tests.EditMode.Bridge
         [SetUp]
         public void SetUp()
         {
-            var world = World.DefaultGameObjectInjectionWorld;
-            Assert.IsNotNull(world, "ECS World이 필요합니다.");
-            _em = world.EntityManager;
+            // EditMode에서는 DefaultGameObjectInjectionWorld가 null이므로 자체 World 생성
+            _testWorld = World.DefaultGameObjectInjectionWorld;
+            if (_testWorld == null || !_testWorld.IsCreated)
+            {
+                _testWorld = new World("TestWorld");
+                World.DefaultGameObjectInjectionWorld = _testWorld;
+            }
+            _em = _testWorld.EntityManager;
             _entities.Clear();
 
             _go = new GameObject("TestBattleResultCollector");
@@ -50,6 +56,13 @@ namespace ProjectSun.Tests.EditMode.Bridge
 
             if (_go != null)
                 Object.DestroyImmediate(_go);
+
+            // 테스트용 World 정리
+            if (_testWorld != null && _testWorld.IsCreated)
+            {
+                _testWorld.Dispose();
+                World.DefaultGameObjectInjectionWorld = null;
+            }
         }
 
         // -------------------------------------------------------------------------
@@ -378,9 +391,9 @@ namespace ProjectSun.Tests.EditMode.Bridge
             // Act
             var result = _collector.CollectResults(gameState);
 
-            // Assert: basicReward = round(1.0 * 20) = 20
-            Assert.That(result.basicReward, Is.EqualTo(20),
-                "적 100% 처치 시 basicReward = 20 이어야 합니다.");
+            // Assert: PerfectDefense + defenseRatio=1.0 → Lerp(10,15,1.0) = 15
+            Assert.That(result.basicReward, Is.EqualTo(15),
+                "적 100% 처치 + 완벽 방어 시 basicReward = 15 이어야 합니다 (Economy-Model).");
         }
 
         [Test]
@@ -400,9 +413,9 @@ namespace ProjectSun.Tests.EditMode.Bridge
             // Act
             var result = _collector.CollectResults(gameState);
 
-            // Assert: basicReward = round(0.5 * 20) = 10
-            Assert.That(result.basicReward, Is.EqualTo(10),
-                "적 50% 처치 시 basicReward = 10 이어야 합니다.");
+            // Assert: PerfectDefense + defenseRatio=0.5 → Lerp(10,15,0.5) = 12~13
+            Assert.That(result.basicReward, Is.InRange(12, 13),
+                "적 50% 처치 + 완벽 방어 시 basicReward ≈ 12~13 이어야 합니다 (Economy-Model).");
         }
 
         [Test]
@@ -422,10 +435,10 @@ namespace ProjectSun.Tests.EditMode.Bridge
             // Act
             var result = _collector.CollectResults(gameState);
 
-            // Assert: isPerfectDefense=true → advancedReward = 5
+            // Assert: isPerfectDefense=true → advancedReward = Lerp(4,6,1.0) = 6
             Assert.IsTrue(result.isPerfectDefense);
-            Assert.That(result.advancedReward, Is.EqualTo(5),
-                "완벽 방어 시 advancedReward = 5 이어야 합니다.");
+            Assert.That(result.advancedReward, Is.EqualTo(6),
+                "완벽 방어 + 100% 처치 시 advancedReward = 6 이어야 합니다 (Economy-Model).");
         }
 
         [Test]
@@ -468,9 +481,9 @@ namespace ProjectSun.Tests.EditMode.Bridge
             // Act
             var result = _collector.CollectResults(gameState);
 
-            // Assert: enemiesTotal=0이므로 defenseRatio=1f → basicReward=20
-            Assert.That(result.basicReward, Is.EqualTo(20),
-                "적이 없는 경우 defenseRatio=1(폴백) → basicReward=20 이어야 합니다.");
+            // Assert: enemiesTotal=0 → defenseRatio=1f → PerfectDefense Lerp(10,15,1.0)=15
+            Assert.That(result.basicReward, Is.EqualTo(15),
+                "적이 없는 경우 defenseRatio=1(폴백) → basicReward=15 이어야 합니다 (Economy-Model).");
         }
 
         // -------------------------------------------------------------------------

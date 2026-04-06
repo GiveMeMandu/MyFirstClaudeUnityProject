@@ -19,6 +19,7 @@ namespace ProjectSun.Tests.EditMode.Bridge
     [TestFixture]
     public class BattleInitializerTests
     {
+        World _testWorld;
         GameObject _go;
         BattleInitializer _initializer;
         EntityManager _em;
@@ -26,9 +27,14 @@ namespace ProjectSun.Tests.EditMode.Bridge
         [SetUp]
         public void SetUp()
         {
-            var world = World.DefaultGameObjectInjectionWorld;
-            Assert.IsNotNull(world, "ECS World이 필요합니다. EditMode에서는 DefaultGameObjectInjectionWorld가 존재해야 합니다.");
-            _em = world.EntityManager;
+            // EditMode에서는 DefaultGameObjectInjectionWorld가 null이므로 자체 World 생성
+            _testWorld = World.DefaultGameObjectInjectionWorld;
+            if (_testWorld == null || !_testWorld.IsCreated)
+            {
+                _testWorld = new World("TestWorld");
+                World.DefaultGameObjectInjectionWorld = _testWorld;
+            }
+            _em = _testWorld.EntityManager;
 
             _go = new GameObject("TestBattleInitializer");
             _initializer = _go.AddComponent<BattleInitializer>();
@@ -38,18 +44,18 @@ namespace ProjectSun.Tests.EditMode.Bridge
         public void TearDown()
         {
             // 생성된 엔티티 정리
-            _initializer.CleanupBattleEntities();
-
-            // 남은 Enemy 엔티티도 정리
-            var world = World.DefaultGameObjectInjectionWorld;
-            if (world != null && world.IsCreated)
-            {
-                var enemyQuery = _em.CreateEntityQuery(ComponentType.ReadOnly<EnemyTag>());
-                _em.DestroyEntity(enemyQuery);
-            }
+            if (_initializer != null)
+                _initializer.CleanupBattleEntities();
 
             if (_go != null)
                 Object.DestroyImmediate(_go);
+
+            // 테스트용 World 정리
+            if (_testWorld != null && _testWorld.IsCreated)
+            {
+                _testWorld.Dispose();
+                World.DefaultGameObjectInjectionWorld = null;
+            }
         }
 
         // -------------------------------------------------------------------------
