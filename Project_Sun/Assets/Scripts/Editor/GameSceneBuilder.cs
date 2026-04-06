@@ -56,10 +56,15 @@ public static class GameSceneBuilder
         var resultCollector = bridgeGO.AddComponent<BattleResultCollector>();
         var uiBridge = bridgeGO.AddComponent<BattleUIBridge>();
 
+        var battleScene = bridgeGO.AddComponent<BattleSceneSetup>();
+
         SetField(director, "battleInitializer", battleInit);
         SetField(director, "resultCollector", resultCollector);
         SetField(director, "battleUIBridge", uiBridge);
+        SetField(director, "battleSceneSetup", battleScene);
         SetField(gameOver, "battleUIBridge", uiBridge);
+        SetField(battleScene, "gameDirector", director);
+        SetField(battleScene, "battleUIBridge", uiBridge);
 
         // ── 3. AudioManager ──
         var audioGO = new GameObject("AudioManager");
@@ -108,8 +113,9 @@ public static class GameSceneBuilder
         var cam = Camera.main;
         if (cam != null)
         {
-            cam.transform.position = new Vector3(0, 25, -20);
-            cam.transform.rotation = Quaternion.Euler(50, 0, 0);
+            cam.transform.position = new Vector3(0, 40, -30);
+            cam.transform.rotation = Quaternion.Euler(55, 0, 0);
+            cam.fieldOfView = 50f;
             cam.backgroundColor = new Color(0.06f, 0.05f, 0.08f);
             cam.clearFlags = CameraClearFlags.SolidColor;
         }

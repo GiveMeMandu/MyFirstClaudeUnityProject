@@ -31,6 +31,7 @@ namespace ProjectSun.V2.Core
         [SerializeField] BattleInitializer battleInitializer;
         [SerializeField] BattleResultCollector resultCollector;
         [SerializeField] BattleUIBridge battleUIBridge;
+        [SerializeField] BattleSceneSetup battleSceneSetup;
 
         [Header("UI Presenters")]
         [SerializeField] MenuScreenPresenter menuPresenter;
@@ -191,7 +192,8 @@ namespace ProjectSun.V2.Core
             battleInitializer?.InitializeBattle(_gameState);
             phaseManager?.EnterNight();
 
-            // 전투 UI 활성화
+            // 전투 시각화 + UI 활성화
+            battleSceneSetup?.SetupBattleScene(_gameState);
             battleUIBridge?.Activate();
             battleHUD?.Show();
             timeScaleController?.ResetToNormal();
@@ -208,6 +210,7 @@ namespace ProjectSun.V2.Core
 
             battleHUD?.Hide();
             battleUIBridge?.Deactivate();
+            battleSceneSetup?.CleanupScene();
 
             phaseManager?.EndNightPhase();
             var result = resultCollector?.CollectResults(_gameState);
