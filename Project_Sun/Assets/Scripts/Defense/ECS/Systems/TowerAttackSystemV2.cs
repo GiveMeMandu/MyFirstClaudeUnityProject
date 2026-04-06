@@ -7,20 +7,26 @@ using Unity.Transforms;
 namespace ProjectSun.Defense.ECS
 {
     /// <summary>
-    /// V2 타워 공격 시스템 — 성능 최적화:
-    /// - Spatial Hash Map으로 O(1) 범위 쿼리 (O(T*E) → O(T*K) where K = nearby enemies)
+    /// V2 타워 공격 시스템 — SpatialHashMap + 투사체 엔티티 생성:
+    /// - Spatial Hash Map으로 O(1) 범위 쿼리
     /// - Persistent NativeList로 매 프레임 할당 제거
+    /// - 즉발 데미지 대신 ProjectileData 엔티티를 ECB로 스폰
     /// </summary>
+    [BurstCompile]
     [UpdateInGroup(typeof(SimulationSystemGroup))]
-    [UpdateAfter(typeof(EnemyCombatSystemV2))]
+    [UpdateAfter(typeof(BuildingDamageApplySystemV2))]
     public partial struct TowerAttackSystemV2 : ISystem
     {
+        private const float ProjectileSpeed = 30f;
+        private const float ProjectileLifeTime = 5f;
+
         NativeList<float3> _enemyPositions;
         NativeList<Entity> _enemyEntities;
         NativeList<int> _enemyTypes;
         SpatialHashMap _spatialHash;
         NativeList<int> _queryResults;
 
+        [BurstCompile]
         public void OnCreate(ref SystemState state)
         {
             state.RequireForUpdate<TowerTag>();
@@ -28,7 +34,6 @@ namespace ProjectSun.Defense.ECS
             _enemyPositions = new NativeList<float3>(4096, Allocator.Persistent);
             _enemyEntities = new NativeList<Entity>(4096, Allocator.Persistent);
             _enemyTypes = new NativeList<int>(4096, Allocator.Persistent);
-            // Cell size 20: typical tower range is 10~30 units, so 20 covers most in 1~4 cells
             _spatialHash = new SpatialHashMap(20f, 4096, Allocator.Persistent);
             _queryResults = new NativeList<int>(128, Allocator.Persistent);
         }
@@ -68,6 +73,8 @@ namespace ProjectSun.Defense.ECS
 
             // Build spatial hash from enemy positions
             _spatialHash.Build(_enemyPositions.AsArray(), enemyCount);
+
+            var ecb = new EntityCommandBuffer(Allocator.Temp);
 
             // Process each tower
             foreach (var (towerTransform, towerStats, buildingData, attackTimer) in
@@ -110,16 +117,27 @@ namespace ProjectSun.Defense.ECS
                 {
                     attackTimer.ValueRW.TimeSinceLastAttack = 0f;
 
-                    var enemyStats = SystemAPI.GetComponentRW<EnemyStats>(_enemyEntities[closestIdx]);
-                    enemyStats.ValueRW.CurrentHP -= towerStats.ValueRO.Damage;
+                    // 투사체 엔티티 생성 (즉발 데미지 대신)
+                    var projectileEntity = ecb.CreateEntity();
 
-                    if (SystemAPI.HasComponent<HealthBarTimer>(_enemyEntities[closestIdx]))
+                    var spawnPos = towerTransform.ValueRO.Position;
+                    spawnPos.y += 1.5f; // 타워 상단에서 발사
+
+                    ecb.AddComponent(projectileEntity, LocalTransform.FromPosition(spawnPos));
+                    ecb.AddComponent(projectileEntity, new ProjectileTag());
+                    ecb.AddComponent(projectileEntity, new ProjectileData
                     {
-                        var hbTimer = SystemAPI.GetComponentRW<HealthBarTimer>(_enemyEntities[closestIdx]);
-                        hbTimer.ValueRW.RemainingTime = 2f;
-                    }
+                        TargetEntity = _enemyEntities[closestIdx],
+                        TargetLastPosition = _enemyPositions[closestIdx],
+                        Speed = ProjectileSpeed,
+                        Damage = towerStats.ValueRO.Damage,
+                        LifeTime = ProjectileLifeTime
+                    });
                 }
             }
+
+            ecb.Playback(state.EntityManager);
+            ecb.Dispose();
         }
     }
 }

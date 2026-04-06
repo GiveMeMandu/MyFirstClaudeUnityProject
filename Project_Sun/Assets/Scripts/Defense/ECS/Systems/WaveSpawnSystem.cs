@@ -24,6 +24,7 @@ namespace ProjectSun.Defense.ECS
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
             var ecb = new EntityCommandBuffer(Allocator.Temp);
+            bool hasBattleStats = SystemAPI.HasSingleton<BattleStatistics>();
 
             // 스폰 포인트 위치 수집
             var spawnPositions = new NativeList<float3>(Allocator.Temp);
@@ -38,6 +39,8 @@ namespace ProjectSun.Defense.ECS
                 ecb.Dispose();
                 return;
             }
+
+            int totalSpawnedThisFrame = 0;
 
             foreach (var (spawnGroup, entity) in SystemAPI.Query<RefRW<SpawnGroup>>().WithEntityAccess())
             {
@@ -100,6 +103,8 @@ namespace ProjectSun.Defense.ECS
                     {
                         RemainingTime = 0f
                     });
+
+                    totalSpawnedThisFrame++;
                 }
 
                 // 그룹의 모든 적 스폰 완료 시 Entity 제거
@@ -107,6 +112,14 @@ namespace ProjectSun.Defense.ECS
                 {
                     ecb.DestroyEntity(entity);
                 }
+            }
+
+            // BattleStatistics 갱신
+            if (hasBattleStats && totalSpawnedThisFrame > 0)
+            {
+                var battleStats = SystemAPI.GetSingletonRW<BattleStatistics>();
+                battleStats.ValueRW.TotalEnemiesSpawned += totalSpawnedThisFrame;
+                battleStats.ValueRW.RemainingEnemies += totalSpawnedThisFrame;
             }
 
             ecb.Playback(state.EntityManager);

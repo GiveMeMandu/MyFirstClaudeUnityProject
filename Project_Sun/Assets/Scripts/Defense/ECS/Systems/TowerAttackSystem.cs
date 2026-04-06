@@ -10,6 +10,7 @@ namespace ProjectSun.Defense.ECS
     /// 방어 타워가 사거리 내 적을 자동 공격하는 시스템.
     /// canTargetAir가 false이면 Flying(EnemyType==2) 적을 무시.
     /// </summary>
+    [DisableAutoCreation] // V1 — TowerAttackSystemV2로 대체
     [UpdateInGroup(typeof(SimulationSystemGroup))]
     [UpdateAfter(typeof(EnemyCombatSystem))]
     public partial struct TowerAttackSystem : ISystem

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Diagnostics;
 using Unity.Collections;
 using Unity.Entities;
@@ -7,6 +8,7 @@ using UnityEngine;
 using ProjectSun.Defense.ECS;
 using ProjectSun.V2.Data;
 using ProjectSun.V2.Defense.ECS;
+using FlowFieldConfig = ProjectSun.V2.Defense.ECS.FlowFieldConfig;
 using Debug = UnityEngine.Debug;
 
 namespace ProjectSun.V2.Defense.Bridge
@@ -17,6 +19,10 @@ namespace ProjectSun.V2.Defense.Bridge
     /// </summary>
     public class BattleInitializer : MonoBehaviour
     {
+        [Header("Wave Configuration")]
+        [Tooltip("SO-based wave config. If null, falls back to hardcoded wave logic.")]
+        [SerializeField] NightWaveConfigSO _nightWaveConfig;
+
         EntityManager _entityManager;
         NativeList<Entity> _createdEntities;
 
@@ -54,8 +60,14 @@ namespace ProjectSun.V2.Defense.Bridge
             // 분대 → ECS Entity
             CreateSquadEntities(gameState);
 
-            // BattleStatistics 싱글턴
+            // 싱글턴 엔티티들
             CreateBattleStatistics();
+            CreateFlowFieldConfig();
+            CreateWaveManager(gameState);
+
+            // 웨이브 인프라
+            CreateSpawnPoints();
+            CreateInitialSpawnGroups(gameState);
 
             sw.Stop();
             InitializeTimeMs = sw.ElapsedMilliseconds;
@@ -123,6 +135,13 @@ namespace ProjectSun.V2.Defense.Bridge
         void CreateSquadEntities(GameState gameState)
         {
             // 전투 배치된 시민 → 분대 엔티티 (SquadDeployed 계약)
+            int combatCitizenCount = 0;
+            for (int i = 0; i < gameState.citizens.Count; i++)
+            {
+                if (gameState.citizens[i].state == CitizenState.InCombat)
+                    combatCitizenCount++;
+            }
+
             int squadIndex = 0;
             for (int i = 0; i < gameState.citizens.Count; i++)
             {
@@ -133,8 +152,8 @@ namespace ProjectSun.V2.Defense.Bridge
                 var entity = _entityManager.CreateEntity();
                 _createdEntities.Add(entity);
 
-                // 분대 위치: 기지 내부 방어선
-                float angle = (float)squadIndex / Mathf.Max(1, 1) * Mathf.PI * 2f;
+                // 분대 위치: 기지 내부 방어선 (균등 배치)
+                float angle = (float)squadIndex / Mathf.Max(combatCitizenCount, 1) * Mathf.PI * 2f;
                 float3 pos = new float3(math.cos(angle) * 10f, 0, math.sin(angle) * 10f);
 
                 _entityManager.AddComponentData(entity, LocalTransform.FromPosition(pos));
@@ -210,6 +229,250 @@ namespace ProjectSun.V2.Defense.Bridge
         {
             if (_createdEntities.IsCreated)
                 _createdEntities.Dispose();
+        }
+
+        /// <summary>
+        /// FlowFieldConfig 싱글턴 생성.
+        /// FlowFieldSystem이 매 프레임 이 싱글턴을 읽어 경로 계산을 수행한다.
+        /// </summary>
+        void CreateFlowFieldConfig()
+        {
+            var entity = _entityManager.CreateEntity();
+            _createdEntities.Add(entity);
+            _entityManager.AddComponentData(entity, new FlowFieldConfig
+            {
+                GridWidth = 100,
+                GridHeight = 100,
+                CellSize = 1f,
+                WorldOrigin = float3.zero,
+                LastComputedFrame = -1,
+                NeedsRecompute = true // 첫 프레임에 계산 트리거
+            });
+            CreatedEntityCount++;
+        }
+
+        /// <summary>
+        /// WaveManager 싱글턴 생성.
+        /// WaveSpawnSystem이 읽어 웨이브 타이밍과 진행을 관리한다.
+        /// SO가 있으면 subWaves.Count를 사용, 없으면 턴 기반 하드코딩 폴백.
+        /// </summary>
+        void CreateWaveManager(GameState gameState)
+        {
+            int totalWaves;
+            float nextWaveDelay;
+
+            WaveDataSOV2 waveData = _nightWaveConfig != null
+                ? _nightWaveConfig.GetWaveForTurn(gameState.currentTurn)
+                : null;
+
+            if (waveData != null && waveData.subWaves.Count > 0)
+            {
+                totalWaves = waveData.subWaves.Count;
+                // Use the first sub-wave's delay as the initial wave delay
+                nextWaveDelay = waveData.subWaves[0].spawnDelay;
+            }
+            else
+            {
+                // Hardcoded fallback: wave count scales with turn
+                totalWaves = gameState.currentTurn <= 5 ? 1
+                           : gameState.currentTurn <= 15 ? 2
+                           : 3;
+                nextWaveDelay = 5f;
+            }
+
+            var entity = _entityManager.CreateEntity();
+            _createdEntities.Add(entity);
+            _entityManager.AddComponentData(entity, new WaveManager
+            {
+                CurrentWaveIndex = 0,
+                TotalWaves = totalWaves,
+                WaveTimer = 0f,
+                NextWaveDelay = nextWaveDelay,
+                WaveActive = true,
+                AllWavesComplete = false
+            });
+            CreatedEntityCount++;
+        }
+
+        /// <summary>
+        /// 맵 가장자리 4방향에 스폰 포인트 생성.
+        /// WaveSpawnSystem이 랜덤 스폰 포인트를 선택하여 적을 배치한다.
+        /// </summary>
+        void CreateSpawnPoints()
+        {
+            float mapEdge = 45f;
+            var positions = new float3[]
+            {
+                new float3(mapEdge, 0, 0),   // 동
+                new float3(-mapEdge, 0, 0),  // 서
+                new float3(0, 0, mapEdge),   // 북
+                new float3(0, 0, -mapEdge)   // 남
+            };
+
+            for (int i = 0; i < positions.Length; i++)
+            {
+                var entity = _entityManager.CreateEntity();
+                _createdEntities.Add(entity);
+                _entityManager.AddComponentData(entity, LocalTransform.FromPosition(positions[i]));
+                _entityManager.AddComponentData(entity, new SpawnPoint { Index = i });
+                CreatedEntityCount++;
+            }
+        }
+
+        /// <summary>
+        /// SpawnGroup 엔티티 생성.
+        /// NightWaveConfigSO가 설정되어 있으면 SO 기반으로 생성하고,
+        /// 없으면 기존 하드코딩 로직으로 폴백한다.
+        /// </summary>
+        void CreateInitialSpawnGroups(GameState gameState)
+        {
+            int turn = Mathf.Max(1, gameState.currentTurn);
+
+            WaveDataSOV2 waveData = _nightWaveConfig != null
+                ? _nightWaveConfig.GetWaveForTurn(turn)
+                : null;
+
+            if (waveData != null && waveData.subWaves.Count > 0)
+            {
+                CreateSpawnGroupsFromSO(waveData, turn);
+            }
+            else
+            {
+                CreateSpawnGroupsHardcoded(turn);
+            }
+        }
+
+        /// <summary>
+        /// SO 기반 SpawnGroup 생성.
+        /// WaveDataSOV2의 SubWave/EnemyGroup을 순회하며
+        /// EnemyDataSOV2 스탯 + NightWaveConfigSO 턴 스케일링을 적용한다.
+        /// </summary>
+        void CreateSpawnGroupsFromSO(WaveDataSOV2 waveData, int turn)
+        {
+            // Build enemy lookup for fast access
+            Dictionary<string, EnemyDataSOV2> enemyLookup = _nightWaveConfig.BuildEnemyLookup();
+
+            float statMultiplier = _nightWaveConfig.GetStatMultiplier(turn)
+                                 * waveData.enemyStatMultiplier;
+
+            for (int sw = 0; sw < waveData.subWaves.Count; sw++)
+            {
+                var subWave = waveData.subWaves[sw];
+
+                for (int eg = 0; eg < subWave.enemies.Count; eg++)
+                {
+                    var enemyGroup = subWave.enemies[eg];
+
+                    // Resolve enemy data from registry
+                    EnemyDataSOV2 enemyData = null;
+                    if (!string.IsNullOrEmpty(enemyGroup.enemyTypeId))
+                        enemyLookup.TryGetValue(enemyGroup.enemyTypeId, out enemyData);
+
+                    if (enemyData == null)
+                    {
+                        Debug.LogWarning($"[BattleInitializer] Enemy '{enemyGroup.enemyTypeId}' " +
+                                         $"not found in registry, skipping group");
+                        continue;
+                    }
+
+                    int scaledCount = _nightWaveConfig.GetScaledCount(enemyGroup.count, turn);
+
+                    // Map EnemyTier to legacy EnemyType int for WaveSpawnSystem compatibility
+                    int enemyTypeInt = MapTierToEnemyType(enemyData.tier);
+
+                    var entity = _entityManager.CreateEntity();
+                    _createdEntities.Add(entity);
+                    _entityManager.AddComponentData(entity, new SpawnGroup
+                    {
+                        EnemyPrefab = Entity.Null,
+                        RemainingCount = scaledCount,
+                        SpawnInterval = enemyGroup.spawnInterval,
+                        SpawnTimer = 0f,
+                        StatMultiplier = statMultiplier,
+                        EnemyType = enemyTypeInt,
+                        BaseHP = enemyData.hp,
+                        BaseSpeed = enemyData.moveSpeed,
+                        BaseDamage = enemyData.attackDamage,
+                        BaseAttackRange = enemyData.attackRangeValue,
+                        BaseAttackInterval = enemyData.attackInterval
+                    });
+                    CreatedEntityCount++;
+                }
+            }
+
+            Debug.Log($"[BattleInitializer] Created {CreatedEntityCount} SpawnGroups from SO " +
+                      $"(turn {turn}, statMult {statMultiplier:F2})");
+        }
+
+        /// <summary>
+        /// Hardcoded fallback SpawnGroup creation.
+        /// Preserved for backward compatibility when NightWaveConfigSO is not assigned.
+        /// GDD 기준: 적 HP x1.1/턴, 적 수량 x1.2/턴.
+        /// </summary>
+        void CreateSpawnGroupsHardcoded(int turn)
+        {
+            float hpScale = Mathf.Pow(1.1f, turn - 1);
+            float countScale = Mathf.Pow(1.2f, turn - 1);
+
+            // 기본 적 스폰 그룹 (유충 아키타입)
+            int baseCount = Mathf.RoundToInt(10 * countScale);
+            var basicGroup = _entityManager.CreateEntity();
+            _createdEntities.Add(basicGroup);
+            _entityManager.AddComponentData(basicGroup, new SpawnGroup
+            {
+                EnemyPrefab = Entity.Null,
+                RemainingCount = baseCount,
+                SpawnInterval = 0.5f,
+                SpawnTimer = 0f,
+                StatMultiplier = hpScale,
+                EnemyType = 0, // Basic
+                BaseHP = 30f,
+                BaseSpeed = 3f,
+                BaseDamage = 5f,
+                BaseAttackRange = 2f,
+                BaseAttackInterval = 1f
+            });
+            CreatedEntityCount++;
+
+            // 턴 6 이후: 중장갑 적 추가
+            if (turn >= 6)
+            {
+                int heavyCount = Mathf.RoundToInt(3 * countScale);
+                var heavyGroup = _entityManager.CreateEntity();
+                _createdEntities.Add(heavyGroup);
+                _entityManager.AddComponentData(heavyGroup, new SpawnGroup
+                {
+                    EnemyPrefab = Entity.Null,
+                    RemainingCount = heavyCount,
+                    SpawnInterval = 1.5f,
+                    SpawnTimer = 0f,
+                    StatMultiplier = hpScale,
+                    EnemyType = 1, // Heavy
+                    BaseHP = 100f,
+                    BaseSpeed = 1.5f,
+                    BaseDamage = 15f,
+                    BaseAttackRange = 2f,
+                    BaseAttackInterval = 2f
+                });
+                CreatedEntityCount++;
+            }
+        }
+
+        /// <summary>
+        /// Maps V2 EnemyTier enum to legacy EnemyType int used by WaveSpawnSystem.
+        /// 0 = Basic, 1 = Heavy, 2 = Flying (mapped from tier for now).
+        /// TODO: When WaveSpawnSystem is upgraded to V2, use EnemyTier directly.
+        /// </summary>
+        static int MapTierToEnemyType(EnemyTier tier)
+        {
+            return tier switch
+            {
+                EnemyTier.Tier1_Basic => 0,    // Basic
+                EnemyTier.Tier2_Enhanced => 0,  // Treated as Basic variant
+                EnemyTier.Tier3_Elite => 1,     // Treated as Heavy
+                EnemyTier.Tier4_Boss => 1,      // Treated as Heavy
+                _ => 0
+            };
         }
 
         static bool IsTowerBuilding(string buildingId)
