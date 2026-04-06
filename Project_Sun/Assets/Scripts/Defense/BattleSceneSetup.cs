@@ -1,80 +1,74 @@
 using System.Collections.Generic;
-using Unity.Entities;
-using Unity.Mathematics;
-using Unity.Transforms;
 using UnityEngine;
-using ProjectSun.Defense.ECS;
 using ProjectSun.V2.Core;
 using ProjectSun.V2.Data;
-using ProjectSun.V2.Defense.Bridge;
 
 namespace ProjectSun.V2.Defense
 {
     /// <summary>
-    /// 전투 씬 시각화. 바닥/건물 프리미티브 + ECS 엔티티 렌더러.
-    /// 매 프레임 ECS 엔티티를 읽어 프리미티브 GameObject로 시각화.
-    /// 전투 종료 자동 감지 (모든 적 처치 OR 본부 파괴).
+    /// 전투 씬 시각화. MonoBehaviour 기반 프로토타입 시뮬레이션.
+    /// ECS 시스템 자동 등록 문제를 우회하여 직접 적 스폰/이동/전투 처리.
+    /// 바닥 + 건물 + 적 프리미티브 렌더링 + 전투 자동 종료.
     /// </summary>
     public class BattleSceneSetup : MonoBehaviour
     {
         [Header("References")]
         [SerializeField] GameDirector gameDirector;
-        [SerializeField] BattleUIBridge battleUIBridge;
+        [SerializeField] Bridge.BattleUIBridge battleUIBridge;
 
-        [Header("Visual Settings")]
-        [SerializeField] Material enemyMaterial;
-        [SerializeField] Material buildingMaterial;
-        [SerializeField] Material towerMaterial;
-        [SerializeField] Material groundMaterial;
-
-        [Header("Auto End")]
+        [Header("Battle Settings")]
         [SerializeField] float minBattleDuration = 3f;
+        [SerializeField] float spawnRadius = 45f;
+        [SerializeField] float enemySpeed = 5f;
 
-        // 프리미티브 풀
+        // 시각 오브젝트
         GameObject _ground;
-        List<GameObject> _buildingVisuals = new();
-        List<GameObject> _enemyPool = new();
-        int _activeEnemyCount;
-        float _battleTimer;
+        List<BuildingVisual> _buildings = new();
+        List<EnemyVisual> _enemies = new();
+        Material _matEnemy, _matBuilding, _matTower, _matGround, _matHQ;
+
+        // 전투 상태
         bool _battleActive;
+        float _battleTimer;
+        float _spawnTimer;
+        int _spawnedCount;
+        int _totalToSpawn;
+        int _killedCount;
+        GameState _gameState;
 
-        // 머티리얼 (런타임 생성)
-        Material _matEnemy;
-        Material _matBuilding;
-        Material _matTower;
-        Material _matGround;
-        Material _matHQ;
+        public int TotalSpawned => _spawnedCount;
+        public int AliveCount => _enemies.FindAll(e => e.alive).Count;
+        public int KilledCount => _killedCount;
 
-        void Awake()
-        {
-            CreateFallbackMaterials();
-        }
-
-        /// <summary>전투 시작 시 호출. 바닥 + 건물 비주얼 생성.</summary>
         public void SetupBattleScene(GameState gameState)
         {
             CleanupScene();
+            EnsureMaterials();
+            _gameState = gameState;
+
+            // 적 수 = 턴 기반 스케일링
+            int turn = Mathf.Max(1, gameState.currentTurn);
+            _totalToSpawn = Mathf.RoundToInt(10 * Mathf.Pow(1.2f, turn - 1));
+            _spawnedCount = 0;
+            _killedCount = 0;
+            _spawnTimer = 0f;
 
             // 바닥
             _ground = GameObject.CreatePrimitive(PrimitiveType.Plane);
             _ground.name = "BattleGround";
             _ground.transform.localScale = new Vector3(10f, 1f, 10f);
-            _ground.GetComponent<Renderer>().material = groundMaterial ?? _matGround;
+            _ground.GetComponent<Renderer>().material = _matGround;
             Destroy(_ground.GetComponent<Collider>());
 
-            // 건물 비주얼
+            // 건물
             for (int i = 0; i < gameState.buildings.Count; i++)
             {
                 var building = gameState.buildings[i];
                 if (building.state != BuildingSlotStateV2.Active &&
-                    building.state != BuildingSlotStateV2.Damaged)
-                    continue;
+                    building.state != BuildingSlotStateV2.Damaged) continue;
 
                 float angle = (float)i / Mathf.Max(gameState.buildings.Count, 1) * Mathf.PI * 2f;
-                float radius = 15f;
-                Vector3 pos = new Vector3(
-                    Mathf.Cos(angle) * radius, 0,
-                    Mathf.Sin(angle) * radius);
+                Vector3 pos = new Vector3(Mathf.Cos(angle) * 15f, 0, Mathf.Sin(angle) * 15f);
 
                 bool isHQ = building.buildingId == "headquarters";
                 bool isTower = building.buildingId != null && building.buildingId.Contains("tower");
@@ -82,158 +76,215 @@ namespace ProjectSun.V2.Defense
                 var go = GameObject.CreatePrimitive(isHQ ? PrimitiveType.Cube : PrimitiveType.Cylinder);
                 go.name = $"Building_{building.slotId}";
                 go.transform.position = pos + Vector3.up * (isHQ ? 1.5f : 1f);
-                go.transform.localScale = isHQ
-                    ? new Vector3(3f, 3f, 3f)
-                    : isTower
-                        ? new Vector3(1f, 2f, 1f)
-                        : new Vector3(1.5f, 1.5f, 1.5f);
-
-                var mat = isHQ ? _matHQ : isTower ? (towerMaterial ?? _matTower) : (buildingMaterial ?? _matBuilding);
-                go.GetComponent<Renderer>().material = mat;
+                go.transform.localScale = isHQ ? Vector3.one * 3f : isTower ? new Vector3(1, 2, 1) : Vector3.one * 1.5f;
+                go.GetComponent<Renderer>().material = isHQ ? _matHQ : isTower ? _matTower : _matBuilding;
                 Destroy(go.GetComponent<Collider>());
-                _buildingVisuals.Add(go);
+
+                _buildings.Add(new BuildingVisual
+                {
+                    go = go, position = pos, hp = building.currentHP,
+                    maxHP = building.maxHP, isHQ = isHQ, isTower = isTower,
+                    slotIndex = i, attackTimer = 0f,
+                    attackRange = isTower ? 15f : 0f,
+                    attackDamage = isTower ? 10f : 0f
+                });
             }
 
             _battleActive = true;
             _battleTimer = 0f;
-            _activeEnemyCount = 0;
+
+            Debug.Log($"[BattleScene] Setup: {_buildings.Count} buildings, {_totalToSpawn} enemies to spawn");
         }
 
         void Update()
         {
             if (!_battleActive) return;
-
             _battleTimer += Time.deltaTime;
 
-            // ECS 엔티티 시각화
-            RenderECSEntities();
-
-            // 전투 종료 자동 감지
-            if (_battleTimer >= minBattleDuration && battleUIBridge != null)
-            {
-                bool allDead = battleUIBridge.TotalEnemiesSpawned > 0 &&
-                               battleUIBridge.AliveEnemyCount == 0;
-                bool hqDestroyed = battleUIBridge.HeadquartersMaxHP > 0 &&
-                                   battleUIBridge.HeadquartersHP <= 0;
-
-                if (allDead || hqDestroyed)
-                {
-                    _battleActive = false;
-                    Debug.Log($"[BattleScene] Auto-end: {(allDead ? "All enemies dead" : "HQ destroyed")} at {_battleTimer:F1}s");
-                    gameDirector?.EndNight();
-                }
-            }
+            SpawnEnemies();
+            MoveEnemies();
+            TowerAttack();
+            CheckBattleEnd();
         }
 
-        void RenderECSEntities()
+        void SpawnEnemies()
         {
-            var world = World.DefaultGameObjectInjectionWorld;
-            if (world == null || !world.IsCreated) return;
+            if (_spawnedCount >= _totalToSpawn) return;
 
-            var em = world.EntityManager;
+            _spawnTimer += Time.deltaTime;
+            if (_spawnTimer < 0.3f) return;
+            _spawnTimer = 0f;
 
-            // 적 엔티티 수집
-            var query = em.CreateEntityQuery(
-                ComponentType.ReadOnly<EnemyTag>(),
-                ComponentType.ReadOnly<LocalTransform>(),
-                ComponentType.ReadOnly<EnemyStats>());
+            float angle = Random.Range(0f, Mathf.PI * 2f);
+            Vector3 pos = new Vector3(Mathf.Cos(angle) * spawnRadius, 0.3f, Mathf.Sin(angle) * spawnRadius);
 
-            using var entities = query.ToEntityArray(Unity.Collections.Allocator.Temp);
-            int aliveCount = 0;
+            float hpScale = Mathf.Pow(1.1f, _gameState.currentTurn - 1);
+            float hp = 30f * hpScale;
 
-            for (int i = 0; i < entities.Length; i++)
+            var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            sphere.name = $"Enemy_{_spawnedCount}";
+            sphere.transform.position = pos;
+            sphere.transform.localScale = Vector3.one * 0.6f;
+            sphere.GetComponent<Renderer>().material = _matEnemy;
+            Destroy(sphere.GetComponent<Collider>());
+
+            _enemies.Add(new EnemyVisual
             {
-                if (em.HasComponent<DeadTag>(entities[i])) continue;
+                go = sphere, hp = hp, maxHP = hp, speed = enemySpeed,
+                damage = 5f * hpScale, alive = true, attackTimer = 0f
+            });
 
-                var transform = em.GetComponentData<LocalTransform>(entities[i]);
-                var stats = em.GetComponentData<EnemyStats>(entities[i]);
-
-                // 풀에서 가져오거나 생성
-                while (_enemyPool.Count <= aliveCount)
-                {
-                    var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-                    sphere.name = $"Enemy_{_enemyPool.Count}";
-                    sphere.transform.localScale = Vector3.one * 0.6f;
-                    sphere.GetComponent<Renderer>().material = enemyMaterial ?? _matEnemy;
-                    Destroy(sphere.GetComponent<Collider>());
-                    sphere.SetActive(false);
-                    _enemyPool.Add(sphere);
-                }
-
-                var enemyGo = _enemyPool[aliveCount];
-                enemyGo.SetActive(true);
-                enemyGo.transform.position = new Vector3(
-                    transform.Position.x,
-                    transform.Position.y + 0.3f,
-                    transform.Position.z);
-
-                // HP에 따라 크기 변경
-                float hpRatio = stats.MaxHP > 0 ? stats.CurrentHP / stats.MaxHP : 1f;
-                float scale = Mathf.Lerp(0.3f, 0.6f, hpRatio);
-                enemyGo.transform.localScale = Vector3.one * scale;
-
-                aliveCount++;
-            }
-
-            // 초과 풀 비활성화
-            for (int i = aliveCount; i < _enemyPool.Count; i++)
-            {
-                if (_enemyPool[i].activeSelf)
-                    _enemyPool[i].SetActive(false);
-            }
-
-            _activeEnemyCount = aliveCount;
+            _spawnedCount++;
         }
 
-        /// <summary>씬 정리. 밤 종료 시 호출.</summary>
+        void MoveEnemies()
+        {
+            if (_buildings.Count == 0) return;
+
+            for (int i = _enemies.Count - 1; i >= 0; i--)
+            {
+                var enemy = _enemies[i];
+                if (!enemy.alive) continue;
+
+                // 가장 가까운 건물 찾기
+                float closestDist = float.MaxValue;
+                int closestIdx = -1;
+                for (int j = 0; j < _buildings.Count; j++)
+                {
+                    if (_buildings[j].hp <= 0) continue;
+                    float dist = Vector3.Distance(enemy.go.transform.position, _buildings[j].position);
+                    if (dist < closestDist) { closestDist = dist; closestIdx = j; }
+                }
+
+                if (closestIdx < 0) continue;
+
+                if (closestDist > 2f)
+                {
+                    // 이동
+                    Vector3 dir = (_buildings[closestIdx].position - enemy.go.transform.position).normalized;
+                    enemy.go.transform.position += dir * enemy.speed * Time.deltaTime;
+                }
+                else
+                {
+                    // 공격
+                    enemy.attackTimer += Time.deltaTime;
+                    if (enemy.attackTimer >= 1f)
+                    {
+                        enemy.attackTimer = 0f;
+                        var bld = _buildings[closestIdx];
+                        bld.hp -= enemy.damage;
+                        _buildings[closestIdx] = bld;
+
+                        // GameState 반영
+                        if (bld.slotIndex < _gameState.buildings.Count)
+                            _gameState.buildings[bld.slotIndex].currentHP = Mathf.RoundToInt(bld.hp);
+                    }
+                }
+
+                // HP에 따라 크기 변동
+                float ratio = enemy.maxHP > 0 ? enemy.hp / enemy.maxHP : 0;
+                enemy.go.transform.localScale = Vector3.one * Mathf.Lerp(0.3f, 0.6f, ratio);
+                _enemies[i] = enemy;
+            }
+        }
+
+        void TowerAttack()
+        {
+            for (int t = 0; t < _buildings.Count; t++)
+            {
+                var tower = _buildings[t];
+                if (!tower.isTower || tower.hp <= 0 || tower.attackRange <= 0) continue;
+
+                tower.attackTimer += Time.deltaTime;
+                if (tower.attackTimer < 0.5f) { _buildings[t] = tower; continue; }
+                tower.attackTimer = 0f;
+
+                // 가장 가까운 적 공격
+                float closestDist = float.MaxValue;
+                int closestIdx = -1;
+                for (int e = 0; e < _enemies.Count; e++)
+                {
+                    if (!_enemies[e].alive) continue;
+                    float dist = Vector3.Distance(tower.position, _enemies[e].go.transform.position);
+                    if (dist <= tower.attackRange && dist < closestDist)
+                    { closestDist = dist; closestIdx = e; }
+                }
+
+                if (closestIdx >= 0)
+                {
+                    var enemy = _enemies[closestIdx];
+                    enemy.hp -= tower.attackDamage;
+                    if (enemy.hp <= 0)
+                    {
+                        enemy.alive = false;
+                        enemy.go.SetActive(false);
+                        _killedCount++;
+                    }
+                    _enemies[closestIdx] = enemy;
+                }
+
+                _buildings[t] = tower;
+            }
+        }
+
+        void CheckBattleEnd()
+        {
+            if (_battleTimer < minBattleDuration) return;
+            if (_spawnedCount < _totalToSpawn) return;
+
+            bool allDead = _enemies.TrueForAll(e => !e.alive);
+            bool hqDestroyed = _buildings.Exists(b => b.isHQ && b.hp <= 0);
+
+            if (allDead || hqDestroyed)
+            {
+                _battleActive = false;
+                Debug.Log($"[BattleScene] End: {(allDead ? "All dead" : "HQ destroyed")} " +
+                          $"killed={_killedCount}/{_spawnedCount} time={_battleTimer:F1}s");
+                gameDirector?.EndNight();
+            }
+        }
+
         public void CleanupScene()
         {
             _battleActive = false;
-
             if (_ground != null) Destroy(_ground);
-
-            foreach (var go in _buildingVisuals)
-                if (go != null) Destroy(go);
-            _buildingVisuals.Clear();
-
-            foreach (var go in _enemyPool)
-                if (go != null) Destroy(go);
-            _enemyPool.Clear();
+            foreach (var b in _buildings) if (b.go != null) Destroy(b.go);
+            _buildings.Clear();
+            foreach (var e in _enemies) if (e.go != null) Destroy(e.go);
+            _enemies.Clear();
         }
 
-        void CreateFallbackMaterials()
+        void EnsureMaterials()
         {
-            _matEnemy = CreateURPMaterial(new Color(0.9f, 0.2f, 0.2f));
-            _matBuilding = CreateURPMaterial(new Color(0.5f, 0.5f, 0.6f));
-            _matTower = CreateURPMaterial(new Color(0.3f, 0.6f, 0.9f));
-            _matGround = CreateURPMaterial(new Color(0.15f, 0.12f, 0.1f));
-            _matHQ = CreateURPMaterial(new Color(0.9f, 0.8f, 0.3f));
+            if (_matEnemy != null) return;
+            _matEnemy = CreateMat(new Color(0.9f, 0.2f, 0.2f));
+            _matBuilding = CreateMat(new Color(0.5f, 0.5f, 0.6f));
+            _matTower = CreateMat(new Color(0.3f, 0.6f, 0.9f));
+            _matGround = CreateMat(new Color(0.15f, 0.12f, 0.1f));
+            _matHQ = CreateMat(new Color(0.9f, 0.8f, 0.3f));
         }
 
-        static Material CreateURPMaterial(Color color)
+        static Material CreateMat(Color color)
         {
-            // URP Lit uses _BaseColor, Standard uses _Color
             var shader = Shader.Find("Universal Render Pipeline/Lit");
-            if (shader != null)
-            {
-                var mat = new Material(shader);
-                mat.SetColor("_BaseColor", color);
-                return mat;
-            }
-
-            // Fallback to Standard
+            if (shader != null) { var m = new Material(shader); m.SetColor("_BaseColor", color); return m; }
             shader = Shader.Find("Standard");
-            if (shader != null)
-                return new Material(shader) { color = color };
-
-            // Last resort: Unlit
-            shader = Shader.Find("Unlit/Color");
             return new Material(shader) { color = color };
         }
 
-        void OnDestroy()
+        void OnDestroy() => CleanupScene();
+
+        struct BuildingVisual
         {
-            CleanupScene();
+            public GameObject go; public Vector3 position;
+            public float hp, maxHP; public bool isHQ, isTower;
+            public int slotIndex; public float attackTimer, attackRange, attackDamage;
+        }
+
+        struct EnemyVisual
+        {
+            public GameObject go; public float hp, maxHP, speed, damage;
+            public bool alive; public float attackTimer;
         }
     }
 }

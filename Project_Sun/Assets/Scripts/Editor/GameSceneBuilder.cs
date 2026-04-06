@@ -54,6 +54,7 @@ public static class GameSceneBuilder
         var uiBridge = bridgeGO.AddComponent<BattleUIBridge>();
 
         var battleScene = bridgeGO.AddComponent<BattleSceneSetup>();
+        bridgeGO.AddComponent<ProjectSun.Defense.ECS.ECSSystemBootstrap>();
 
         SetField(director, "battleInitializer", battleInit);
         SetField(director, "resultCollector", resultCollector);

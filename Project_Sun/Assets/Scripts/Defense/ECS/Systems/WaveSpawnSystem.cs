@@ -19,12 +19,12 @@ namespace ProjectSun.Defense.ECS
             state.RequireForUpdate<SpawnGroup>();
         }
 
-        [BurstCompile]
         public void OnUpdate(ref SystemState state)
         {
             var deltaTime = SystemAPI.Time.DeltaTime;
             var ecb = new EntityCommandBuffer(Allocator.Temp);
             bool hasBattleStats = SystemAPI.HasSingleton<BattleStatistics>();
+            UnityEngine.Debug.Log($"[WaveSpawn] OnUpdate dt={deltaTime}");
 
             // 스폰 포인트 위치 수집
             var spawnPositions = new NativeList<float3>(Allocator.Temp);
