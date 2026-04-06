@@ -1,0 +1,471 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Screens/GameUI.uss" />
+
+    <!-- Root: picking-mode=Ignore so 3D clicks pass through transparent areas -->
+    <VisualElement name="game-ui-root" style="flex-grow: 1;" picking-mode="Ignore">
+
+        <!-- ============================================================ -->
+        <!-- 1. MAIN MENU (visible by default)                            -->
+        <!-- ============================================================ -->
+        <VisualElement name="main-menu" class="menu-fullscreen menu-bg">
+            <VisualElement class="menu-panel">
+                <Label class="menu-title" text="PROJECT SUN" />
+                <Label class="menu-subtitle" text="Survive the Night, Build the Dawn" />
+
+                <Button name="btn-new-game" class="menu-btn menu-btn--primary" text="NEW GAME" />
+                <Button name="btn-continue" class="menu-btn" text="CONTINUE" />
+                <Button name="btn-settings" class="menu-btn" text="SETTINGS" />
+                <Button name="btn-quit" class="menu-btn" text="QUIT" />
+
+                <Label class="version-label" text="v0.2 Alpha - M2" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 2. BASE SELECT                                               -->
+        <!-- ============================================================ -->
+        <VisualElement name="base-select" class="menu-fullscreen menu-bg" style="display: none;">
+            <VisualElement class="menu-panel">
+                <Label class="menu-title" text="SELECT BASE" />
+                <Label class="menu-subtitle" text="Choose your starting location" />
+
+                <VisualElement name="base-card-0" class="base-card base-card--selected">
+                    <Label class="base-name" text="Outpost Alpha" />
+                    <Label class="base-desc" text="A small settlement at the edge of the wasteland. Moderate resources, standard threats." />
+                    <Label class="base-difficulty" text="Difficulty: Normal" />
+                </VisualElement>
+
+                <Button name="btn-start-game" class="menu-btn menu-btn--primary" text="START" />
+                <Button name="btn-back-menu" class="menu-btn" text="BACK" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 3. DAY HUD (top bar: resources + tabs + START NIGHT)         -->
+        <!-- ============================================================ -->
+        <VisualElement name="day-hud" class="day-hud-root" style="display: none;" picking-mode="Ignore">
+            <VisualElement class="day-top-bar">
+
+                <!-- Resources -->
+                <VisualElement class="resource-hud-compact">
+                    <VisualElement class="res-item">
+                        <VisualElement class="res-dot res-dot--basic" />
+                        <Label name="res-basic" class="res-value" text="60" />
+                    </VisualElement>
+                    <VisualElement class="res-item">
+                        <VisualElement class="res-dot res-dot--advanced" />
+                        <Label name="res-advanced" class="res-value" text="20" />
+                    </VisualElement>
+                    <VisualElement class="res-item">
+                        <VisualElement class="res-dot res-dot--relic" />
+                        <Label name="res-relic" class="res-value" text="0" />
+                    </VisualElement>
+                    <Label name="turn-badge" class="turn-badge" text="TURN 1" />
+                </VisualElement>
+
+                <!-- Tabs + Night -->
+                <VisualElement class="tab-row">
+                    <Button name="tab-construction" class="tab-btn tab-btn--active" text="Construction" />
+                    <Button name="tab-workforce" class="tab-btn" text="Workforce" />
+                    <Button name="tab-exploration" class="tab-btn" text="Exploration" />
+                    <Button name="btn-start-night" class="night-btn" text="START NIGHT" />
+                </VisualElement>
+
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 4. DAY CONTENT PANELS (opaque, cover 3D during day)          -->
+        <!-- ============================================================ -->
+        <VisualElement name="day-content" style="display: none; flex-grow: 1;" picking-mode="Ignore">
+
+            <!-- 4a. Construction Panel -->
+            <VisualElement name="construction-panel" class="construction-root" style="display: none;">
+
+                <!-- Left: Building Slot List -->
+                <VisualElement class="slot-panel">
+                    <Label class="slot-panel-title" text="BUILDING SLOTS" />
+                    <ScrollView name="slot-list" class="slot-list" />
+                </VisualElement>
+
+                <!-- Right: Detail Panel -->
+                <VisualElement name="construction-detail-panel" class="detail-panel">
+
+                    <VisualElement name="empty-prompt" class="empty-prompt">
+                        <Label class="empty-prompt-text" text="Select a slot to view details" />
+                    </VisualElement>
+
+                    <VisualElement name="detail-content" style="display: none; flex-grow: 1;">
+
+                        <VisualElement class="detail-header">
+                            <Label name="detail-name" class="detail-name" text="Building Name" />
+                            <Label name="detail-category" class="detail-category" text="Category" />
+                        </VisualElement>
+
+                        <Label name="detail-desc" class="detail-desc" text="Description" />
+
+                        <VisualElement name="hp-section" class="hp-bar-container">
+                            <Label name="hp-label" class="hp-bar-label" text="HP: 100 / 100" />
+                            <VisualElement class="hp-bar-bg">
+                                <VisualElement name="hp-fill" class="hp-bar-fill" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement name="stats-grid" class="stats-grid">
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Production" />
+                                <Label name="stat-production" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Storage Bonus" />
+                                <Label name="stat-storage" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Attack" />
+                                <Label name="stat-attack" class="stat-value" text="-" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Range" />
+                                <Label name="stat-range" class="stat-value" text="-" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement name="build-section" style="display: none;">
+                            <Label text="Build Cost" class="hp-bar-label" />
+                            <VisualElement class="cost-row">
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--basic" />
+                                    <Label name="build-cost-basic" class="cost-value" text="0" />
+                                </VisualElement>
+                                <VisualElement class="cost-item">
+                                    <VisualElement class="cost-icon cost-icon--advanced" />
+                                    <Label name="build-cost-advanced" class="cost-value" text="0" />
+                                </VisualElement>
+                            </VisualElement>
+                            <VisualElement class="action-row">
+                                <Button name="btn-build" class="action-btn" text="BUILD" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement name="upgrade-section" style="display: none;">
+                            <Label text="Upgrade Path" class="hp-bar-label" />
+                            <VisualElement name="branch-row" class="branch-row">
+                                <VisualElement name="branch-a" class="branch-card">
+                                    <Label name="branch-a-name" class="branch-name" text="Branch A" />
+                                    <Label name="branch-a-desc" class="branch-desc" text="" />
+                                    <VisualElement class="cost-row">
+                                        <VisualElement class="cost-item">
+                                            <VisualElement class="cost-icon cost-icon--basic" />
+                                            <Label name="branch-a-cost-basic" class="cost-value" text="0" />
+                                        </VisualElement>
+                                        <VisualElement class="cost-item">
+                                            <VisualElement class="cost-icon cost-icon--advanced" />
+                                            <Label name="branch-a-cost-advanced" class="cost-value" text="0" />
+                                        </VisualElement>
+                                    </VisualElement>
+                                </VisualElement>
+                                <VisualElement name="branch-b" class="branch-card">
+                                    <Label name="branch-b-name" class="branch-name" text="Branch B" />
+                                    <Label name="branch-b-desc" class="branch-desc" text="" />
+                                    <VisualElement class="cost-row">
+                                        <VisualElement class="cost-item">
+                                            <VisualElement class="cost-icon cost-icon--basic" />
+                                            <Label name="branch-b-cost-basic" class="cost-value" text="0" />
+                                        </VisualElement>
+                                        <VisualElement class="cost-item">
+                                            <VisualElement class="cost-icon cost-icon--advanced" />
+                                            <Label name="branch-b-cost-advanced" class="cost-value" text="0" />
+                                        </VisualElement>
+                                    </VisualElement>
+                                </VisualElement>
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement name="repair-section" style="display: none;">
+                            <VisualElement class="action-row">
+                                <Button name="btn-repair" class="action-btn action-btn--repair" text="REPAIR" />
+                            </VisualElement>
+                        </VisualElement>
+
+                    </VisualElement>
+                </VisualElement>
+
+            </VisualElement>
+
+            <!-- 4b. Workforce Panel -->
+            <VisualElement name="workforce-panel" class="workforce-root" style="display: none;">
+
+                <!-- Left: Citizen List -->
+                <VisualElement class="citizen-panel">
+                    <Label class="citizen-panel-title" text="CITIZENS" />
+                    <Label name="citizen-summary" class="citizen-summary" text="0 total | 0 idle | 0 assigned" />
+
+                    <VisualElement class="filter-row">
+                        <Button name="filter-all" class="filter-btn filter-btn--active" text="All" />
+                        <Button name="filter-idle" class="filter-btn" text="Idle" />
+                        <Button name="filter-assigned" class="filter-btn" text="Assigned" />
+                        <Button name="filter-injured" class="filter-btn" text="Injured" />
+                    </VisualElement>
+
+                    <ScrollView name="citizen-list" class="citizen-list" />
+                </VisualElement>
+
+                <!-- Right: Detail / Assignment Panel -->
+                <VisualElement name="wf-detail-panel" class="detail-panel">
+
+                    <VisualElement name="wf-detail-empty" class="detail-empty">
+                        <Label class="detail-empty-text" text="Select a citizen to view details" />
+                    </VisualElement>
+
+                    <VisualElement name="wf-detail-content" class="detail-content" style="display: none;">
+
+                        <VisualElement class="detail-header">
+                            <VisualElement name="wf-detail-portrait" class="detail-portrait" />
+                            <VisualElement>
+                                <Label name="wf-detail-name" class="detail-name" text="Name" />
+                                <Label name="wf-detail-aptitude" class="detail-aptitude" text="Aptitude" />
+                                <Label name="wf-detail-level" class="detail-level" text="Lv. 0" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement class="status-section">
+                            <Label name="wf-status-label" class="status-label status--idle" text="IDLE" />
+                            <Label name="wf-status-detail" class="status-detail" text="Ready for assignment" />
+                        </VisualElement>
+
+                        <VisualElement name="assign-section" class="assign-section">
+                            <Label class="assign-title" text="ASSIGNMENT" />
+                            <Button name="btn-assign-combat" class="assign-btn assign-btn--combat" text="Assign to Combat" />
+                            <Button name="btn-unassign" class="assign-btn assign-btn--unassign" text="Unassign" />
+                        </VisualElement>
+
+                    </VisualElement>
+                </VisualElement>
+
+            </VisualElement>
+
+            <!-- 4c. Exploration Panel -->
+            <VisualElement name="exploration-panel" class="exploration-root" style="display: none;">
+
+                <!-- Left: Node Map -->
+                <VisualElement class="map-panel">
+                    <Label class="map-title" text="EXPLORATION MAP" />
+                    <VisualElement name="node-grid" class="node-grid" />
+                </VisualElement>
+
+                <!-- Right: Expedition Panel -->
+                <VisualElement class="expedition-panel">
+                    <Label class="expedition-title" text="EXPEDITIONS" />
+                    <Label name="expedition-status" class="expedition-status" text="0 active expeditions" />
+
+                    <ScrollView name="expedition-list" class="expedition-list" />
+
+                    <VisualElement class="dispatch-section">
+                        <Label class="dispatch-label" text="Select a node to dispatch" />
+                        <Button name="btn-dispatch" class="dispatch-btn dispatch-btn--disabled" text="DISPATCH EXPEDITION" />
+                        <Button name="btn-bonfire" class="bonfire-btn" text="INVEST BONFIRE (10 Basic)" />
+                    </VisualElement>
+                </VisualElement>
+
+            </VisualElement>
+
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 5. BATTLE HUD (semi-transparent positioned panels)           -->
+        <!-- ============================================================ -->
+        <VisualElement name="battle-hud" style="display: none; flex-grow: 1;" picking-mode="Ignore">
+
+            <!-- Top Bar: Wave Progress + Enemy Count -->
+            <VisualElement name="top-bar" class="battle-top-bar">
+                <VisualElement class="wave-info">
+                    <Label name="wave-label" class="wave-label" text="WAVE 1/3" />
+                    <VisualElement class="wave-progress-container">
+                        <VisualElement name="wave-progress-fill" class="wave-progress-fill" />
+                    </VisualElement>
+                </VisualElement>
+                <VisualElement class="enemy-count">
+                    <Label name="enemy-count-label" class="enemy-count-label" text="0 / 0" />
+                </VisualElement>
+            </VisualElement>
+
+            <!-- Left: Squad Status Panel -->
+            <VisualElement name="squad-panel" class="squad-panel" picking-mode="Ignore">
+                <Label class="squad-panel-title" text="SQUADS" />
+                <Label name="squad-count-label" class="squad-hp-label" text="0 squads" />
+                <VisualElement class="squad-hp-bar-bg">
+                    <VisualElement name="squad-hp-fill" class="squad-hp-bar-fill" />
+                </VisualElement>
+                <Label name="squad-hp-label" class="squad-hp-label" text="0 / 0" />
+            </VisualElement>
+
+            <!-- Right: Building HP Panel -->
+            <VisualElement name="building-panel" class="building-panel" picking-mode="Ignore">
+                <Label class="building-panel-title" text="BUILDINGS" />
+
+                <VisualElement class="hq-section">
+                    <Label class="hq-label" text="HEADQUARTERS" />
+                    <VisualElement class="hq-hp-bar-bg">
+                        <VisualElement name="hq-hp-fill" class="hq-hp-bar-fill" />
+                    </VisualElement>
+                    <Label name="hq-hp-label" class="hq-hp-label" text="500 / 500" />
+                </VisualElement>
+
+                <Label class="building-total-label" text="All Buildings" />
+                <VisualElement class="building-hp-bar-bg">
+                    <VisualElement name="building-hp-fill" class="building-hp-bar-fill" />
+                </VisualElement>
+                <Label name="building-hp-label" class="squad-hp-label" text="0 / 0" />
+            </VisualElement>
+
+            <!-- Bottom Right: Speed Controls -->
+            <VisualElement name="speed-controls" class="speed-controls">
+                <Label class="speed-label" text="SPEED" />
+                <Button name="btn-speed-1x" class="speed-btn speed-btn--active" text="1x" />
+                <Button name="btn-speed-2x" class="speed-btn" text="2x" />
+                <Button name="btn-pause" class="speed-btn" text="II" />
+            </VisualElement>
+
+            <!-- Game Over Overlay (within battle HUD) -->
+            <VisualElement name="game-over-overlay" class="game-over-overlay">
+                <Label class="game-over-text" text="GAME OVER" />
+                <Label name="game-over-sub" class="game-over-sub" text="Headquarters destroyed" />
+            </VisualElement>
+
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 6. WAVE PREVIEW OVERLAY                                      -->
+        <!-- ============================================================ -->
+        <VisualElement name="wave-preview-overlay" class="overlay-bg" style="display: none;">
+            <VisualElement class="overlay-panel">
+                <Label class="overlay-title" text="INCOMING WAVE" />
+
+                <VisualElement class="wave-direction-row">
+                    <VisualElement name="dir-north" class="direction-indicator">
+                        <Label class="direction-label" text="N" />
+                        <Label name="dir-north-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-east" class="direction-indicator">
+                        <Label class="direction-label" text="E" />
+                        <Label name="dir-east-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-south" class="direction-indicator">
+                        <Label class="direction-label" text="S" />
+                        <Label name="dir-south-count" class="direction-count" text="0" />
+                    </VisualElement>
+                    <VisualElement name="dir-west" class="direction-indicator">
+                        <Label class="direction-label" text="W" />
+                        <Label name="dir-west-count" class="direction-count" text="0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Total Enemies" />
+                    <Label name="preview-total" class="wave-detail-value" text="0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Wave Count" />
+                    <Label name="preview-waves" class="wave-detail-value" text="0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Threat Level" />
+                    <Label name="preview-threat" class="wave-detail-value" text="???" />
+                </VisualElement>
+
+                <Label name="scout-info" class="scout-info" text="Scout level: Unknown" />
+
+                <Button name="btn-close-preview" class="overlay-close-btn" text="CLOSE" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 7. BATTLE RESULT OVERLAY                                     -->
+        <!-- ============================================================ -->
+        <VisualElement name="battle-result-overlay" class="overlay-bg" style="display: none;">
+            <VisualElement class="overlay-panel">
+                <Label class="overlay-title" text="BATTLE RESULT" />
+
+                <Label name="result-grade" class="result-grade grade--perfect" text="PERFECT DEFENSE" />
+
+                <VisualElement class="reward-row">
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon cost-icon--basic" />
+                        <Label name="reward-basic" class="reward-value" text="+0" />
+                    </VisualElement>
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon cost-icon--advanced" />
+                        <Label name="reward-advanced" class="reward-value" text="+0" />
+                    </VisualElement>
+                    <VisualElement class="reward-item">
+                        <VisualElement class="reward-icon reward-icon--relic" />
+                        <Label name="reward-relic" class="reward-value" text="+0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Enemies Defeated" />
+                    <Label name="result-killed" class="wave-detail-value" text="0 / 0" />
+                </VisualElement>
+                <VisualElement class="wave-detail-row">
+                    <Label class="wave-detail-label" text="Damage Ratio" />
+                    <Label name="result-damage" class="wave-detail-value" text="0%" />
+                </VisualElement>
+
+                <VisualElement name="damage-list" class="damage-list" style="display: none;">
+                    <Label class="damage-list-title" text="Damaged Buildings:" />
+                    <Label name="damage-list-items" class="damage-list-item" text="" />
+                </VisualElement>
+
+                <Button name="btn-close-result" class="overlay-close-btn" text="CONTINUE" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 8. ENCOUNTER OVERLAY                                         -->
+        <!-- ============================================================ -->
+        <VisualElement name="encounter-overlay" class="encounter-overlay" style="display: none;">
+            <VisualElement class="encounter-panel">
+                <Label name="encounter-title" class="encounter-title" text="ENCOUNTER" />
+                <Label name="encounter-desc" class="encounter-desc" text="Something happened..." />
+                <VisualElement name="choice-list" class="choice-list" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 9. GAME OVER SCREEN                                          -->
+        <!-- ============================================================ -->
+        <VisualElement name="game-over-screen" class="menu-fullscreen menu-bg" style="display: none;">
+            <VisualElement class="menu-panel">
+                <Label name="gameover-title" class="gameover-title gameover-title--defeat" text="GAME OVER" />
+
+                <VisualElement class="gameover-stats">
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Turns Survived" />
+                        <Label name="stat-turns" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Citizens" />
+                        <Label name="stat-citizens" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Buildings" />
+                        <Label name="stat-buildings" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Enemies Defeated" />
+                        <Label name="stat-enemies" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Total Resources" />
+                        <Label name="stat-resources" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <Button name="btn-retry" class="menu-btn menu-btn--primary" text="RETRY" />
+                <Button name="btn-to-menu" class="menu-btn" text="MAIN MENU" />
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>

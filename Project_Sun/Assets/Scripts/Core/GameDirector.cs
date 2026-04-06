@@ -6,15 +6,13 @@ using ProjectSun.V2.Defense.Bridge;
 using ProjectSun.V2.Construction;
 using ProjectSun.V2.Workforce;
 using ProjectSun.V2.Exploration;
-using ProjectSun.V2.UI;
-using EncounterPopupPresenter = ProjectSun.V2.UI.EncounterPopupPresenter;
 
 namespace ProjectSun.V2.Core
 {
     /// <summary>
     /// 전체 게임 루프 오케스트레이터.
     /// 메뉴 → 게임 시작 → 낮/밤 루프 → 게임오버 흐름 관리.
-    /// 모든 Presenter/Bridge/Manager를 연결한다.
+    /// 단일 GameUIController로 모든 UI를 제어.
     /// </summary>
     public class GameDirector : MonoBehaviour
     {
@@ -33,15 +31,8 @@ namespace ProjectSun.V2.Core
         [SerializeField] BattleUIBridge battleUIBridge;
         [SerializeField] BattleSceneSetup battleSceneSetup;
 
-        [Header("UI Presenters")]
-        [SerializeField] MenuScreenPresenter menuPresenter;
-        [SerializeField] BattleHUDPresenter battleHUD;
-        [SerializeField] ConstructionTabPresenter constructionTab;
-        [SerializeField] WorkforceTabPresenter workforceTab;
-        [SerializeField] ExplorationTabPresenter explorationTab;
-        [SerializeField] WavePreviewPresenter wavePreview;
-        [SerializeField] EncounterPopupPresenter encounterPopup;
-        [SerializeField] DayTabController dayTabController;
+        [Header("UI")]
+        [SerializeField] GameUIController uiController;
 
         int activeTab;
         GameState _gameState;
@@ -55,18 +46,22 @@ namespace ProjectSun.V2.Core
         void ShowMenu()
         {
             _gameActive = false;
-            HideAllGameUI();
-            menuPresenter?.ShowMainMenu();
+            uiController?.HideAllSections();
+            uiController?.ShowMainMenu();
 
-            if (menuPresenter != null)
+            if (uiController != null)
             {
-                menuPresenter.OnNewGameRequested -= StartNewGame;
-                menuPresenter.OnContinueRequested -= ContinueGame;
-                menuPresenter.OnRetryRequested -= StartNewGame;
+                uiController.OnNewGameRequested -= StartNewGame;
+                uiController.OnContinueRequested -= ContinueGame;
+                uiController.OnRetryRequested -= StartNewGame;
+                uiController.OnPreviewClosed -= ConfirmNight;
+                uiController.OnResultClosed -= OnResultClosed;
 
-                menuPresenter.OnNewGameRequested += StartNewGame;
-                menuPresenter.OnContinueRequested += ContinueGame;
-                menuPresenter.OnRetryRequested += StartNewGame;
+                uiController.OnNewGameRequested += StartNewGame;
+                uiController.OnContinueRequested += ContinueGame;
+                uiController.OnRetryRequested += StartNewGame;
+                uiController.OnPreviewClosed += ConfirmNight;
+                uiController.OnResultClosed += OnResultClosed;
             }
         }
 
@@ -97,10 +92,7 @@ namespace ProjectSun.V2.Core
             autoSaveHandler?.Initialize(_gameState);
             explorationBridge?.Initialize(_gameState);
             encounterBridge?.Initialize(_gameState);
-            dayTabController?.Initialize(_gameState);
-            constructionTab?.Initialize(_gameState);
-            workforceTab?.Initialize(_gameState);
-            explorationTab?.Initialize(_gameState);
+            uiController?.Initialize(_gameState);
 
             // 이벤트 연결
             if (phaseManager != null)
@@ -109,11 +101,6 @@ namespace ProjectSun.V2.Core
                 gameOverManager.OnGameOver += OnGameOver;
             if (resultCollector != null)
                 resultCollector.OnDefenseResultPublished += OnDefenseResult;
-            if (wavePreview != null)
-            {
-                wavePreview.OnPreviewClosed += ConfirmNight;
-                wavePreview.OnResultClosed += OnResultClosed;
-            }
 
             gameOverManager?.Reset();
             _gameActive = true;
@@ -126,7 +113,7 @@ namespace ProjectSun.V2.Core
 
         void EnterDayPhase()
         {
-            HideAllGameUI();
+            uiController?.HideAllSections();
             resourceFlowLogger?.OnTurnStart(_gameState);
             explorationBridge?.ProcessTurn();
 
@@ -135,7 +122,7 @@ namespace ProjectSun.V2.Core
                 encounterBridge?.TryDailyEncounter();
 
             // 낮 HUD + 탭 표시
-            dayTabController?.Show();
+            uiController?.ShowDayPhase(_gameState);
             ShowDayTab(activeTab);
 
             Debug.Log($"[GameDirector] === DAY {_gameState.currentTurn} ===");
@@ -145,16 +132,9 @@ namespace ProjectSun.V2.Core
         public void ShowDayTab(int tabIndex)
         {
             activeTab = tabIndex;
-            constructionTab?.Hide();
-            workforceTab?.Hide();
-            explorationTab?.Hide();
-
-            switch (tabIndex)
-            {
-                case 0: constructionTab?.Show(); break;
-                case 1: workforceTab?.Show(); break;
-                case 2: explorationTab?.Show(); break;
-            }
+            // GameUIController handles the actual tab switching internally
+            // when called from buttons. This method is called by GameUIController
+            // to sync state and also directly by GameDirector for initial tab.
         }
 
         /// <summary>밤 전환 시작. UI 버튼에서 호출.</summary>
@@ -165,7 +145,7 @@ namespace ProjectSun.V2.Core
             resourceFlowLogger?.OnDayEnd(_gameState);
 
             // 낮 UI 숨기기
-            HideDayUI();
+            uiController?.HideDayUI();
 
             // 웨이브 미리보기 표시
             var scoutLevel = ScoutLevel.Unknown;
@@ -174,7 +154,7 @@ namespace ProjectSun.V2.Core
 
             int estimatedEnemies = Mathf.RoundToInt(10 * Mathf.Pow(1.2f, _gameState.currentTurn - 1));
             int waveCount = _gameState.currentTurn <= 5 ? 1 : _gameState.currentTurn <= 15 ? 2 : 3;
-            wavePreview?.ShowPreview(_gameState.currentTurn, estimatedEnemies, waveCount, scoutLevel);
+            uiController?.ShowWavePreview(_gameState.currentTurn, estimatedEnemies, waveCount, scoutLevel);
 
             Debug.Log($"[GameDirector] Wave preview shown — {estimatedEnemies} enemies, {waveCount} waves");
         }
@@ -184,8 +164,7 @@ namespace ProjectSun.V2.Core
         {
             if (!_gameActive) return;
 
-            HideAllGameUI();
-            wavePreview?.HidePreview();
+            uiController?.HideAllSections();
 
             // 페이즈 전환
             phaseManager?.StartNightPhase();
@@ -195,7 +174,7 @@ namespace ProjectSun.V2.Core
             // 전투 시각화 + UI 활성화
             battleSceneSetup?.SetupBattleScene(_gameState);
             battleUIBridge?.Activate();
-            battleHUD?.Show();
+            uiController?.ShowBattleHUD();
             timeScaleController?.ResetToNormal();
 
             Debug.Log($"[GameDirector] === NIGHT {_gameState.currentTurn} ===");
@@ -208,7 +187,7 @@ namespace ProjectSun.V2.Core
         {
             if (!_gameActive || _gameState.currentPhase != PhaseType.Night) return;
 
-            battleHUD?.Hide();
+            uiController?.HideBattleHUD();
             battleUIBridge?.Deactivate();
             battleSceneSetup?.CleanupScene();
 
@@ -229,7 +208,7 @@ namespace ProjectSun.V2.Core
                 if (!gameOverManager.IsGameOver)
                 {
                     // 결과 화면 표시
-                    wavePreview?.ShowResult(result);
+                    uiController?.ShowBattleResult(result);
                 }
             }
         }
@@ -258,31 +237,14 @@ namespace ProjectSun.V2.Core
         void OnGameOver(GameOverManager.GameOverReason reason)
         {
             _gameActive = false;
-            HideAllGameUI();
-            battleHUD?.Hide();
+            uiController?.HideAllSections();
+            uiController?.HideBattleHUD();
             battleUIBridge?.Deactivate();
 
             bool isVictory = reason == GameOverManager.GameOverReason.Victory;
-            menuPresenter?.ShowGameOver(_gameState, isVictory);
+            uiController?.ShowGameOver(_gameState, isVictory);
 
             Debug.Log($"[GameDirector] GAME OVER — {reason}");
-        }
-
-        void HideDayUI()
-        {
-            dayTabController?.Hide();
-            constructionTab?.Hide();
-            workforceTab?.Hide();
-            explorationTab?.Hide();
-        }
-
-        void HideAllGameUI()
-        {
-            menuPresenter?.HideAll();
-            battleHUD?.Hide();
-            HideDayUI();
-            wavePreview?.HidePreview();
-            wavePreview?.HideResult();
         }
 
         void OnDestroy()
@@ -293,10 +255,10 @@ namespace ProjectSun.V2.Core
                 gameOverManager.OnGameOver -= OnGameOver;
             if (resultCollector != null)
                 resultCollector.OnDefenseResultPublished -= OnDefenseResult;
-            if (wavePreview != null)
+            if (uiController != null)
             {
-                wavePreview.OnPreviewClosed -= ConfirmNight;
-                wavePreview.OnResultClosed -= OnResultClosed;
+                uiController.OnPreviewClosed -= ConfirmNight;
+                uiController.OnResultClosed -= OnResultClosed;
             }
         }
 

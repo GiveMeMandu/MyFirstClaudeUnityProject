@@ -1,0 +1,1466 @@
+/* ================================================================== */
+/* GameUI.uss — Single unified stylesheet for ALL game UI screens     */
+/* NO var() references — all values hardcoded to avoid                */
+/* StyleVariableResolver NullReferenceException bug                   */
+/* ================================================================== */
+
+
+/* ================================================================== */
+/* 1. MENU SCREENS — Main Menu, Base Select, Game Over                */
+/* ================================================================== */
+
+.menu-fullscreen {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+.menu-bg {
+    background-color: rgb(10, 8, 14);
+}
+
+.menu-panel {
+    width: 420px;
+    background-color: rgb(30, 28, 36);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgb(80, 70, 100);
+    padding: 32px;
+    align-items: center;
+}
+
+.menu-title {
+    font-size: 36px;
+    color: rgb(240, 200, 80);
+    -unity-font-style: bold;
+    letter-spacing: 4px;
+    margin-bottom: 8px;
+}
+
+.menu-subtitle {
+    font-size: 14px;
+    color: rgb(100, 95, 115);
+    margin-bottom: 32px;
+}
+
+.menu-btn {
+    width: 280px;
+    height: 48px;
+    margin-bottom: 10px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    color: rgb(230, 225, 240);
+    font-size: 18px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+    transition-property: background-color, border-color, scale;
+    transition-duration: 150ms;
+}
+
+.menu-btn:hover {
+    background-color: rgb(55, 50, 65);
+    border-color: rgb(120, 90, 220);
+    scale: 1.02;
+}
+
+.menu-btn--primary {
+    background-color: rgb(120, 90, 220);
+    border-color: rgb(140, 110, 240);
+    color: white;
+}
+
+.menu-btn--primary:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+.menu-btn--disabled {
+    opacity: 0.4;
+}
+
+/* Base Select */
+.base-card {
+    width: 340px;
+    padding: 16px;
+    margin-bottom: 12px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: rgb(80, 70, 100);
+}
+
+.base-card:hover {
+    border-color: rgb(120, 90, 220);
+    background-color: rgb(55, 50, 65);
+}
+
+.base-card--selected {
+    border-color: rgb(240, 200, 80);
+    background-color: rgba(240, 200, 80, 0.08);
+}
+
+.base-name {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.base-desc {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    white-space: normal;
+}
+
+.base-difficulty {
+    font-size: 12px;
+    color: rgb(240, 200, 80);
+    margin-top: 6px;
+}
+
+/* Game Over / Victory */
+.gameover-title {
+    font-size: 48px;
+    -unity-font-style: bold;
+    letter-spacing: 6px;
+    margin-bottom: 16px;
+}
+
+.gameover-title--defeat {
+    color: rgb(220, 80, 80);
+}
+
+.gameover-title--victory {
+    color: rgb(240, 200, 80);
+}
+
+.gameover-stats {
+    width: 320px;
+    margin-bottom: 20px;
+}
+
+.gameover-stat-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 6px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 70, 100);
+}
+
+.gameover-stat-label {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+}
+
+.gameover-stat-value {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.version-label {
+    font-size: 12px;
+    color: rgb(50, 45, 60);
+    margin-top: 24px;
+}
+
+
+/* ================================================================== */
+/* 2. DAY HUD — Tab Bar + Resource Display + Night Button             */
+/* ================================================================== */
+
+.day-hud-root {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    flex-direction: column;
+}
+
+.day-top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: rgba(15, 13, 20, 0.9);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 70, 100);
+}
+
+.resource-hud-compact {
+    flex-direction: row;
+    align-items: center;
+}
+
+.res-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.res-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 4px;
+}
+
+.res-dot--basic { background-color: rgb(180, 140, 80); }
+.res-dot--advanced { background-color: rgb(80, 160, 200); }
+.res-dot--relic { background-color: rgb(200, 120, 220); }
+
+.res-value {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.turn-badge {
+    font-size: 14px;
+    color: rgb(240, 200, 80);
+    -unity-font-style: bold;
+    margin-left: 8px;
+}
+
+.tab-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.tab-btn {
+    height: 32px;
+    min-width: 100px;
+    margin: 0 2px;
+    padding: 0 16px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px 4px 0 0;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    border-bottom-width: 0;
+    color: rgb(160, 150, 180);
+    font-size: 12px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.tab-btn:hover {
+    background-color: rgb(55, 50, 65);
+    color: rgb(230, 225, 240);
+}
+
+.tab-btn--active {
+    background-color: rgb(30, 28, 36);
+    color: rgb(230, 225, 240);
+    border-color: rgb(120, 90, 220);
+    border-top-width: 2px;
+    border-top-color: rgb(120, 90, 220);
+}
+
+.night-btn {
+    height: 32px;
+    padding: 0 20px;
+    margin-left: 12px;
+    background-color: rgb(180, 60, 60);
+    border-radius: 4px;
+    border-width: 0;
+    color: white;
+    font-size: 12px;
+    -unity-font-style: bold;
+}
+
+.night-btn:hover {
+    background-color: rgb(200, 80, 80);
+}
+
+
+/* ================================================================== */
+/* 3. CONSTRUCTION TAB                                                */
+/* ================================================================== */
+
+.construction-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+    padding-top: 46px;
+}
+
+.slot-panel {
+    width: 280px;
+    padding: 12px;
+    border-right-width: 1px;
+    border-right-color: rgb(80, 70, 100);
+}
+
+.slot-panel-title {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.slot-list {
+    flex-grow: 1;
+}
+
+.slot-item {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+}
+
+.slot-item:hover {
+    background-color: rgb(55, 50, 65);
+    border-color: rgb(140, 120, 200);
+}
+
+.slot-item--selected {
+    background-color: rgb(70, 60, 90);
+    border-color: rgb(120, 90, 220);
+    border-width: 2px;
+}
+
+.slot-item--locked {
+    opacity: 0.4;
+}
+
+.slot-item--damaged {
+    border-color: rgb(220, 80, 80);
+}
+
+.slot-state-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-right: 8px;
+}
+
+.slot-state--active { background-color: rgb(120, 200, 120); }
+.slot-state--empty { background-color: rgb(100, 95, 115); }
+.slot-state--locked { background-color: rgb(60, 55, 70); }
+.slot-state--damaged { background-color: rgb(220, 80, 80); }
+.slot-state--constructing { background-color: rgb(240, 200, 80); }
+
+.slot-name {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    flex-grow: 1;
+}
+
+.slot-hp {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+}
+
+/* Detail Panel (shared by construction + workforce) */
+.detail-panel {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.detail-header {
+    margin-bottom: 16px;
+}
+
+/* Workforce detail header uses row layout for portrait + info */
+.workforce-root .detail-header {
+    flex-direction: row;
+    align-items: center;
+}
+
+.detail-name {
+    font-size: 24px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.detail-category {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    margin-top: 4px;
+}
+
+.detail-desc {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    margin-bottom: 16px;
+    white-space: normal;
+}
+
+/* Stats grid */
+.stats-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.stat-box {
+    width: 48%;
+    padding: 8px;
+    margin: 1%;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+}
+
+.stat-label {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+}
+
+.stat-value {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+/* HP bar */
+.hp-bar-container {
+    margin-bottom: 12px;
+}
+
+.hp-bar-label {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    margin-bottom: 4px;
+}
+
+.hp-bar-bg {
+    height: 14px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(120, 200, 120);
+    border-radius: 6px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+/* Action buttons */
+.action-row {
+    flex-direction: row;
+    margin-top: 16px;
+}
+
+.action-btn {
+    flex-grow: 1;
+    height: 40px;
+    margin: 0 4px;
+    background-color: rgb(120, 90, 220);
+    border-radius: 4px;
+    border-width: 0;
+    color: white;
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.action-btn:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+.action-btn--disabled {
+    background-color: rgb(42, 38, 50);
+    color: rgb(100, 95, 115);
+}
+
+.action-btn--repair {
+    background-color: rgb(240, 200, 80);
+    color: rgb(20, 18, 24);
+}
+
+.action-btn--repair:hover {
+    background-color: rgb(255, 220, 100);
+}
+
+/* Cost display */
+.cost-row {
+    flex-direction: row;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.cost-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.cost-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    margin-right: 4px;
+}
+
+.cost-icon--basic { background-color: rgb(180, 140, 80); }
+.cost-icon--advanced { background-color: rgb(80, 160, 200); }
+
+.cost-value {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+}
+
+.cost-value--insufficient {
+    color: rgb(220, 80, 80);
+}
+
+/* Upgrade branches */
+.branch-row {
+    flex-direction: row;
+    margin-top: 12px;
+}
+
+.branch-card {
+    flex-grow: 1;
+    padding: 10px;
+    margin: 0 4px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+}
+
+.branch-card:hover {
+    border-color: rgb(140, 120, 200);
+    background-color: rgb(55, 50, 65);
+}
+
+.branch-name {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.branch-desc {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+/* Empty state */
+.empty-prompt {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-prompt-text {
+    font-size: 18px;
+    color: rgb(100, 95, 115);
+}
+
+
+/* ================================================================== */
+/* 4. WORKFORCE TAB                                                   */
+/* ================================================================== */
+
+.workforce-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+    padding-top: 46px;
+}
+
+.citizen-panel {
+    width: 300px;
+    padding: 12px;
+    border-right-width: 1px;
+    border-right-color: rgb(80, 70, 100);
+}
+
+.citizen-panel-title {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.citizen-summary {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    margin-bottom: 8px;
+}
+
+.filter-row {
+    flex-direction: row;
+    margin-bottom: 8px;
+}
+
+.filter-btn {
+    flex-grow: 1;
+    height: 28px;
+    margin: 0 2px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    color: rgb(160, 150, 180);
+    font-size: 12px;
+    -unity-text-align: middle-center;
+}
+
+.filter-btn:hover {
+    background-color: rgb(55, 50, 65);
+}
+
+.filter-btn--active {
+    background-color: rgb(120, 90, 220);
+    border-color: rgb(140, 110, 240);
+    color: white;
+}
+
+.citizen-list {
+    flex-grow: 1;
+}
+
+.citizen-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 3px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+}
+
+.citizen-row:hover {
+    background-color: rgb(55, 50, 65);
+    border-color: rgb(140, 120, 200);
+}
+
+.citizen-row--selected {
+    background-color: rgb(70, 60, 90);
+    border-color: rgb(120, 90, 220);
+    border-width: 2px;
+}
+
+.citizen-row--injured {
+    border-left-width: 3px;
+    border-left-color: rgb(220, 80, 80);
+}
+
+.citizen-row--combat {
+    border-left-width: 3px;
+    border-left-color: rgb(220, 80, 80);
+}
+
+.citizen-row--assigned {
+    border-left-width: 3px;
+    border-left-color: rgb(120, 200, 120);
+}
+
+.citizen-portrait {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    margin-right: 8px;
+    background-color: rgb(55, 50, 65);
+    border-width: 2px;
+}
+
+.portrait--combat { border-color: rgb(220, 80, 80); }
+.portrait--construction { border-color: rgb(180, 140, 80); }
+.portrait--research { border-color: rgb(80, 160, 200); }
+.portrait--exploration { border-color: rgb(80, 200, 120); }
+.portrait--none { border-color: rgb(100, 95, 115); }
+
+.citizen-info {
+    flex-grow: 1;
+}
+
+.citizen-name {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+}
+
+.citizen-status {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+}
+
+.citizen-level {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    -unity-font-style: bold;
+}
+
+/* Detail / Assignment Panel */
+.detail-empty {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-empty-text {
+    font-size: 18px;
+    color: rgb(100, 95, 115);
+}
+
+.detail-content {
+    flex-grow: 1;
+}
+
+.detail-portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background-color: rgb(55, 50, 65);
+    border-width: 3px;
+    margin-right: 16px;
+}
+
+.detail-aptitude {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+}
+
+.detail-level {
+    font-size: 14px;
+    color: rgb(240, 200, 80);
+}
+
+/* Status section */
+.status-section {
+    padding: 12px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: 18px;
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.status--idle { color: rgb(160, 150, 180); }
+.status--assigned { color: rgb(120, 200, 120); }
+.status--injured { color: rgb(220, 80, 80); }
+.status--combat { color: rgb(220, 80, 80); }
+
+.status-detail {
+    font-size: 14px;
+    color: rgb(100, 95, 115);
+}
+
+/* Assignment actions */
+.assign-section {
+    margin-top: 12px;
+}
+
+.assign-title {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.assign-btn {
+    height: 36px;
+    margin-bottom: 6px;
+    background-color: rgb(120, 90, 220);
+    border-radius: 4px;
+    border-width: 0;
+    color: white;
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.assign-btn:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+.assign-btn--combat {
+    background-color: rgb(180, 60, 60);
+}
+
+.assign-btn--combat:hover {
+    background-color: rgb(200, 80, 80);
+}
+
+.assign-btn--unassign {
+    background-color: rgb(42, 38, 50);
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    color: rgb(160, 150, 180);
+}
+
+.assign-btn--unassign:hover {
+    background-color: rgb(55, 50, 65);
+}
+
+
+/* ================================================================== */
+/* 5. EXPLORATION TAB                                                 */
+/* ================================================================== */
+
+.exploration-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+    padding-top: 46px;
+}
+
+.map-panel {
+    flex-grow: 1;
+    padding: 16px;
+    border-right-width: 1px;
+    border-right-color: rgb(80, 70, 100);
+}
+
+.map-title {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 12px;
+}
+
+.node-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.node-card {
+    width: 100px;
+    height: 100px;
+    margin: 6px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 2px;
+    border-color: rgb(80, 70, 100);
+    justify-content: center;
+    align-items: center;
+    transition-property: scale;
+    transition-duration: 100ms;
+}
+
+.node-card:hover {
+    scale: 1.05;
+    border-color: rgb(140, 120, 200);
+}
+
+.node-card--selected {
+    border-color: rgb(120, 90, 220);
+    border-width: 3px;
+    background-color: rgb(70, 60, 90);
+}
+
+.node-card--hidden {
+    background-color: rgb(25, 22, 30);
+    border-color: rgb(40, 35, 50);
+    opacity: 0.5;
+}
+
+.node-card--visited {
+    border-color: rgb(120, 200, 120);
+}
+
+.node-card--base {
+    border-color: rgb(240, 200, 80);
+    background-color: rgba(240, 200, 80, 0.1);
+}
+
+.node-icon {
+    font-size: 28px;
+    color: rgb(230, 225, 240);
+    -unity-text-align: middle-center;
+}
+
+.node-label {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    -unity-text-align: upper-center;
+    margin-top: 4px;
+}
+
+.expedition-panel {
+    width: 280px;
+    padding: 16px;
+}
+
+.expedition-title {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.expedition-status {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    margin-bottom: 12px;
+}
+
+.expedition-list {
+    flex-grow: 1;
+}
+
+.expedition-item {
+    padding: 10px;
+    margin-bottom: 6px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+}
+
+.expedition-citizen {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.expedition-dest {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+    margin-top: 2px;
+}
+
+.expedition-turns {
+    font-size: 12px;
+    color: rgb(240, 200, 80);
+    margin-top: 2px;
+}
+
+.dispatch-section {
+    padding: 12px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    margin-top: 12px;
+}
+
+.dispatch-label {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    margin-bottom: 8px;
+}
+
+.dispatch-btn {
+    height: 36px;
+    background-color: rgb(120, 90, 220);
+    border-radius: 4px;
+    border-width: 0;
+    color: white;
+    font-size: 14px;
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.dispatch-btn:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+.dispatch-btn--disabled {
+    background-color: rgb(42, 38, 50);
+    color: rgb(100, 95, 115);
+}
+
+.bonfire-btn {
+    height: 36px;
+    background-color: rgb(180, 140, 80);
+    color: rgb(20, 18, 24);
+    border-radius: 4px;
+    border-width: 0;
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.bonfire-btn:hover {
+    background-color: rgb(200, 160, 100);
+}
+
+
+/* ================================================================== */
+/* 6. BATTLE HUD — Night Phase                                        */
+/* ================================================================== */
+
+.battle-top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: rgba(15, 13, 20, 0.85);
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 70, 100);
+}
+
+.wave-info {
+    flex-direction: row;
+    align-items: center;
+}
+
+.wave-label {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    margin-right: 12px;
+}
+
+.wave-progress-container {
+    width: 200px;
+    height: 16px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    overflow: hidden;
+}
+
+.wave-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: rgb(120, 90, 220);
+    border-radius: 7px;
+    transition-property: width;
+    transition-duration: 300ms;
+}
+
+.enemy-count {
+    flex-direction: row;
+    align-items: center;
+}
+
+.enemy-count-label {
+    font-size: 18px;
+    color: rgb(220, 80, 80);
+    -unity-font-style: bold;
+}
+
+/* Squad Panel */
+.squad-panel {
+    position: absolute;
+    left: 12px;
+    top: 60px;
+    width: 180px;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    padding: 8px;
+}
+
+.squad-panel-title {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.squad-hp-bar-bg {
+    height: 12px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 6px;
+    margin-bottom: 4px;
+    overflow: hidden;
+}
+
+.squad-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(120, 200, 120);
+    border-radius: 5px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+.squad-hp-label {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+    -unity-text-align: middle-center;
+}
+
+/* Building Panel */
+.building-panel {
+    position: absolute;
+    right: 12px;
+    top: 60px;
+    width: 200px;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    padding: 8px;
+}
+
+.building-panel-title {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.hq-section {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 70, 100);
+}
+
+.hq-label {
+    font-size: 14px;
+    color: rgb(240, 200, 80);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.hq-hp-bar-bg {
+    height: 16px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.hq-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(240, 200, 80);
+    border-radius: 7px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+.hq-hp-label {
+    font-size: 12px;
+    color: rgb(230, 225, 240);
+    -unity-text-align: middle-center;
+    margin-top: 2px;
+}
+
+.building-total-label {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+}
+
+.building-hp-bar-bg {
+    height: 10px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 5px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.building-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: rgb(120, 90, 220);
+    border-radius: 4px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+/* Speed Controls */
+.speed-controls {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    padding: 6px 8px;
+}
+
+.speed-btn {
+    width: 48px;
+    height: 36px;
+    margin: 0 4px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    color: rgb(230, 225, 240);
+    font-size: 14px;
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.speed-btn:hover {
+    background-color: rgb(55, 50, 65);
+    border-color: rgb(140, 120, 200);
+}
+
+.speed-btn--active {
+    background-color: rgb(120, 90, 220);
+    border-color: rgb(140, 110, 240);
+    color: white;
+}
+
+.speed-label {
+    font-size: 12px;
+    color: rgb(160, 150, 180);
+    margin-right: 8px;
+}
+
+/* Game Over Overlay (battle) */
+.game-over-overlay {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.game-over-text {
+    font-size: 48px;
+    color: rgb(220, 80, 80);
+    -unity-font-style: bold;
+    letter-spacing: 8px;
+}
+
+.game-over-sub {
+    font-size: 18px;
+    color: rgb(160, 150, 180);
+    margin-top: 12px;
+}
+
+
+/* ================================================================== */
+/* 7. WAVE PREVIEW + BATTLE RESULT OVERLAYS                           */
+/* ================================================================== */
+
+.overlay-bg {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    justify-content: center;
+    align-items: center;
+}
+
+.overlay-panel {
+    width: 500px;
+    min-height: 300px;
+    background-color: rgb(30, 28, 36);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgb(80, 70, 100);
+    padding: 24px;
+}
+
+.overlay-title {
+    font-size: 24px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 16px;
+}
+
+.overlay-close-btn {
+    height: 40px;
+    margin-top: 16px;
+    background-color: rgb(120, 90, 220);
+    border-radius: 4px;
+    border-width: 0;
+    color: white;
+    font-size: 14px;
+    -unity-font-style: bold;
+}
+
+.overlay-close-btn:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+/* Wave Preview specifics */
+.wave-direction-row {
+    flex-direction: row;
+    justify-content: space-around;
+    margin-bottom: 16px;
+}
+
+.direction-indicator {
+    width: 80px;
+    height: 80px;
+    border-radius: 40px;
+    background-color: rgb(42, 38, 50);
+    border-width: 2px;
+    border-color: rgb(80, 70, 100);
+    justify-content: center;
+    align-items: center;
+}
+
+.direction-indicator--active {
+    border-color: rgb(220, 80, 80);
+    background-color: rgba(220, 80, 80, 0.2);
+}
+
+.direction-label {
+    font-size: 12px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.direction-count {
+    font-size: 18px;
+    color: rgb(220, 80, 80);
+    -unity-font-style: bold;
+}
+
+.wave-detail-row {
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgb(80, 70, 100);
+}
+
+.wave-detail-label {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+}
+
+.wave-detail-value {
+    font-size: 14px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.scout-info {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+    -unity-text-align: upper-center;
+    margin-top: 8px;
+    -unity-font-style: italic;
+}
+
+/* Battle Result specifics */
+.result-grade {
+    font-size: 36px;
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 12px;
+}
+
+.grade--perfect { color: rgb(240, 200, 80); }
+.grade--minor { color: rgb(120, 200, 120); }
+.grade--moderate { color: rgb(80, 160, 200); }
+.grade--major { color: rgb(220, 80, 80); }
+
+.reward-row {
+    flex-direction: row;
+    justify-content: center;
+    margin: 12px 0;
+}
+
+.reward-item {
+    flex-direction: row;
+    align-items: center;
+    margin: 0 12px;
+}
+
+.reward-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px;
+    margin-right: 6px;
+}
+
+.reward-icon--relic {
+    background-color: rgb(200, 120, 220);
+}
+
+.reward-value {
+    font-size: 18px;
+    color: rgb(230, 225, 240);
+    -unity-font-style: bold;
+}
+
+.damage-list {
+    margin-top: 8px;
+    padding: 8px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 4px;
+}
+
+.damage-list-title {
+    font-size: 12px;
+    color: rgb(100, 95, 115);
+    margin-bottom: 4px;
+}
+
+.damage-list-item {
+    font-size: 12px;
+    color: rgb(220, 80, 80);
+}
+
+
+/* ================================================================== */
+/* 8. ENCOUNTER POPUP                                                 */
+/* ================================================================== */
+
+.encounter-overlay {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+}
+
+.encounter-panel {
+    width: 480px;
+    background-color: rgb(30, 28, 36);
+    border-radius: 12px;
+    border-width: 2px;
+    border-color: rgb(140, 120, 200);
+    padding: 28px;
+}
+
+.encounter-title {
+    font-size: 24px;
+    color: rgb(240, 200, 80);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 12px;
+}
+
+.encounter-desc {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    -unity-text-align: upper-center;
+    white-space: normal;
+    margin-bottom: 20px;
+}
+
+.choice-list {
+    margin-bottom: 8px;
+}
+
+.choice-btn {
+    height: 44px;
+    margin-bottom: 8px;
+    background-color: rgb(42, 38, 50);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    color: rgb(230, 225, 240);
+    font-size: 14px;
+    -unity-text-align: middle-center;
+    transition-property: background-color, border-color;
+    transition-duration: 150ms;
+}
+
+.choice-btn:hover {
+    background-color: rgb(55, 50, 65);
+    border-color: rgb(120, 90, 220);
+}
+
+.choice-btn--cost {
+    color: rgb(80, 160, 200);
+}
