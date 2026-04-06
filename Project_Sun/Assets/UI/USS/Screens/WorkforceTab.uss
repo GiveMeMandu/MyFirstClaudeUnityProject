@@ -1,0 +1,279 @@
+/* === Workforce Tab — Day Phase Citizen Management UI (SF-WF-009) === */
+
+.workforce-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+}
+
+/* ── Left: Citizen List ── */
+.citizen-panel {
+    width: 300px;
+    padding: 12px;
+    border-right-width: 1px;
+    border-right-color: var(--color-border);
+}
+
+.citizen-panel-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.citizen-summary {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: 8px;
+}
+
+.filter-row {
+    flex-direction: row;
+    margin-bottom: 8px;
+}
+
+.filter-btn {
+    flex-grow: 1;
+    height: 28px;
+    margin: 0 2px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    -unity-text-align: middle-center;
+}
+
+.filter-btn:hover {
+    background-color: var(--color-bg-hover);
+}
+
+.filter-btn--active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent-hover);
+    color: white;
+}
+
+.citizen-list {
+    flex-grow: 1;
+}
+
+.citizen-row {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 3px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-border);
+}
+
+.citizen-row:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-border-highlight);
+}
+
+.citizen-row--selected {
+    background-color: var(--color-bg-selected);
+    border-color: var(--color-accent);
+    border-width: 2px;
+}
+
+.citizen-row--injured {
+    border-left-width: 3px;
+    border-left-color: var(--color-insufficient);
+}
+
+.citizen-row--combat {
+    border-left-width: 3px;
+    border-left-color: rgb(220, 80, 80);
+}
+
+.citizen-row--assigned {
+    border-left-width: 3px;
+    border-left-color: var(--color-sufficient);
+}
+
+.citizen-portrait {
+    width: 32px;
+    height: 32px;
+    border-radius: 16px;
+    margin-right: 8px;
+    background-color: var(--color-bg-hover);
+    border-width: 2px;
+}
+
+.portrait--combat {
+    border-color: rgb(220, 80, 80);
+}
+
+.portrait--construction {
+    border-color: var(--color-resource-basic);
+}
+
+.portrait--research {
+    border-color: var(--color-resource-advanced);
+}
+
+.portrait--exploration {
+    border-color: rgb(80, 200, 120);
+}
+
+.portrait--none {
+    border-color: var(--color-text-dim);
+}
+
+.citizen-info {
+    flex-grow: 1;
+}
+
+.citizen-name {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+}
+
+.citizen-status {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+}
+
+.citizen-level {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+}
+
+/* ── Right: Detail / Assignment Panel ── */
+.detail-panel {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.detail-empty {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.detail-empty-text {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-dim);
+}
+
+.detail-content {
+    flex-grow: 1;
+}
+
+.detail-header {
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.detail-portrait {
+    width: 64px;
+    height: 64px;
+    border-radius: 32px;
+    background-color: var(--color-bg-hover);
+    border-width: 3px;
+    margin-right: 16px;
+}
+
+.detail-name {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.detail-aptitude {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+}
+
+.detail-level {
+    font-size: var(--font-size-md);
+    color: var(--color-turn);
+}
+
+/* Status section */
+.status-section {
+    padding: 12px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+}
+
+.status-label {
+    font-size: var(--font-size-lg);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.status--idle {
+    color: var(--color-text-secondary);
+}
+
+.status--assigned {
+    color: var(--color-sufficient);
+}
+
+.status--injured {
+    color: var(--color-insufficient);
+}
+
+.status--combat {
+    color: rgb(220, 80, 80);
+}
+
+.status-detail {
+    font-size: var(--font-size-md);
+    color: var(--color-text-dim);
+}
+
+/* Assignment actions */
+.assign-section {
+    margin-top: 12px;
+}
+
+.assign-title {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.assign-btn {
+    height: 36px;
+    margin-bottom: 6px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    color: white;
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+}
+
+.assign-btn:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.assign-btn--combat {
+    background-color: rgb(180, 60, 60);
+}
+
+.assign-btn--combat:hover {
+    background-color: rgb(200, 80, 80);
+}
+
+.assign-btn--unassign {
+    background-color: var(--color-bg-card);
+    border-width: 1px;
+    border-color: var(--color-border);
+    color: var(--color-text-secondary);
+}
+
+.assign-btn--unassign:hover {
+    background-color: var(--color-bg-hover);
+}

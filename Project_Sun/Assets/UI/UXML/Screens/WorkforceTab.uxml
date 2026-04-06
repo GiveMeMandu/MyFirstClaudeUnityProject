@@ -1,0 +1,61 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/WorkforceTab.uss" />
+
+    <VisualElement name="workforce-root" class="workforce-root">
+
+        <!-- ═══ Left: Citizen List ═══ -->
+        <VisualElement class="citizen-panel">
+            <Label class="citizen-panel-title" text="CITIZENS" />
+            <Label name="citizen-summary" class="citizen-summary" text="0 total | 0 idle | 0 assigned" />
+
+            <!-- Filter buttons -->
+            <VisualElement class="filter-row">
+                <Button name="filter-all" class="filter-btn filter-btn--active" text="All" />
+                <Button name="filter-idle" class="filter-btn" text="Idle" />
+                <Button name="filter-assigned" class="filter-btn" text="Assigned" />
+                <Button name="filter-injured" class="filter-btn" text="Injured" />
+            </VisualElement>
+
+            <ScrollView name="citizen-list" class="citizen-list" />
+        </VisualElement>
+
+        <!-- ═══ Right: Detail / Assignment Panel ═══ -->
+        <VisualElement name="detail-panel" class="detail-panel">
+
+            <!-- Empty state -->
+            <VisualElement name="detail-empty" class="detail-empty">
+                <Label class="detail-empty-text" text="Select a citizen to view details" />
+            </VisualElement>
+
+            <!-- Detail content -->
+            <VisualElement name="detail-content" class="detail-content" style="display: none;">
+
+                <!-- Header: portrait + name -->
+                <VisualElement class="detail-header">
+                    <VisualElement name="detail-portrait" class="detail-portrait" />
+                    <VisualElement>
+                        <Label name="detail-name" class="detail-name" text="Name" />
+                        <Label name="detail-aptitude" class="detail-aptitude" text="Aptitude" />
+                        <Label name="detail-level" class="detail-level" text="Lv. 0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <!-- Status -->
+                <VisualElement class="status-section">
+                    <Label name="status-label" class="status-label status--idle" text="IDLE" />
+                    <Label name="status-detail" class="status-detail" text="Ready for assignment" />
+                </VisualElement>
+
+                <!-- Assignment actions -->
+                <VisualElement name="assign-section" class="assign-section">
+                    <Label class="assign-title" text="ASSIGNMENT" />
+                    <Button name="btn-assign-combat" class="assign-btn assign-btn--combat" text="Assign to Combat" />
+                    <Button name="btn-unassign" class="assign-btn assign-btn--unassign" text="Unassign" />
+                </VisualElement>
+
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>
