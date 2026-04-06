@@ -1,0 +1,298 @@
+/* === Construction Tab — Day Phase Building UI (SF-CON-009) === */
+
+/* ── Container ── */
+.construction-root {
+    flex-grow: 1;
+    flex-direction: row;
+    background-color: rgba(15, 13, 20, 0.95);
+}
+
+/* ── Left: Slot Grid ── */
+.slot-panel {
+    width: 280px;
+    padding: 12px;
+    border-right-width: 1px;
+    border-right-color: var(--color-border);
+}
+
+.slot-panel-title {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 8px;
+}
+
+.slot-list {
+    flex-grow: 1;
+}
+
+.slot-item {
+    flex-direction: row;
+    align-items: center;
+    padding: 8px;
+    margin-bottom: 4px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-border);
+}
+
+.slot-item:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-border-highlight);
+}
+
+.slot-item--selected {
+    background-color: var(--color-bg-selected);
+    border-color: var(--color-accent);
+    border-width: 2px;
+}
+
+.slot-item--locked {
+    opacity: 0.4;
+}
+
+.slot-item--damaged {
+    border-color: var(--color-insufficient);
+}
+
+.slot-state-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    margin-right: 8px;
+}
+
+.slot-state--active {
+    background-color: var(--color-sufficient);
+}
+
+.slot-state--empty {
+    background-color: var(--color-text-dim);
+}
+
+.slot-state--locked {
+    background-color: rgb(60, 55, 70);
+}
+
+.slot-state--damaged {
+    background-color: var(--color-insufficient);
+}
+
+.slot-state--constructing {
+    background-color: var(--color-turn);
+}
+
+.slot-name {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    flex-grow: 1;
+}
+
+.slot-hp {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+}
+
+/* ── Right: Detail Panel ── */
+.detail-panel {
+    flex-grow: 1;
+    padding: 16px;
+}
+
+.detail-header {
+    margin-bottom: 16px;
+}
+
+.detail-name {
+    font-size: var(--font-size-xl);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.detail-category {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-top: 4px;
+}
+
+.detail-desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    margin-bottom: 16px;
+    white-space: normal;
+}
+
+/* Stats grid */
+.stats-grid {
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+}
+
+.stat-box {
+    width: 48%;
+    padding: 8px;
+    margin: 1%;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+}
+
+.stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+}
+
+.stat-value {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+/* HP bar */
+.hp-bar-container {
+    margin-bottom: 12px;
+}
+
+.hp-bar-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+}
+
+.hp-bar-bg {
+    height: 14px;
+    background-color: var(--color-bg-card);
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-sufficient);
+    border-radius: 6px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+/* Action buttons */
+.action-row {
+    flex-direction: row;
+    margin-top: 16px;
+}
+
+.action-btn {
+    flex-grow: 1;
+    height: 40px;
+    margin: 0 4px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    color: white;
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.action-btn:hover {
+    background-color: var(--color-accent-hover);
+}
+
+.action-btn--disabled {
+    background-color: var(--color-bg-card);
+    color: var(--color-text-dim);
+}
+
+.action-btn--repair {
+    background-color: var(--color-turn);
+    color: var(--color-bg-dark);
+}
+
+.action-btn--repair:hover {
+    background-color: rgb(255, 220, 100);
+}
+
+/* Cost display */
+.cost-row {
+    flex-direction: row;
+    margin-top: 8px;
+    align-items: center;
+}
+
+.cost-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.cost-icon {
+    width: 14px;
+    height: 14px;
+    border-radius: 3px;
+    margin-right: 4px;
+}
+
+.cost-icon--basic {
+    background-color: var(--color-resource-basic);
+}
+
+.cost-icon--advanced {
+    background-color: var(--color-resource-advanced);
+}
+
+.cost-value {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+}
+
+.cost-value--insufficient {
+    color: var(--color-insufficient);
+}
+
+/* Upgrade branches */
+.branch-row {
+    flex-direction: row;
+    margin-top: 12px;
+}
+
+.branch-card {
+    flex-grow: 1;
+    padding: 10px;
+    margin: 0 4px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+}
+
+.branch-card:hover {
+    border-color: var(--color-border-highlight);
+    background-color: var(--color-bg-hover);
+}
+
+.branch-name {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.branch-desc {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    white-space: normal;
+    margin-bottom: 6px;
+}
+
+/* Empty state */
+.empty-prompt {
+    flex-grow: 1;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-prompt-text {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-dim);
+}
