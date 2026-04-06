@@ -166,6 +166,11 @@ namespace ProjectSun.V2.Core
         Label _policyBName, _policyBDesc, _policyBEffects;
         Button _btnPolicyA, _btnPolicyB;
 
+        // ── Settings elements ──
+        VisualElement _settingsScreen;
+        Slider _sliderMaster, _sliderBGM, _sliderSFX;
+        Button _btnSaveSettings, _btnBackSettings;
+
         // ── State ──
         GameState _gameState;
         bool _battleHudActive;
@@ -450,6 +455,14 @@ namespace ProjectSun.V2.Core
             _policyBEffects = _root.Q<Label>("policy-b-effects");
             _btnPolicyA = _root.Q<Button>("btn-policy-a");
             _btnPolicyB = _root.Q<Button>("btn-policy-b");
+
+            // Settings
+            _settingsScreen = _root.Q("settings-screen");
+            _sliderMaster = _root.Q<Slider>("slider-master");
+            _sliderBGM = _root.Q<Slider>("slider-bgm");
+            _sliderSFX = _root.Q<Slider>("slider-sfx");
+            _btnSaveSettings = _root.Q<Button>("btn-save-settings");
+            _btnBackSettings = _root.Q<Button>("btn-back-settings");
         }
 
         void SetupAllButtons()
@@ -457,8 +470,7 @@ namespace ProjectSun.V2.Core
             // ── Menu ──
             _root.Q<Button>("btn-new-game")?.RegisterCallback<ClickEvent>(_ => ShowBaseSelect());
             _btnContinue?.RegisterCallback<ClickEvent>(_ => OnContinueRequested?.Invoke());
-            _root.Q<Button>("btn-settings")?.RegisterCallback<ClickEvent>(_ =>
-                Debug.Log("[Menu] Settings not yet implemented"));
+            _root.Q<Button>("btn-settings")?.RegisterCallback<ClickEvent>(_ => ShowSettings());
             _root.Q<Button>("btn-quit")?.RegisterCallback<ClickEvent>(_ =>
             {
 #if UNITY_EDITOR
@@ -508,6 +520,26 @@ namespace ProjectSun.V2.Core
             _btnPolicyA?.RegisterCallback<ClickEvent>(_ => ChoosePolicy(true));
             _btnPolicyB?.RegisterCallback<ClickEvent>(_ => ChoosePolicy(false));
 
+            // ── Settings actions ──
+            _sliderMaster?.RegisterValueChangedCallback(evt =>
+            {
+                if (AudioManager.Instance != null) AudioManager.Instance.MasterVolume = evt.newValue;
+            });
+            _sliderBGM?.RegisterValueChangedCallback(evt =>
+            {
+                if (AudioManager.Instance != null) AudioManager.Instance.BGMVolume = evt.newValue;
+            });
+            _sliderSFX?.RegisterValueChangedCallback(evt =>
+            {
+                if (AudioManager.Instance != null) AudioManager.Instance.SFXVolume = evt.newValue;
+            });
+            _btnSaveSettings?.RegisterCallback<ClickEvent>(_ =>
+            {
+                AudioManager.Instance?.SaveSettings();
+                ShowMainMenu();
+            });
+            _btnBackSettings?.RegisterCallback<ClickEvent>(_ => ShowMainMenu());
+
             // ── Speed controls ──
             _btn1x?.RegisterCallback<ClickEvent>(_ =>
                 timeScaleController?.SetSpeed(TimeScaleController.TimeSpeed.Normal));
@@ -539,6 +571,21 @@ namespace ProjectSun.V2.Core
             HideAllSections();
             _mainMenu?.SetDisplay(true);
             UpdateContinueButton();
+        }
+
+        /// <summary>Show settings screen with current audio values.</summary>
+        public void ShowSettings()
+        {
+            HideAllSections();
+            _settingsScreen?.SetDisplay(true);
+
+            // Sync sliders with current AudioManager values
+            if (AudioManager.Instance != null)
+            {
+                if (_sliderMaster != null) _sliderMaster.value = AudioManager.Instance.MasterVolume;
+                if (_sliderBGM != null) _sliderBGM.value = AudioManager.Instance.BGMVolume;
+                if (_sliderSFX != null) _sliderSFX.value = AudioManager.Instance.SFXVolume;
+            }
         }
 
         void ShowBaseSelect()
@@ -771,6 +818,7 @@ namespace ProjectSun.V2.Core
             _battleResultOverlay?.SetDisplay(false);
             _encounterOverlay?.SetDisplay(false);
             _policyOverlay?.SetDisplay(false);
+            _settingsScreen?.SetDisplay(false);
             _gameOverScreen?.SetDisplay(false);
             _battleHudActive = false;
         }

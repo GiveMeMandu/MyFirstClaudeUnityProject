@@ -525,7 +525,28 @@
         </VisualElement>
 
         <!-- ============================================================ -->
-        <!-- 10. GAME OVER SCREEN                                         -->
+        <!-- 11. SETTINGS SCREEN                                          -->
+        <!-- ============================================================ -->
+        <VisualElement name="settings-screen" class="menu-fullscreen menu-bg" style="display: none;">
+            <VisualElement class="menu-panel" style="width: 450px;">
+                <Label class="menu-title" text="SETTINGS" />
+
+                <Label class="settings-label" text="Master Volume" />
+                <Slider name="slider-master" low-value="0" high-value="1" value="1" class="settings-slider" />
+
+                <Label class="settings-label" text="BGM Volume" />
+                <Slider name="slider-bgm" low-value="0" high-value="1" value="0.7" class="settings-slider" />
+
+                <Label class="settings-label" text="SFX Volume" />
+                <Slider name="slider-sfx" low-value="0" high-value="1" value="1" class="settings-slider" />
+
+                <Button name="btn-save-settings" class="menu-btn menu-btn--primary" text="SAVE" />
+                <Button name="btn-back-settings" class="menu-btn" text="BACK" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 12. GAME OVER SCREEN                                         -->
         <!-- ============================================================ -->
         <VisualElement name="game-over-screen" class="menu-fullscreen menu-bg" style="display: none;">
             <VisualElement class="menu-panel">

@@ -1589,3 +1589,55 @@
     -unity-font-style: italic;
     margin-bottom: 12px;
 }
+
+
+/* ================================================================== */
+/* 11. SETTINGS SCREEN                                                */
+/* ================================================================== */
+
+.settings-label {
+    font-size: 14px;
+    color: rgb(160, 150, 180);
+    margin-top: 12px;
+    margin-bottom: 4px;
+    -unity-text-align: upper-left;
+    width: 280px;
+    align-self: center;
+}
+
+.settings-slider {
+    width: 280px;
+    align-self: center;
+    margin-bottom: 8px;
+}
+
+.settings-slider .unity-base-slider__dragger {
+    width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    background-color: rgb(120, 90, 220);
+    border-width: 2px;
+    border-color: rgb(140, 110, 240);
+    margin-top: -7px;
+}
+
+.settings-slider .unity-base-slider__dragger:hover {
+    background-color: rgb(140, 110, 240);
+}
+
+.settings-slider .unity-base-slider__tracker {
+    height: 6px;
+    border-radius: 3px;
+    background-color: rgb(42, 38, 50);
+    border-width: 1px;
+    border-color: rgb(80, 70, 100);
+    margin-top: -1px;
+}
+
+.settings-slider .unity-base-slider__drag-container {
+    height: 20px;
+}
+
+.settings-slider .unity-base-field__label {
+    display: none;
+}
