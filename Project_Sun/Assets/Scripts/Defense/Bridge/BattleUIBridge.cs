@@ -78,7 +78,23 @@ namespace ProjectSun.V2.Defense.Bridge
         public void Deactivate()
         {
             _active = false;
+            DisposeQueries();
             Debug.Log("[BattleUIBridge] Deactivated");
+        }
+
+        void OnDestroy()
+        {
+            DisposeQueries();
+        }
+
+        void DisposeQueries()
+        {
+            if (_allEnemyQuery.IsValid) _allEnemyQuery.Dispose();
+            if (_aliveEnemyQuery.IsValid) _aliveEnemyQuery.Dispose();
+            if (_buildingQuery.IsValid) _buildingQuery.Dispose();
+            if (_squadQuery.IsValid) _squadQuery.Dispose();
+            if (_waveManagerQuery.IsValid) _waveManagerQuery.Dispose();
+            if (_battleStatsQuery.IsValid) _battleStatsQuery.Dispose();
         }
 
         void Update()
