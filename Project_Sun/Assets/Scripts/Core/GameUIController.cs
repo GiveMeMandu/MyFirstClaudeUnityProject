@@ -30,6 +30,8 @@ namespace ProjectSun.V2.Core
         [SerializeField] GameOverManager gameOverManager;
         [SerializeField] ExplorationBridge explorationBridge;
         [SerializeField] EncounterBridge encounterBridge;
+        [SerializeField] TechTreeBridge techTreeBridge;
+        [SerializeField] PolicyBridge policyBridge;
         [SerializeField] SORegistry soRegistry;
 
         [Header("Exploration Config")]
@@ -66,7 +68,9 @@ namespace ProjectSun.V2.Core
         VisualElement _battleHud;
         VisualElement _wavePreviewOverlay;
         VisualElement _battleResultOverlay;
+        VisualElement _researchPanel;
         VisualElement _encounterOverlay;
+        VisualElement _policyOverlay;
         VisualElement _gameOverScreen;
 
         // ── Menu elements ──
@@ -144,6 +148,24 @@ namespace ProjectSun.V2.Core
         Label _encounterTitle, _encounterDesc;
         VisualElement _choiceList;
 
+        // ── Research elements ──
+        Button _tabResearch;
+        Label _researchStatus;
+        ScrollView _techNodeList;
+        VisualElement _researchDetailEmpty, _researchDetailContent;
+        Label _techName, _techCategory, _techDesc;
+        Label _techCostBasic, _techCostAdvanced, _techTurns, _techPrereqs;
+        VisualElement _techProgressSection;
+        Label _techProgressLabel;
+        VisualElement _techProgressFill;
+        Button _btnStartResearch;
+
+        // ── Policy elements ──
+        Label _policyTitle, _policyDesc;
+        Label _policyAName, _policyADesc, _policyAEffects;
+        Label _policyBName, _policyBDesc, _policyBEffects;
+        Button _btnPolicyA, _btnPolicyB;
+
         // ── State ──
         GameState _gameState;
         bool _battleHudActive;
@@ -161,6 +183,14 @@ namespace ProjectSun.V2.Core
         // Exploration state
         int _selectedNode = -1;
         readonly List<VisualElement> _nodeElements = new();
+
+        // Research state
+        int _selectedTechIndex = -1;
+        readonly List<VisualElement> _techElements = new();
+        TechNode[] _allTechNodes;
+
+        // Policy state
+        PolicyData _currentPolicy;
 
         // ================================================================
         // Lifecycle
@@ -184,6 +214,14 @@ namespace ProjectSun.V2.Core
                 encounterBridge.OnEncounterStarted += ShowEncounterPopup;
                 encounterBridge.OnEncounterEnded += HideEncounterPopup;
             }
+            if (techTreeBridge != null)
+            {
+                techTreeBridge.OnResearchCompleted += OnResearchCompleted;
+            }
+            if (policyBridge != null)
+            {
+                policyBridge.OnPolicyAvailable += ShowPolicyPopup;
+            }
         }
 
         void OnDisable()
@@ -196,6 +234,14 @@ namespace ProjectSun.V2.Core
             {
                 encounterBridge.OnEncounterStarted -= ShowEncounterPopup;
                 encounterBridge.OnEncounterEnded -= HideEncounterPopup;
+            }
+            if (techTreeBridge != null)
+            {
+                techTreeBridge.OnResearchCompleted -= OnResearchCompleted;
+            }
+            if (policyBridge != null)
+            {
+                policyBridge.OnPolicyAvailable -= ShowPolicyPopup;
             }
         }
 
@@ -244,10 +290,12 @@ namespace ProjectSun.V2.Core
             _constructionPanel = _root.Q("construction-panel");
             _workforcePanel = _root.Q("workforce-panel");
             _explorationPanel = _root.Q("exploration-panel");
+            _researchPanel = _root.Q("research-panel");
             _battleHud = _root.Q("battle-hud");
             _wavePreviewOverlay = _root.Q("wave-preview-overlay");
             _battleResultOverlay = _root.Q("battle-result-overlay");
             _encounterOverlay = _root.Q("encounter-overlay");
+            _policyOverlay = _root.Q("policy-overlay");
             _gameOverScreen = _root.Q("game-over-screen");
 
             // Menu
@@ -372,6 +420,36 @@ namespace ProjectSun.V2.Core
             _encounterTitle = _root.Q<Label>("encounter-title");
             _encounterDesc = _root.Q<Label>("encounter-desc");
             _choiceList = _root.Q("choice-list");
+
+            // Research
+            _tabResearch = _root.Q<Button>("tab-research");
+            _researchStatus = _root.Q<Label>("research-status");
+            _techNodeList = _root.Q<ScrollView>("tech-node-list");
+            _researchDetailEmpty = _root.Q("research-detail-empty");
+            _researchDetailContent = _root.Q("research-detail-content");
+            _techName = _root.Q<Label>("tech-name");
+            _techCategory = _root.Q<Label>("tech-category");
+            _techDesc = _root.Q<Label>("tech-desc");
+            _techCostBasic = _root.Q<Label>("tech-cost-basic");
+            _techCostAdvanced = _root.Q<Label>("tech-cost-advanced");
+            _techTurns = _root.Q<Label>("tech-turns");
+            _techPrereqs = _root.Q<Label>("tech-prereqs");
+            _techProgressSection = _root.Q("tech-progress-section");
+            _techProgressLabel = _root.Q<Label>("tech-progress-label");
+            _techProgressFill = _root.Q("tech-progress-fill");
+            _btnStartResearch = _root.Q<Button>("btn-start-research");
+
+            // Policy
+            _policyTitle = _root.Q<Label>("policy-title");
+            _policyDesc = _root.Q<Label>("policy-desc");
+            _policyAName = _root.Q<Label>("policy-a-name");
+            _policyADesc = _root.Q<Label>("policy-a-desc");
+            _policyAEffects = _root.Q<Label>("policy-a-effects");
+            _policyBName = _root.Q<Label>("policy-b-name");
+            _policyBDesc = _root.Q<Label>("policy-b-desc");
+            _policyBEffects = _root.Q<Label>("policy-b-effects");
+            _btnPolicyA = _root.Q<Button>("btn-policy-a");
+            _btnPolicyB = _root.Q<Button>("btn-policy-b");
         }
 
         void SetupAllButtons()
@@ -406,6 +484,7 @@ namespace ProjectSun.V2.Core
             _tabConstruction?.RegisterCallback<ClickEvent>(_ => ShowDayTab(0));
             _tabWorkforce?.RegisterCallback<ClickEvent>(_ => ShowDayTab(1));
             _tabExploration?.RegisterCallback<ClickEvent>(_ => ShowDayTab(2));
+            _tabResearch?.RegisterCallback<ClickEvent>(_ => ShowDayTab(3));
             _btnStartNight?.RegisterCallback<ClickEvent>(_ => director?.StartNight());
 
             // ── Workforce filters ──
@@ -421,6 +500,13 @@ namespace ProjectSun.V2.Core
             // ── Exploration actions ──
             _btnDispatch?.RegisterCallback<ClickEvent>(_ => DispatchExpedition());
             _btnBonfire?.RegisterCallback<ClickEvent>(_ => InvestBonfire());
+
+            // ── Research actions ──
+            _btnStartResearch?.RegisterCallback<ClickEvent>(_ => StartResearchClicked());
+
+            // ── Policy actions ──
+            _btnPolicyA?.RegisterCallback<ClickEvent>(_ => ChoosePolicy(true));
+            _btnPolicyB?.RegisterCallback<ClickEvent>(_ => ChoosePolicy(false));
 
             // ── Speed controls ──
             _btn1x?.RegisterCallback<ClickEvent>(_ =>
@@ -472,18 +558,20 @@ namespace ProjectSun.V2.Core
             ShowDayTab(0); // 기본 Construction 탭 표시
         }
 
-        /// <summary>Switch day tab. 0=Construction, 1=Workforce, 2=Exploration.</summary>
+        /// <summary>Switch day tab. 0=Construction, 1=Workforce, 2=Exploration, 3=Research.</summary>
         public void ShowDayTab(int tabIndex)
         {
             // Hide all content panels
             _constructionPanel?.SetDisplay(false);
             _workforcePanel?.SetDisplay(false);
             _explorationPanel?.SetDisplay(false);
+            _researchPanel?.SetDisplay(false);
 
             // Tab styling
             _tabConstruction?.RemoveFromClassList("tab-btn--active");
             _tabWorkforce?.RemoveFromClassList("tab-btn--active");
             _tabExploration?.RemoveFromClassList("tab-btn--active");
+            _tabResearch?.RemoveFromClassList("tab-btn--active");
 
             switch (tabIndex)
             {
@@ -503,6 +591,11 @@ namespace ProjectSun.V2.Core
                     RefreshExplorationMap();
                     RefreshExpeditions();
                     break;
+                case 3:
+                    _tabResearch?.AddToClassList("tab-btn--active");
+                    _researchPanel?.SetDisplay(true);
+                    RefreshResearchList();
+                    break;
             }
 
             director?.ShowDayTab(tabIndex);
@@ -516,6 +609,7 @@ namespace ProjectSun.V2.Core
             _constructionPanel?.SetDisplay(false);
             _workforcePanel?.SetDisplay(false);
             _explorationPanel?.SetDisplay(false);
+            _researchPanel?.SetDisplay(false);
         }
 
         /// <summary>Show battle HUD.</summary>
@@ -671,10 +765,12 @@ namespace ProjectSun.V2.Core
             _constructionPanel?.SetDisplay(false);
             _workforcePanel?.SetDisplay(false);
             _explorationPanel?.SetDisplay(false);
+            _researchPanel?.SetDisplay(false);
             _battleHud?.SetDisplay(false);
             _wavePreviewOverlay?.SetDisplay(false);
             _battleResultOverlay?.SetDisplay(false);
             _encounterOverlay?.SetDisplay(false);
+            _policyOverlay?.SetDisplay(false);
             _gameOverScreen?.SetDisplay(false);
             _battleHudActive = false;
         }
@@ -1380,6 +1476,269 @@ namespace ProjectSun.V2.Core
             if (_gameState == null) return ExplorationNodeState.Hidden;
             var node = _gameState.explorationNodes.Find(n => n.nodeId == index.ToString());
             return node?.state ?? ExplorationNodeState.Hidden;
+        }
+
+        // ================================================================
+        // Research Tab
+        // ================================================================
+
+        void RefreshResearchList()
+        {
+            if (_techNodeList == null || techTreeBridge == null) return;
+
+            _techNodeList.Clear();
+            _techElements.Clear();
+            _allTechNodes = techTreeBridge.GetAllNodes();
+
+            // Update status label
+            if (techTreeBridge.CurrentResearchId != null)
+            {
+                var current = techTreeBridge.GetNode(techTreeBridge.CurrentResearchId);
+                if (current != null)
+                    _researchStatus?.SetText($"Researching: {current.Name} ({techTreeBridge.Progress}/{current.ResearchTurns})");
+            }
+            else
+            {
+                _researchStatus?.SetText("No active research");
+            }
+
+            for (int i = 0; i < _allTechNodes.Length; i++)
+            {
+                var node = _allTechNodes[i];
+                var item = CreateTechNodeElement(node, i);
+                _techNodeList.Add(item);
+                _techElements.Add(item);
+            }
+
+            if (_selectedTechIndex >= 0 && _selectedTechIndex < _allTechNodes.Length)
+                UpdateResearchDetail();
+            else
+                ClearResearchSelection();
+        }
+
+        VisualElement CreateTechNodeElement(TechNode node, int index)
+        {
+            var item = new VisualElement();
+            item.AddToClassList("tech-node-item");
+
+            bool isCompleted = techTreeBridge.IsResearched(node.Id);
+            bool isActive = techTreeBridge.CurrentResearchId == node.Id;
+            bool prereqsMet = true;
+            if (node.Prerequisites != null)
+            {
+                foreach (var prereq in node.Prerequisites)
+                {
+                    if (!techTreeBridge.IsResearched(prereq))
+                    {
+                        prereqsMet = false;
+                        break;
+                    }
+                }
+            }
+
+            if (isCompleted)
+                item.AddToClassList("tech-node-item--completed");
+            else if (isActive)
+                item.AddToClassList("tech-node-item--active");
+            else if (!prereqsMet)
+                item.AddToClassList("tech-node-item--locked");
+
+            var catIcon = new VisualElement();
+            catIcon.AddToClassList("tech-category-icon");
+            catIcon.AddToClassList(node.Category switch
+            {
+                TechCategory.Economy => "tech-cat--economy",
+                TechCategory.Defense => "tech-cat--defense",
+                _ => "tech-cat--utility"
+            });
+            item.Add(catIcon);
+
+            var nameLabel = new Label(node.Name);
+            nameLabel.AddToClassList("tech-node-name");
+            item.Add(nameLabel);
+
+            var statusLabel = new Label(isCompleted ? "DONE" : isActive ? "IN PROGRESS" : "");
+            statusLabel.AddToClassList("tech-node-status");
+            item.Add(statusLabel);
+
+            int idx = index;
+            item.RegisterCallback<ClickEvent>(_ => SelectTechNode(idx));
+
+            return item;
+        }
+
+        void SelectTechNode(int index)
+        {
+            if (_selectedTechIndex >= 0 && _selectedTechIndex < _techElements.Count)
+                _techElements[_selectedTechIndex].RemoveFromClassList("tech-node-item--selected");
+
+            _selectedTechIndex = index;
+
+            if (index >= 0 && index < _techElements.Count)
+                _techElements[index].AddToClassList("tech-node-item--selected");
+
+            UpdateResearchDetail();
+        }
+
+        void ClearResearchSelection()
+        {
+            _selectedTechIndex = -1;
+            _researchDetailEmpty?.SetDisplay(true);
+            _researchDetailContent?.SetDisplay(false);
+        }
+
+        void UpdateResearchDetail()
+        {
+            if (techTreeBridge == null || _allTechNodes == null ||
+                _selectedTechIndex < 0 || _selectedTechIndex >= _allTechNodes.Length)
+            {
+                ClearResearchSelection();
+                return;
+            }
+
+            _researchDetailEmpty?.SetDisplay(false);
+            _researchDetailContent?.SetDisplay(true);
+
+            var node = _allTechNodes[_selectedTechIndex];
+            bool isCompleted = techTreeBridge.IsResearched(node.Id);
+            bool isActive = techTreeBridge.CurrentResearchId == node.Id;
+            bool hasActiveResearch = !string.IsNullOrEmpty(techTreeBridge.CurrentResearchId);
+
+            _techName?.SetText(node.Name);
+            _techCategory?.SetText(node.Category.ToString());
+            _techDesc?.SetText(node.Description);
+            _techCostBasic?.SetText(node.CostBasic.ToString());
+            _techCostAdvanced?.SetText(node.CostAdvanced.ToString());
+            _techTurns?.SetText($"{node.ResearchTurns} turn{(node.ResearchTurns > 1 ? "s" : "")}");
+
+            // Prerequisites
+            if (node.Prerequisites == null || node.Prerequisites.Length == 0)
+            {
+                _techPrereqs?.SetText("None");
+            }
+            else
+            {
+                var prereqNames = new List<string>();
+                foreach (var prereqId in node.Prerequisites)
+                {
+                    var prereqNode = techTreeBridge.GetNode(prereqId);
+                    prereqNames.Add(prereqNode != null ? prereqNode.Name : prereqId);
+                }
+                _techPrereqs?.SetText(string.Join(", ", prereqNames));
+            }
+
+            // Progress bar (only for active research)
+            _techProgressSection?.SetDisplay(isActive);
+            if (isActive)
+            {
+                _techProgressLabel?.SetText($"Progress: {techTreeBridge.Progress} / {node.ResearchTurns}");
+                float ratio = node.ResearchTurns > 0
+                    ? (float)techTreeBridge.Progress / node.ResearchTurns
+                    : 0f;
+                _techProgressFill?.SetWidth(ratio * 100f);
+            }
+
+            // Button state
+            if (_btnStartResearch != null)
+            {
+                bool canStart = !isCompleted && !hasActiveResearch;
+                if (canStart && node.Prerequisites != null)
+                {
+                    foreach (var prereq in node.Prerequisites)
+                    {
+                        if (!techTreeBridge.IsResearched(prereq))
+                        {
+                            canStart = false;
+                            break;
+                        }
+                    }
+                }
+                if (canStart && _gameState != null)
+                    canStart = _gameState.resources.CanAfford(node.CostBasic, node.CostAdvanced);
+
+                _btnStartResearch.SetEnabled(canStart);
+                _btnStartResearch.SetDisplay(!isCompleted);
+
+                if (isCompleted)
+                    _btnStartResearch.text = "COMPLETED";
+                else if (isActive)
+                {
+                    _btnStartResearch.text = "IN PROGRESS";
+                    _btnStartResearch.SetDisplay(true);
+                    _btnStartResearch.SetEnabled(false);
+                }
+                else if (!canStart)
+                {
+                    _btnStartResearch.text = "START RESEARCH";
+                    _btnStartResearch.AddToClassList("action-btn--disabled");
+                }
+                else
+                {
+                    _btnStartResearch.text = "START RESEARCH";
+                    _btnStartResearch.RemoveFromClassList("action-btn--disabled");
+                }
+            }
+        }
+
+        void StartResearchClicked()
+        {
+            if (techTreeBridge == null || _allTechNodes == null ||
+                _selectedTechIndex < 0 || _selectedTechIndex >= _allTechNodes.Length)
+                return;
+
+            var node = _allTechNodes[_selectedTechIndex];
+            if (techTreeBridge.StartResearch(node.Id))
+            {
+                RefreshResearchList();
+                UpdateResearchDetail();
+            }
+        }
+
+        void OnResearchCompleted(TechNode node)
+        {
+            Debug.Log($"[GameUIController] Research completed: {node.Name}");
+            // Refresh if research tab is visible
+            if (_researchPanel != null && _researchPanel.resolvedStyle.display == DisplayStyle.Flex)
+                RefreshResearchList();
+        }
+
+        // ================================================================
+        // Policy Popup
+        // ================================================================
+
+        /// <summary>정책 팝업 표시.</summary>
+        public void ShowPolicyPopup(PolicyData policy)
+        {
+            if (policy == null) return;
+            _currentPolicy = policy;
+
+            _policyTitle?.SetText(policy.Title);
+            _policyDesc?.SetText(policy.Description);
+
+            _policyAName?.SetText(policy.OptionAName);
+            _policyADesc?.SetText(policy.OptionADescription);
+            _policyAEffects?.SetText(policy.OptionAEffects);
+
+            _policyBName?.SetText(policy.OptionBName);
+            _policyBDesc?.SetText(policy.OptionBDescription);
+            _policyBEffects?.SetText(policy.OptionBEffects);
+
+            _policyOverlay?.SetDisplay(true);
+        }
+
+        /// <summary>정책 팝업 숨기기.</summary>
+        public void HidePolicyPopup()
+        {
+            _policyOverlay?.SetDisplay(false);
+            _currentPolicy = null;
+        }
+
+        void ChoosePolicy(bool isOptionA)
+        {
+            if (policyBridge == null || _currentPolicy == null) return;
+
+            policyBridge.ChooseOption(_currentPolicy.Id, isOptionA);
+            HidePolicyPopup();
         }
 
         // ================================================================

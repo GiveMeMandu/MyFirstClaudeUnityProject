@@ -35,6 +35,8 @@ public static class GameSceneBuilder
         var flowLogger = directorGO.AddComponent<ResourceFlowLogger>();
         var explorationBridge = directorGO.AddComponent<ExplorationBridge>();
         var encounterBridge = directorGO.AddComponent<EncounterBridge>();
+        var techTreeBridge = directorGO.AddComponent<TechTreeBridge>();
+        var policyBridge = directorGO.AddComponent<PolicyBridge>();
 
         // Wire core refs
         SetField(director, "phaseManager", phaseManager);
@@ -44,6 +46,8 @@ public static class GameSceneBuilder
         SetField(director, "resourceFlowLogger", flowLogger);
         SetField(director, "explorationBridge", explorationBridge);
         SetField(director, "encounterBridge", encounterBridge);
+        SetField(director, "techTreeBridge", techTreeBridge);
+        SetField(director, "policyBridge", policyBridge);
         SetField(autoSave, "phaseManager", phaseManager);
         SetField(gameOver, "battleUIBridge", null); // wired below
 
@@ -89,6 +93,8 @@ public static class GameSceneBuilder
         SetField(uiController, "gameOverManager", gameOver);
         SetField(uiController, "explorationBridge", explorationBridge);
         SetField(uiController, "encounterBridge", encounterBridge);
+        SetField(uiController, "techTreeBridge", techTreeBridge);
+        SetField(uiController, "policyBridge", policyBridge);
 
         // Wire controller to director
         SetField(director, "uiController", uiController);

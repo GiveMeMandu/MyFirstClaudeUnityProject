@@ -68,6 +68,7 @@
                     <Button name="tab-construction" class="tab-btn tab-btn--active" text="Construction" />
                     <Button name="tab-workforce" class="tab-btn" text="Workforce" />
                     <Button name="tab-exploration" class="tab-btn" text="Exploration" />
+                    <Button name="tab-research" class="tab-btn" text="Research" />
                     <Button name="btn-start-night" class="night-btn" text="START NIGHT" />
                 </VisualElement>
 
@@ -269,6 +270,67 @@
 
             </VisualElement>
 
+            <!-- 4d. Research Panel -->
+            <VisualElement name="research-panel" class="research-root" style="display: none;">
+
+                <!-- Left: Tech Node List -->
+                <VisualElement class="research-left">
+                    <Label class="slot-panel-title" text="TECH TREE" />
+                    <Label name="research-status" class="research-status" text="No active research" />
+                    <ScrollView name="tech-node-list" class="tech-node-list" />
+                </VisualElement>
+
+                <!-- Right: Detail Panel -->
+                <VisualElement name="research-detail" class="detail-panel">
+
+                    <VisualElement name="research-detail-empty" class="empty-prompt">
+                        <Label class="empty-prompt-text" text="Select a technology to view details" />
+                    </VisualElement>
+
+                    <VisualElement name="research-detail-content" style="display: none; flex-grow: 1;">
+
+                        <VisualElement class="detail-header">
+                            <Label name="tech-name" class="detail-name" text="Technology Name" />
+                            <Label name="tech-category" class="detail-category" text="Category" />
+                        </VisualElement>
+
+                        <Label name="tech-desc" class="detail-desc" text="Description" />
+
+                        <VisualElement class="stats-grid">
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Basic Cost" />
+                                <Label name="tech-cost-basic" class="stat-value" text="0" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Advanced Cost" />
+                                <Label name="tech-cost-advanced" class="stat-value" text="0" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Research Turns" />
+                                <Label name="tech-turns" class="stat-value" text="0" />
+                            </VisualElement>
+                            <VisualElement class="stat-box">
+                                <Label class="stat-label" text="Prerequisites" />
+                                <Label name="tech-prereqs" class="stat-value" text="None" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement name="tech-progress-section" class="hp-bar-container" style="display: none;">
+                            <Label name="tech-progress-label" class="hp-bar-label" text="Progress: 0 / 0" />
+                            <VisualElement class="hp-bar-bg">
+                                <VisualElement name="tech-progress-fill" class="hp-bar-fill" style="background-color: rgb(80, 160, 200);" />
+                            </VisualElement>
+                        </VisualElement>
+
+                        <VisualElement class="action-row">
+                            <Button name="btn-start-research" class="action-btn" text="START RESEARCH" />
+                        </VisualElement>
+
+                    </VisualElement>
+                </VisualElement>
+
+            </VisualElement>
+
         </VisualElement>
 
         <!-- ============================================================ -->
@@ -433,7 +495,37 @@
         </VisualElement>
 
         <!-- ============================================================ -->
-        <!-- 9. GAME OVER SCREEN                                          -->
+        <!-- 9. POLICY OVERLAY                                            -->
+        <!-- ============================================================ -->
+        <VisualElement name="policy-overlay" class="overlay-bg" style="display: none;">
+            <VisualElement class="overlay-panel" style="width: 550px;">
+                <Label name="policy-title" class="encounter-title" text="POLICY DECISION" />
+                <Label name="policy-desc" class="encounter-desc" />
+
+                <VisualElement style="flex-direction: row;">
+
+                    <!-- Option A -->
+                    <VisualElement name="policy-option-a" class="policy-card">
+                        <Label name="policy-a-name" class="policy-option-name" text="Option A" />
+                        <Label name="policy-a-desc" class="policy-option-desc" text="Description" />
+                        <Label name="policy-a-effects" class="policy-option-effects" text="Effects" />
+                        <Button name="btn-policy-a" class="action-btn" text="CHOOSE A" />
+                    </VisualElement>
+
+                    <!-- Option B -->
+                    <VisualElement name="policy-option-b" class="policy-card">
+                        <Label name="policy-b-name" class="policy-option-name" text="Option B" />
+                        <Label name="policy-b-desc" class="policy-option-desc" text="Description" />
+                        <Label name="policy-b-effects" class="policy-option-effects" text="Effects" />
+                        <Button name="btn-policy-b" class="action-btn" text="CHOOSE B" />
+                    </VisualElement>
+
+                </VisualElement>
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ============================================================ -->
+        <!-- 10. GAME OVER SCREEN                                         -->
         <!-- ============================================================ -->
         <VisualElement name="game-over-screen" class="menu-fullscreen menu-bg" style="display: none;">
             <VisualElement class="menu-panel">

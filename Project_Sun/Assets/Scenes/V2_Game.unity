@@ -119,7 +119,7 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &331975593
+--- !u!1 &237674377
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,286 +127,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 331975596}
-  - component: {fileID: 331975595}
-  - component: {fileID: 331975594}
+  - component: {fileID: 237674379}
+  - component: {fileID: 237674378}
   m_Layer: 0
-  m_Name: Directional Light
+  m_Name: AudioManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &331975594
+--- !u!114 &237674378
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331975593}
+  m_GameObject: {fileID: 237674377}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Script: {fileID: 11500000, guid: 649742f4934110b4c853ee02ebd7ea01, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
-  m_UsePipelineSettings: 1
-  m_AdditionalLightsShadowResolutionTier: 2
-  m_CustomShadowLayers: 0
-  m_LightCookieSize: {x: 1, y: 1}
-  m_LightCookieOffset: {x: 0, y: 0}
-  m_SoftShadowQuality: 0
-  m_RenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_ShadowRenderingLayersMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_Version: 4
-  m_LightLayerMask: 1
-  m_ShadowLayerMask: 1
-  m_RenderingLayers: 1
-  m_ShadowRenderingLayers: 1
---- !u!108 &331975595
-Light:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331975593}
-  m_Enabled: 1
-  serializedVersion: 13
-  m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1
-  m_Range: 10
-  m_SpotAngle: 30
-  m_InnerSpotAngle: 21.80208
-  m_CookieSize2D: {x: 0.5, y: 0.5}
-  m_Shadows:
-    m_Type: 2
-    m_Resolution: -1
-    m_CustomResolution: -1
-    m_Strength: 1
-    m_Bias: 0.05
-    m_NormalBias: 0.4
-    m_NearPlane: 0.2
-    m_CullingMatrixOverride:
-      e00: 1
-      e01: 0
-      e02: 0
-      e03: 0
-      e10: 0
-      e11: 1
-      e12: 0
-      e13: 0
-      e20: 0
-      e21: 0
-      e22: 1
-      e23: 0
-      e30: 0
-      e31: 0
-      e32: 0
-      e33: 1
-    m_UseCullingMatrixOverride: 0
-  m_Cookie: {fileID: 0}
-  m_DrawHalo: 0
-  m_Flare: {fileID: 0}
-  m_RenderMode: 0
-  m_CullingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RenderingLayerMask: 1
-  m_Lightmapping: 4
-  m_LightShadowCasterMode: 0
-  m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 1
-  m_ColorTemperature: 6570
-  m_UseColorTemperature: 0
-  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
-  m_UseBoundingSphereOverride: 0
-  m_UseViewFrustumForShadowCasterCull: 1
-  m_ForceVisible: 0
-  m_ShapeRadius: 0.025
-  m_ShadowAngle: 0
-  m_LightUnit: 1
-  m_LuxAtDistance: 1
-  m_EnableSpotReflector: 1
---- !u!4 &331975596
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AudioManager
+  bgmSource: {fileID: 0}
+  sfxSource: {fileID: 0}
+  defaultMasterVolume: 1
+  defaultBGMVolume: 0.7
+  defaultSFXVolume: 1
+--- !u!4 &237674379
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 331975593}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
-  m_LocalPosition: {x: 0, y: 3, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &371204692
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 371204701}
-  - component: {fileID: 371204697}
-  - component: {fileID: 371204700}
-  - component: {fileID: 371204696}
-  - component: {fileID: 371204695}
-  - component: {fileID: 371204699}
-  - component: {fileID: 371204698}
-  - component: {fileID: 371204694}
-  - component: {fileID: 371204693}
-  m_Layer: 0
-  m_Name: GameDirector
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &371204693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 452bb08c8806ad040a5772461d3e1d29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.EncounterBridge
-  baseChance: 0.4
-  pityIncrement: 0.15
---- !u!114 &371204694
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00074a5c3167f9049bff7c7b2598f36d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ExplorationBridge
-  defaultTravelTurns: 2
-  bonfireBasicCost: 10
-  bonfireBaseChance: 0.3
---- !u!114 &371204695
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40c49f7a608e95d4f9750fd0caca2f11, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameOverManager
-  battleUIBridge: {fileID: 1671744360}
---- !u!114 &371204696
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09fd20f98daa2ac4b8b45840c90bd23b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TimeScaleController
-  _autoSlowOnDamage: 1
---- !u!114 &371204697
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c7da788193aea3b4fa9630276fb618ef, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameDirector
-  phaseManager: {fileID: 371204700}
-  timeScaleController: {fileID: 371204696}
-  gameOverManager: {fileID: 371204695}
-  autoSaveHandler: {fileID: 371204699}
-  resourceFlowLogger: {fileID: 371204698}
-  explorationBridge: {fileID: 371204694}
-  encounterBridge: {fileID: 371204693}
-  battleInitializer: {fileID: 1671744363}
-  resultCollector: {fileID: 1671744362}
-  battleUIBridge: {fileID: 1671744360}
-  battleSceneSetup: {fileID: 1671744361}
-  uiController: {fileID: 483604479}
---- !u!114 &371204698
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5035b93eceab16348bff338ef299d9ce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ResourceFlowLogger
---- !u!114 &371204699
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f7fba06a7674814ba250e811c04eb45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AutoSaveHandler
-  phaseManager: {fileID: 371204700}
-  enableAutoSave: 1
---- !u!114 &371204700
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b364c5acea8a7fe4ba8c0b06fd886e42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PhaseManager
-  gameState:
-    currentTurn: 1
-    currentPhase: 0
-    resources:
-      basicAmount: 60
-      basicCap: 100
-      advancedAmount: 20
-      advancedCap: 40
-      relicAmount: 0
-    buildings: []
-    citizens: []
-    explorationNodes: []
-    waveHistory: []
---- !u!4 &371204701
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 371204692}
+  m_GameObject: {fileID: 237674377}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -415,7 +168,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &483604478
+--- !u!1 &685366042
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -423,86 +176,9 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 483604481}
-  - component: {fileID: 483604480}
-  - component: {fileID: 483604479}
-  m_Layer: 0
-  m_Name: GameUI
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &483604479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483604478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5775c380d5df8984894675407e84eb2f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameUIController
-  uiDocument: {fileID: 483604480}
-  director: {fileID: 371204697}
-  battleUIBridge: {fileID: 1671744360}
-  timeScaleController: {fileID: 371204696}
-  gameOverManager: {fileID: 371204695}
-  explorationBridge: {fileID: 371204694}
-  encounterBridge: {fileID: 371204693}
-  soRegistry: {fileID: 0}
-  stubNodeCount: 20
---- !u!114 &483604480
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483604478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
-  m_PanelSettings: {fileID: 11400000, guid: 97049e8152e88094dbb82898c90e26a7, type: 2}
-  m_ParentUI: {fileID: 0}
-  sourceAsset: {fileID: 9197481963319205126, guid: 90e9838cc42aa7d43bbf44402a935a94, type: 3}
-  m_SortingOrder: 0
-  m_Position: 0
-  m_WorldSpaceSizeMode: 1
-  m_WorldSpaceWidth: 1920
-  m_WorldSpaceHeight: 1080
-  m_PivotReferenceSize: 0
-  m_Pivot: 0
-  m_WorldSpaceCollider: {fileID: 0}
---- !u!4 &483604481
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 483604478}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &656973616
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 656973619}
-  - component: {fileID: 656973618}
-  - component: {fileID: 656973617}
+  - component: {fileID: 685366045}
+  - component: {fileID: 685366044}
+  - component: {fileID: 685366043}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -510,21 +186,21 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &656973617
+--- !u!81 &685366043
 AudioListener:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656973616}
+  m_GameObject: {fileID: 685366042}
   m_Enabled: 1
---- !u!20 &656973618
+--- !u!20 &685366044
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656973616}
+  m_GameObject: {fileID: 685366042}
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
@@ -569,13 +245,13 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!4 &656973619
+--- !u!4 &685366045
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 656973616}
+  m_GameObject: {fileID: 685366042}
   serializedVersion: 2
   m_LocalRotation: {x: 0.46174863, y: 0, z: 0, w: 0.8870109}
   m_LocalPosition: {x: 0, y: 40, z: -30}
@@ -584,7 +260,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1452034867
+--- !u!1 &692437897
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -592,61 +268,12 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1452034869}
-  - component: {fileID: 1452034868}
-  m_Layer: 0
-  m_Name: AudioManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1452034868
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452034867}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 649742f4934110b4c853ee02ebd7ea01, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AudioManager
-  bgmSource: {fileID: 0}
-  sfxSource: {fileID: 0}
-  defaultMasterVolume: 1
-  defaultBGMVolume: 0.7
-  defaultSFXVolume: 1
---- !u!4 &1452034869
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1452034867}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1671744359
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1671744365}
-  - component: {fileID: 1671744363}
-  - component: {fileID: 1671744362}
-  - component: {fileID: 1671744360}
-  - component: {fileID: 1671744361}
-  - component: {fileID: 1671744364}
+  - component: {fileID: 692437903}
+  - component: {fileID: 692437901}
+  - component: {fileID: 692437900}
+  - component: {fileID: 692437898}
+  - component: {fileID: 692437899}
+  - component: {fileID: 692437902}
   m_Layer: 0
   m_Name: BridgeLayer
   m_TagString: Untagged
@@ -654,79 +281,79 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1671744360
+--- !u!114 &692437898
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e7e3211cf395375459c9a1e44dc13399, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleUIBridge
---- !u!114 &1671744361
+--- !u!114 &692437899
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8857335ed748b294ca7717544b715fb8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.BattleSceneSetup
-  gameDirector: {fileID: 371204697}
-  battleUIBridge: {fileID: 1671744360}
+  gameDirector: {fileID: 1974815596}
+  battleUIBridge: {fileID: 692437898}
   minBattleDuration: 3
   spawnRadius: 45
   enemySpeed: 5
---- !u!114 &1671744362
+--- !u!114 &692437900
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d49b2c5241589bc4eac62bd553e72e33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleResultCollector
---- !u!114 &1671744363
+--- !u!114 &692437901
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e858e9fbeb8be694c8bc9f822dfc2d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Defense.Bridge.BattleInitializer
   _nightWaveConfig: {fileID: 0}
---- !u!114 &1671744364
+--- !u!114 &692437902
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4ddab3b5a8d92d64589164c6e119033c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.Defense.ECS.ECSSystemBootstrap
---- !u!4 &1671744365
+--- !u!4 &692437903
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671744359}
+  m_GameObject: {fileID: 692437897}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
@@ -735,7 +362,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1771277395
+--- !u!1 &907423291
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -743,8 +370,87 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1771277397}
-  - component: {fileID: 1771277396}
+  - component: {fileID: 907423294}
+  - component: {fileID: 907423293}
+  - component: {fileID: 907423292}
+  m_Layer: 0
+  m_Name: GameUI
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &907423292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907423291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5775c380d5df8984894675407e84eb2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameUIController
+  uiDocument: {fileID: 907423293}
+  director: {fileID: 1974815596}
+  battleUIBridge: {fileID: 692437898}
+  timeScaleController: {fileID: 1974815595}
+  gameOverManager: {fileID: 1974815594}
+  explorationBridge: {fileID: 1974815593}
+  encounterBridge: {fileID: 1974815592}
+  techTreeBridge: {fileID: 1974815591}
+  policyBridge: {fileID: 1974815590}
+  soRegistry: {fileID: 0}
+  stubNodeCount: 20
+--- !u!114 &907423293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907423291}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 19102, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.dll::UnityEngine.UIElements.UIDocument
+  m_PanelSettings: {fileID: 11400000, guid: 97049e8152e88094dbb82898c90e26a7, type: 2}
+  m_ParentUI: {fileID: 0}
+  sourceAsset: {fileID: 9197481963319205126, guid: 90e9838cc42aa7d43bbf44402a935a94, type: 3}
+  m_SortingOrder: 0
+  m_Position: 0
+  m_WorldSpaceSizeMode: 1
+  m_WorldSpaceWidth: 1920
+  m_WorldSpaceHeight: 1080
+  m_PivotReferenceSize: 0
+  m_Pivot: 0
+  m_WorldSpaceCollider: {fileID: 0}
+--- !u!4 &907423294
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 907423291}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1155729893
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1155729895}
+  - component: {fileID: 1155729894}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -752,13 +458,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!108 &1771277396
+--- !u!108 &1155729894
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1771277395}
+  m_GameObject: {fileID: 1155729893}
   m_Enabled: 1
   serializedVersion: 13
   m_Type: 1
@@ -817,15 +523,339 @@ Light:
   m_LightUnit: 1
   m_LuxAtDistance: 1
   m_EnableSpotReflector: 1
---- !u!4 &1771277397
+--- !u!4 &1155729895
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1771277395}
+  m_GameObject: {fileID: 1155729893}
   serializedVersion: 2
   m_LocalRotation: {x: 0.40821794, y: -0.23456973, z: 0.10938166, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1926616094
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1926616097}
+  - component: {fileID: 1926616096}
+  - component: {fileID: 1926616095}
+  m_Layer: 0
+  m_Name: Directional Light
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1926616095
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926616094}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 0
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
+--- !u!108 &1926616096
+Light:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926616094}
+  m_Enabled: 1
+  serializedVersion: 13
+  m_Type: 1
+  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
+  m_Intensity: 1
+  m_Range: 10
+  m_SpotAngle: 30
+  m_InnerSpotAngle: 21.80208
+  m_CookieSize2D: {x: 0.5, y: 0.5}
+  m_Shadows:
+    m_Type: 2
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+    m_CullingMatrixOverride:
+      e00: 1
+      e01: 0
+      e02: 0
+      e03: 0
+      e10: 0
+      e11: 1
+      e12: 0
+      e13: 0
+      e20: 0
+      e21: 0
+      e22: 1
+      e23: 0
+      e30: 0
+      e31: 0
+      e32: 0
+      e33: 1
+    m_UseCullingMatrixOverride: 0
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 0
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingLayerMask: 1
+  m_Lightmapping: 4
+  m_LightShadowCasterMode: 0
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ColorTemperature: 6570
+  m_UseColorTemperature: 0
+  m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_UseBoundingSphereOverride: 0
+  m_UseViewFrustumForShadowCasterCull: 1
+  m_ForceVisible: 0
+  m_ShapeRadius: 0.025
+  m_ShadowAngle: 0
+  m_LightUnit: 1
+  m_LuxAtDistance: 1
+  m_EnableSpotReflector: 1
+--- !u!4 &1926616097
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1926616094}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &1974815589
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1974815600}
+  - component: {fileID: 1974815596}
+  - component: {fileID: 1974815599}
+  - component: {fileID: 1974815595}
+  - component: {fileID: 1974815594}
+  - component: {fileID: 1974815598}
+  - component: {fileID: 1974815597}
+  - component: {fileID: 1974815593}
+  - component: {fileID: 1974815592}
+  - component: {fileID: 1974815591}
+  - component: {fileID: 1974815590}
+  m_Layer: 0
+  m_Name: GameDirector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1974815590
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f0d0d58b5843424b9fd0639a09483ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PolicyBridge
+--- !u!114 &1974815591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd76cae95e1445d45880d4eb63a117a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TechTreeBridge
+--- !u!114 &1974815592
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 452bb08c8806ad040a5772461d3e1d29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.EncounterBridge
+  baseChance: 0.4
+  pityIncrement: 0.15
+--- !u!114 &1974815593
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00074a5c3167f9049bff7c7b2598f36d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ExplorationBridge
+  defaultTravelTurns: 2
+  bonfireBasicCost: 10
+  bonfireBaseChance: 0.3
+--- !u!114 &1974815594
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40c49f7a608e95d4f9750fd0caca2f11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameOverManager
+  battleUIBridge: {fileID: 692437898}
+--- !u!114 &1974815595
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09fd20f98daa2ac4b8b45840c90bd23b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.TimeScaleController
+  _autoSlowOnDamage: 1
+--- !u!114 &1974815596
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7da788193aea3b4fa9630276fb618ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.GameDirector
+  phaseManager: {fileID: 1974815599}
+  timeScaleController: {fileID: 1974815595}
+  gameOverManager: {fileID: 1974815594}
+  autoSaveHandler: {fileID: 1974815598}
+  resourceFlowLogger: {fileID: 1974815597}
+  explorationBridge: {fileID: 1974815593}
+  encounterBridge: {fileID: 1974815592}
+  techTreeBridge: {fileID: 1974815591}
+  policyBridge: {fileID: 1974815590}
+  battleInitializer: {fileID: 692437901}
+  resultCollector: {fileID: 692437900}
+  battleUIBridge: {fileID: 692437898}
+  battleSceneSetup: {fileID: 692437899}
+  uiController: {fileID: 907423292}
+--- !u!114 &1974815597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5035b93eceab16348bff338ef299d9ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.ResourceFlowLogger
+--- !u!114 &1974815598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f7fba06a7674814ba250e811c04eb45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.AutoSaveHandler
+  phaseManager: {fileID: 1974815599}
+  enableAutoSave: 1
+--- !u!114 &1974815599
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b364c5acea8a7fe4ba8c0b06fd886e42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: ProjectSun.Runtime::ProjectSun.V2.Core.PhaseManager
+  gameState:
+    currentTurn: 1
+    currentPhase: 0
+    resources:
+      basicAmount: 60
+      basicCap: 100
+      advancedAmount: 20
+      advancedCap: 40
+      relicAmount: 0
+    buildings: []
+    citizens: []
+    explorationNodes: []
+    waveHistory: []
+--- !u!4 &1974815600
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974815589}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -836,10 +866,10 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 656973619}
-  - {fileID: 331975596}
-  - {fileID: 371204701}
-  - {fileID: 1671744365}
-  - {fileID: 1452034869}
-  - {fileID: 483604481}
-  - {fileID: 1771277397}
+  - {fileID: 685366045}
+  - {fileID: 1926616097}
+  - {fileID: 1974815600}
+  - {fileID: 692437903}
+  - {fileID: 237674379}
+  - {fileID: 907423294}
+  - {fileID: 1155729895}

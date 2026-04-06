@@ -24,6 +24,8 @@ namespace ProjectSun.V2.Core
         [SerializeField] ResourceFlowLogger resourceFlowLogger;
         [SerializeField] ExplorationBridge explorationBridge;
         [SerializeField] EncounterBridge encounterBridge;
+        [SerializeField] TechTreeBridge techTreeBridge;
+        [SerializeField] PolicyBridge policyBridge;
 
         [Header("Bridge")]
         [SerializeField] BattleInitializer battleInitializer;
@@ -92,6 +94,8 @@ namespace ProjectSun.V2.Core
             autoSaveHandler?.Initialize(_gameState);
             explorationBridge?.Initialize(_gameState);
             encounterBridge?.Initialize(_gameState);
+            techTreeBridge?.Initialize(_gameState);
+            policyBridge?.Initialize(_gameState);
             uiController?.Initialize(_gameState);
 
             // 이벤트 연결
@@ -116,10 +120,14 @@ namespace ProjectSun.V2.Core
             uiController?.HideAllSections();
             resourceFlowLogger?.OnTurnStart(_gameState);
             explorationBridge?.ProcessTurn();
+            techTreeBridge?.ProcessTurn();
 
             // 턴 2 이후 일상 인카운터 시도
             if (_gameState.currentTurn >= 2)
                 encounterBridge?.TryDailyEncounter();
+
+            // 정책 해금 체크
+            policyBridge?.CheckPendingPolicy();
 
             // 낮 HUD + 탭 표시
             uiController?.ShowDayPhase(_gameState);
