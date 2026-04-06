@@ -31,6 +31,9 @@ namespace ProjectSun.V2.Defense
         VisualElement _damageList;
         Label _damageListItems;
 
+        /// <summary>미리보기 닫힘 시 발행. 전투 시작 트리거.</summary>
+        public event Action OnPreviewClosed;
+
         /// <summary>결과 화면 닫힘 시 발행. 다음 턴 진행 트리거.</summary>
         public event Action OnResultClosed;
 
@@ -75,7 +78,11 @@ namespace ProjectSun.V2.Defense
 
         void SetupButtons()
         {
-            _root.Q<Button>("btn-close-preview")?.RegisterCallback<ClickEvent>(_ => HidePreview());
+            _root.Q<Button>("btn-close-preview")?.RegisterCallback<ClickEvent>(_ =>
+            {
+                HidePreview();
+                OnPreviewClosed?.Invoke();
+            });
             _root.Q<Button>("btn-close-result")?.RegisterCallback<ClickEvent>(_ =>
             {
                 HideResult();

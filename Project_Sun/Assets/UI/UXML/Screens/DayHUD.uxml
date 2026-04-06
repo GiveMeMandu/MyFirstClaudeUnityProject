@@ -1,0 +1,35 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/DayHUD.uss" />
+
+    <VisualElement name="day-hud-root" class="day-hud-root">
+        <VisualElement class="day-top-bar">
+
+            <!-- Resources -->
+            <VisualElement class="resource-hud-compact">
+                <VisualElement class="res-item">
+                    <VisualElement class="res-dot res-dot--basic" />
+                    <Label name="res-basic" class="res-value" text="60" />
+                </VisualElement>
+                <VisualElement class="res-item">
+                    <VisualElement class="res-dot res-dot--advanced" />
+                    <Label name="res-advanced" class="res-value" text="20" />
+                </VisualElement>
+                <VisualElement class="res-item">
+                    <VisualElement class="res-dot res-dot--relic" />
+                    <Label name="res-relic" class="res-value" text="0" />
+                </VisualElement>
+                <Label name="turn-badge" class="turn-badge" text="TURN 1" />
+            </VisualElement>
+
+            <!-- Tabs + Night -->
+            <VisualElement class="tab-row">
+                <Button name="tab-construction" class="tab-btn tab-btn--active" text="Construction" />
+                <Button name="tab-workforce" class="tab-btn" text="Workforce" />
+                <Button name="tab-exploration" class="tab-btn" text="Exploration" />
+                <Button name="btn-start-night" class="night-btn" text="START NIGHT" />
+            </VisualElement>
+
+        </VisualElement>
+    </VisualElement>
+</UXML>

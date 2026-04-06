@@ -1,65 +1,89 @@
 using UnityEngine;
+using UnityEngine.UIElements;
+using ProjectSun.V2.Data;
+using ProjectSun.V2.Construction;
 
 namespace ProjectSun.V2.Core
 {
     /// <summary>
-    /// 낮 페이즈 탭 전환 + 밤 시작 IMGUI 버튼.
+    /// 낮 페이즈 HUD — UI Toolkit 탭 바 + 자원 표시 + 밤 시작 버튼.
     /// GameDirector와 연결하여 탭 전환/밤 전환을 제어.
-    /// 추후 UI Toolkit 탭 바로 교체 예정.
     /// </summary>
     public class DayTabController : MonoBehaviour
     {
         [SerializeField] GameDirector director;
+        [SerializeField] UIDocument uiDocument;
 
-        string[] _tabNames = { "Construction", "Workforce", "Exploration" };
+        VisualElement _root;
+        Button _tabConstruction, _tabWorkforce, _tabExploration;
+        Button _btnStartNight;
+        Label _resBasic, _resAdvanced, _resRelic, _turnBadge;
+
         int _selectedTab;
+        GameState _gameState;
 
-        void OnGUI()
+        public void Initialize(GameState state)
         {
-            if (director == null) return;
+            _gameState = state;
+        }
 
-            // 상단 탭 바
-            GUILayout.BeginArea(new Rect(10, 10, 500, 40));
-            GUILayout.BeginHorizontal();
+        void OnEnable()
+        {
+            if (uiDocument == null) return;
+            _root = uiDocument.rootVisualElement;
+            if (_root == null) return;
 
-            for (int i = 0; i < _tabNames.Length; i++)
+            _tabConstruction = _root.Q<Button>("tab-construction");
+            _tabWorkforce = _root.Q<Button>("tab-workforce");
+            _tabExploration = _root.Q<Button>("tab-exploration");
+            _btnStartNight = _root.Q<Button>("btn-start-night");
+            _resBasic = _root.Q<Label>("res-basic");
+            _resAdvanced = _root.Q<Label>("res-advanced");
+            _resRelic = _root.Q<Label>("res-relic");
+            _turnBadge = _root.Q<Label>("turn-badge");
+
+            _tabConstruction?.RegisterCallback<ClickEvent>(_ => SelectTab(0));
+            _tabWorkforce?.RegisterCallback<ClickEvent>(_ => SelectTab(1));
+            _tabExploration?.RegisterCallback<ClickEvent>(_ => SelectTab(2));
+            _btnStartNight?.RegisterCallback<ClickEvent>(_ => director?.StartNight());
+        }
+
+        void SelectTab(int index)
+        {
+            _selectedTab = index;
+
+            _tabConstruction?.RemoveFromClassList("tab-btn--active");
+            _tabWorkforce?.RemoveFromClassList("tab-btn--active");
+            _tabExploration?.RemoveFromClassList("tab-btn--active");
+
+            switch (index)
             {
-                var style = i == _selectedTab ? GUI.skin.button : GUI.skin.box;
-                if (GUILayout.Button(_tabNames[i], style, GUILayout.Width(120), GUILayout.Height(30)))
-                {
-                    _selectedTab = i;
-                    director.ShowDayTab(i);
-                }
+                case 0: _tabConstruction?.AddToClassList("tab-btn--active"); break;
+                case 1: _tabWorkforce?.AddToClassList("tab-btn--active"); break;
+                case 2: _tabExploration?.AddToClassList("tab-btn--active"); break;
             }
 
-            GUILayout.FlexibleSpace();
+            director?.ShowDayTab(index);
+        }
 
-            // 밤 시작 버튼
-            GUI.backgroundColor = new Color(0.9f, 0.3f, 0.3f);
-            if (GUILayout.Button("START NIGHT", GUILayout.Width(120), GUILayout.Height(30)))
-            {
-                director.StartNight();
-            }
-            GUI.backgroundColor = Color.white;
+        void Update()
+        {
+            if (_gameState == null) return;
 
-            // 밤 확인 버튼 (미리보기 후)
-            GUI.backgroundColor = new Color(1f, 0.5f, 0.2f);
-            if (GUILayout.Button("CONFIRM", GUILayout.Width(80), GUILayout.Height(30)))
-            {
-                director.ConfirmNight();
-            }
-            GUI.backgroundColor = Color.white;
+            _resBasic?.SetText(_gameState.resources.basicAmount.ToString());
+            _resAdvanced?.SetText(_gameState.resources.advancedAmount.ToString());
+            _resRelic?.SetText(_gameState.resources.relicAmount.ToString());
+            _turnBadge?.SetText($"TURN {_gameState.currentTurn}");
+        }
 
-            // 밤 종료 버튼
-            GUI.backgroundColor = new Color(0.3f, 0.7f, 0.3f);
-            if (GUILayout.Button("END NIGHT", GUILayout.Width(100), GUILayout.Height(30)))
-            {
-                director.EndNight();
-            }
-            GUI.backgroundColor = Color.white;
+        public void Show()
+        {
+            if (_root != null) _root.style.display = DisplayStyle.Flex;
+        }
 
-            GUILayout.EndHorizontal();
-            GUILayout.EndArea();
+        public void Hide()
+        {
+            if (_root != null) _root.style.display = DisplayStyle.None;
         }
     }
 }

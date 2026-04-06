@@ -37,6 +37,7 @@ public static class GameSceneBuilder
         var autoSave = directorGO.AddComponent<AutoSaveHandler>();
         var flowLogger = directorGO.AddComponent<ResourceFlowLogger>();
         var explorationBridge = directorGO.AddComponent<ExplorationBridge>();
+        var encounterBridge = directorGO.AddComponent<EncounterBridge>();
 
         // Wire core refs
         SetField(director, "phaseManager", phaseManager);
@@ -45,6 +46,7 @@ public static class GameSceneBuilder
         SetField(director, "autoSaveHandler", autoSave);
         SetField(director, "resourceFlowLogger", flowLogger);
         SetField(director, "explorationBridge", explorationBridge);
+        SetField(director, "encounterBridge", encounterBridge);
         SetField(autoSave, "phaseManager", phaseManager);
         SetField(gameOver, "battleUIBridge", null); // wired below
 
@@ -76,6 +78,8 @@ public static class GameSceneBuilder
             "UI_ExplorationTab", "Assets/UI/UXML/Screens/ExplorationTab.uxml", panelSettings);
         var wavePreview = CreatePresenter<WavePreviewPresenter>(
             "UI_WavePreview", "Assets/UI/UXML/Screens/WavePreview.uxml", panelSettings);
+        var encounterPopup = CreatePresenter<EncounterPopupPresenter>(
+            "UI_EncounterPopup", "Assets/UI/UXML/Screens/EncounterPopup.uxml", panelSettings);
 
         // Wire presenter refs to director
         SetField(director, "menuPresenter", menuPresenter.GetComponent<MenuScreenPresenter>());
@@ -84,17 +88,21 @@ public static class GameSceneBuilder
         SetField(director, "workforceTab", workforceTab.GetComponent<WorkforceTabPresenter>());
         SetField(director, "explorationTab", explorationTab.GetComponent<ExplorationTabPresenter>());
         SetField(director, "wavePreview", wavePreview.GetComponent<WavePreviewPresenter>());
+        SetField(director, "encounterPopup", encounterPopup.GetComponent<EncounterPopupPresenter>());
 
         // Wire sub-refs for presenters
         SetField(battleHUD.GetComponent<BattleHUDPresenter>(), "battleUIBridge", uiBridge);
         SetField(battleHUD.GetComponent<BattleHUDPresenter>(), "timeScaleController", timeScale);
         SetField(battleHUD.GetComponent<BattleHUDPresenter>(), "gameOverManager", gameOver);
         SetField(explorationTab.GetComponent<ExplorationTabPresenter>(), "explorationBridge", explorationBridge);
+        SetField(encounterPopup.GetComponent<EncounterPopupPresenter>(), "encounterBridge", encounterBridge);
 
-        // ── 5. Day Tab Buttons (IMGUI fallback) ──
-        var tabGO = new GameObject("DayTabController");
-        var tabCtrl = tabGO.AddComponent<DayTabController>();
+        // ── 5. Day Tab Controller (UI Toolkit) ──
+        var tabPresenter = CreatePresenter<DayTabController>(
+            "UI_DayHUD", "Assets/UI/UXML/Screens/DayHUD.uxml", panelSettings);
+        var tabCtrl = tabPresenter.GetComponent<DayTabController>();
         SetField(tabCtrl, "director", director);
+        SetField(director, "dayTabController", tabCtrl);
 
         // ── 6. Camera ──
         var cam = Camera.main;

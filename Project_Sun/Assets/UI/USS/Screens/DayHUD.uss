@@ -1,0 +1,107 @@
+/* === Day Phase HUD — Tab Bar + Resource Display + Night Button === */
+
+.day-hud-root {
+    position: absolute;
+    left: 0; right: 0; top: 0;
+    flex-direction: column;
+    picking-mode: Ignore;
+}
+
+/* ── Top Bar ── */
+.day-top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    background-color: rgba(15, 13, 20, 0.9);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+}
+
+/* Resource display */
+.resource-hud-compact {
+    flex-direction: row;
+    align-items: center;
+}
+
+.res-item {
+    flex-direction: row;
+    align-items: center;
+    margin-right: 16px;
+}
+
+.res-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    margin-right: 4px;
+}
+
+.res-dot--basic { background-color: var(--color-resource-basic); }
+.res-dot--advanced { background-color: var(--color-resource-advanced); }
+.res-dot--relic { background-color: var(--color-resource-relic); }
+
+.res-value {
+    font-size: var(--font-size-md);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+}
+
+.turn-badge {
+    font-size: var(--font-size-md);
+    color: var(--color-turn);
+    -unity-font-style: bold;
+    margin-left: 8px;
+}
+
+/* Tab buttons */
+.tab-row {
+    flex-direction: row;
+    align-items: center;
+}
+
+.tab-btn {
+    height: 32px;
+    min-width: 100px;
+    margin: 0 2px;
+    padding: 0 16px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+    border-width: 1px;
+    border-color: var(--color-border);
+    border-bottom-width: 0;
+    color: var(--color-text-secondary);
+    font-size: var(--font-size-sm);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.tab-btn:hover {
+    background-color: var(--color-bg-hover);
+    color: var(--color-text-primary);
+}
+
+.tab-btn--active {
+    background-color: var(--color-bg-panel);
+    color: var(--color-text-primary);
+    border-color: var(--color-accent);
+    border-top-width: 2px;
+    border-top-color: var(--color-accent);
+}
+
+/* Night button */
+.night-btn {
+    height: 32px;
+    padding: 0 20px;
+    margin-left: 12px;
+    background-color: rgb(180, 60, 60);
+    border-radius: var(--radius-sm);
+    border-width: 0;
+    color: white;
+    font-size: var(--font-size-sm);
+    -unity-font-style: bold;
+}
+
+.night-btn:hover {
+    background-color: rgb(200, 80, 80);
+}

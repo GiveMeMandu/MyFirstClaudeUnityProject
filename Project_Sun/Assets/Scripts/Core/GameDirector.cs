@@ -40,10 +40,9 @@ namespace ProjectSun.V2.Core
         [SerializeField] ExplorationTabPresenter explorationTab;
         [SerializeField] WavePreviewPresenter wavePreview;
         [SerializeField] EncounterPopupPresenter encounterPopup;
+        [SerializeField] DayTabController dayTabController;
 
-        [Header("Day Phase Tab")]
-        [SerializeField] int activeTab; // 0=건설, 1=관리, 2=탐험
-
+        int activeTab;
         GameState _gameState;
         bool _gameActive;
 
@@ -97,6 +96,7 @@ namespace ProjectSun.V2.Core
             autoSaveHandler?.Initialize(_gameState);
             explorationBridge?.Initialize(_gameState);
             encounterBridge?.Initialize(_gameState);
+            dayTabController?.Initialize(_gameState);
             constructionTab?.Initialize(_gameState);
             workforceTab?.Initialize(_gameState);
             explorationTab?.Initialize(_gameState);
@@ -109,7 +109,10 @@ namespace ProjectSun.V2.Core
             if (resultCollector != null)
                 resultCollector.OnDefenseResultPublished += OnDefenseResult;
             if (wavePreview != null)
+            {
+                wavePreview.OnPreviewClosed += ConfirmNight;
                 wavePreview.OnResultClosed += OnResultClosed;
+            }
 
             gameOverManager?.Reset();
             _gameActive = true;
@@ -130,7 +133,8 @@ namespace ProjectSun.V2.Core
             if (_gameState.currentTurn >= 2)
                 encounterBridge?.TryDailyEncounter();
 
-            // 낮 탭 표시
+            // 낮 HUD + 탭 표시
+            dayTabController?.Show();
             ShowDayTab(activeTab);
 
             Debug.Log($"[GameDirector] === DAY {_gameState.currentTurn} ===");
@@ -159,6 +163,9 @@ namespace ProjectSun.V2.Core
 
             resourceFlowLogger?.OnDayEnd(_gameState);
 
+            // 낮 UI 숨기기
+            HideDayUI();
+
             // 웨이브 미리보기 표시
             var scoutLevel = ScoutLevel.Unknown;
             if (explorationBridge?.ScoutData != null)
@@ -167,9 +174,11 @@ namespace ProjectSun.V2.Core
             int estimatedEnemies = Mathf.RoundToInt(10 * Mathf.Pow(1.2f, _gameState.currentTurn - 1));
             int waveCount = _gameState.currentTurn <= 5 ? 1 : _gameState.currentTurn <= 15 ? 2 : 3;
             wavePreview?.ShowPreview(_gameState.currentTurn, estimatedEnemies, waveCount, scoutLevel);
+
+            Debug.Log($"[GameDirector] Wave preview shown — {estimatedEnemies} enemies, {waveCount} waves");
         }
 
-        /// <summary>미리보기 확인 후 실제 전투 시작. 미리보기 닫기 버튼 대신 직접 호출용.</summary>
+        /// <summary>미리보기 CLOSE 버튼 → 전투 시작.</summary>
         public void ConfirmNight()
         {
             if (!_gameActive) return;
@@ -256,13 +265,19 @@ namespace ProjectSun.V2.Core
             Debug.Log($"[GameDirector] GAME OVER — {reason}");
         }
 
+        void HideDayUI()
+        {
+            dayTabController?.Hide();
+            constructionTab?.Hide();
+            workforceTab?.Hide();
+            explorationTab?.Hide();
+        }
+
         void HideAllGameUI()
         {
             menuPresenter?.HideAll();
             battleHUD?.Hide();
-            constructionTab?.Hide();
-            workforceTab?.Hide();
-            explorationTab?.Hide();
+            HideDayUI();
             wavePreview?.HidePreview();
             wavePreview?.HideResult();
         }
@@ -276,7 +291,10 @@ namespace ProjectSun.V2.Core
             if (resultCollector != null)
                 resultCollector.OnDefenseResultPublished -= OnDefenseResult;
             if (wavePreview != null)
+            {
+                wavePreview.OnPreviewClosed -= ConfirmNight;
                 wavePreview.OnResultClosed -= OnResultClosed;
+            }
         }
 
         GameState CreateDefaultGameState()
