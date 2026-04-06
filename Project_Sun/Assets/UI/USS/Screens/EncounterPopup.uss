@@ -1,0 +1,61 @@
+/* === Encounter Popup (SF-UX-005) === */
+
+.encounter-overlay {
+    position: absolute;
+    left: 0; right: 0; top: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+}
+
+.encounter-panel {
+    width: 480px;
+    background-color: var(--color-bg-panel);
+    border-radius: var(--radius-lg);
+    border-width: 2px;
+    border-color: var(--color-border-highlight);
+    padding: 28px;
+}
+
+.encounter-title {
+    font-size: var(--font-size-xl);
+    color: var(--color-turn);
+    -unity-font-style: bold;
+    -unity-text-align: upper-center;
+    margin-bottom: 12px;
+}
+
+.encounter-desc {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-text-align: upper-center;
+    white-space: normal;
+    margin-bottom: 20px;
+}
+
+.choice-list {
+    margin-bottom: 8px;
+}
+
+.choice-btn {
+    height: 44px;
+    margin-bottom: 8px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    -unity-text-align: middle-center;
+    transition-property: background-color, border-color;
+    transition-duration: 150ms;
+}
+
+.choice-btn:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-accent);
+}
+
+.choice-btn--cost {
+    color: var(--color-resource-advanced);
+}
