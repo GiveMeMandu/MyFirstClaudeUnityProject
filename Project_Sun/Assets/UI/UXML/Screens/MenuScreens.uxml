@@ -1,0 +1,74 @@
+<UXML xmlns="UnityEngine.UIElements">
+    <Style src="../../USS/Theme/Variables.uss" />
+    <Style src="../../USS/Screens/MenuScreens.uss" />
+
+    <VisualElement name="menu-root" style="flex-grow: 1;" picking-mode="Ignore">
+
+        <!-- ═══ 1. Main Menu (SCR-01) ═══ -->
+        <VisualElement name="main-menu" class="menu-fullscreen menu-bg">
+            <VisualElement class="menu-panel">
+                <Label class="menu-title" text="PROJECT SUN" />
+                <Label class="menu-subtitle" text="Survive the Night, Build the Dawn" />
+
+                <Button name="btn-new-game" class="menu-btn menu-btn--primary" text="NEW GAME" />
+                <Button name="btn-continue" class="menu-btn" text="CONTINUE" />
+                <Button name="btn-settings" class="menu-btn" text="SETTINGS" />
+                <Button name="btn-quit" class="menu-btn" text="QUIT" />
+
+                <Label class="version-label" text="v0.2 Alpha — M2" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ═══ 2. Base Select (SCR-02) ═══ -->
+        <VisualElement name="base-select" class="menu-fullscreen menu-bg" style="display: none;">
+            <VisualElement class="menu-panel">
+                <Label class="menu-title" text="SELECT BASE" />
+                <Label class="menu-subtitle" text="Choose your starting location" />
+
+                <!-- MVP: 1 base -->
+                <VisualElement name="base-card-0" class="base-card base-card--selected">
+                    <Label class="base-name" text="Outpost Alpha" />
+                    <Label class="base-desc" text="A small settlement at the edge of the wasteland. Moderate resources, standard threats." />
+                    <Label class="base-difficulty" text="Difficulty: Normal" />
+                </VisualElement>
+
+                <Button name="btn-start-game" class="menu-btn menu-btn--primary" text="START" />
+                <Button name="btn-back-menu" class="menu-btn" text="BACK" />
+            </VisualElement>
+        </VisualElement>
+
+        <!-- ═══ 3. Game Over / Victory (SCR-08) ═══ -->
+        <VisualElement name="game-over-screen" class="menu-fullscreen menu-bg" style="display: none;">
+            <VisualElement class="menu-panel">
+                <Label name="gameover-title" class="gameover-title gameover-title--defeat" text="GAME OVER" />
+
+                <VisualElement class="gameover-stats">
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Turns Survived" />
+                        <Label name="stat-turns" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Citizens" />
+                        <Label name="stat-citizens" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Buildings" />
+                        <Label name="stat-buildings" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Enemies Defeated" />
+                        <Label name="stat-enemies" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                    <VisualElement class="gameover-stat-row">
+                        <Label class="gameover-stat-label" text="Total Resources" />
+                        <Label name="stat-resources" class="gameover-stat-value" text="0" />
+                    </VisualElement>
+                </VisualElement>
+
+                <Button name="btn-retry" class="menu-btn menu-btn--primary" text="RETRY" />
+                <Button name="btn-to-menu" class="menu-btn" text="MAIN MENU" />
+            </VisualElement>
+        </VisualElement>
+
+    </VisualElement>
+</UXML>
