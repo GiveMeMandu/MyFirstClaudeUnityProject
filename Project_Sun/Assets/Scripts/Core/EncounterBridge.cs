@@ -19,26 +19,68 @@ namespace ProjectSun.V2.Core
         GameState _gameState;
         int _consecutiveMisses;
 
-        // 인카운터 정의 (스텁: SO 대신 하드코딩)
+        // SF-ENC-004/005: 인카운터 콘텐츠 (M3에서 SO로 분리 예정)
         static readonly EncounterData[] DailyEncounters =
         {
             new() { Id = "daily_trade", Title = "Wandering Merchant",
                 Description = "A trader offers supplies in exchange for advanced materials.",
                 Choices = new[] {
                     new ChoiceData { Text = "Trade (5 Advanced → 15 Basic)", CostAdvanced = 5, RewardBasic = 15 },
-                    new ChoiceData { Text = "Decline", CostAdvanced = 0, RewardBasic = 0 }
+                    new ChoiceData { Text = "Decline" }
                 }},
             new() { Id = "daily_scout", Title = "Scout Report",
                 Description = "Your scouts spotted a supply cache nearby.",
                 Choices = new[] {
                     new ChoiceData { Text = "Retrieve (+8 Basic)", RewardBasic = 8 },
-                    new ChoiceData { Text = "Ignore", RewardBasic = 0 }
+                    new ChoiceData { Text = "Ignore" }
                 }},
             new() { Id = "daily_storm", Title = "Dust Storm",
                 Description = "A storm approaches. Reinforce or shelter?",
                 Choices = new[] {
-                    new ChoiceData { Text = "Reinforce (-5 Basic, buildings safe)", CostBasic = 5 },
-                    new ChoiceData { Text = "Shelter (random building -20 HP)", BuildingDamage = 20 }
+                    new ChoiceData { Text = "Reinforce (-5 Basic)", CostBasic = 5 },
+                    new ChoiceData { Text = "Shelter (building -20 HP)", BuildingDamage = 20 }
+                }},
+            new() { Id = "daily_harvest", Title = "Wild Growth",
+                Description = "Unusual plants sprouted near the base overnight.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Harvest (+6 Basic)", RewardBasic = 6 },
+                    new ChoiceData { Text = "Study (+2 Advanced)", RewardAdvanced = 2 }
+                }},
+            new() { Id = "daily_refugee", Title = "Lone Wanderer",
+                Description = "A lone survivor approaches, wounded but willing to work.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Take in (+1 citizen, injured)", RewardCitizens = 1, InjuryCitizen = true },
+                    new ChoiceData { Text = "Give supplies (-3 Basic)", CostBasic = 3 }
+                }},
+            new() { Id = "daily_cache", Title = "Hidden Cache",
+                Description = "Workers found a buried container during construction.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Open it (+4 Advanced)", RewardAdvanced = 4 },
+                    new ChoiceData { Text = "Too risky (building -10 HP)", BuildingDamage = 10 }
+                }},
+            new() { Id = "daily_fog", Title = "Strange Fog",
+                Description = "A thick fog rolled in. Visibility is near zero.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Stay alert (-2 Basic for torches)", CostBasic = 2 },
+                    new ChoiceData { Text = "Wait it out" }
+                }},
+            new() { Id = "daily_repair", Title = "Makeshift Repairs",
+                Description = "Citizens found salvageable parts from wreckage.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Use for repairs (+10 Basic)", RewardBasic = 10 },
+                    new ChoiceData { Text = "Craft tools (+1 Advanced)", RewardAdvanced = 1 }
+                }},
+            new() { Id = "daily_morale", Title = "Campfire Stories",
+                Description = "Citizens gathered to share stories of the old world.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Join them (community)" },
+                    new ChoiceData { Text = "Keep working (+3 Basic)", RewardBasic = 3 }
+                }},
+            new() { Id = "daily_earthquake", Title = "Minor Tremor",
+                Description = "The ground shook briefly. Some structures may be affected.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Inspect all (-3 Basic)", CostBasic = 3 },
+                    new ChoiceData { Text = "Ignore (building -15 HP)", BuildingDamage = 15 }
                 }},
         };
 
@@ -49,14 +91,35 @@ namespace ProjectSun.V2.Core
                 Choices = new[] {
                     new ChoiceData { Text = "Welcome all (+2 citizens, -10 Basic)", RewardCitizens = 2, CostBasic = 10 },
                     new ChoiceData { Text = "Select skilled only (+1 citizen)", RewardCitizens = 1 },
-                    new ChoiceData { Text = "Turn away (+5 Basic from their supplies)", RewardBasic = 5 }
+                    new ChoiceData { Text = "Turn away (+5 Basic)", RewardBasic = 5 }
                 }},
             new() { Id = "major_ruin", Title = "Ancient Ruin",
                 Description = "Explorers found a ruin with strange technology.",
                 Choices = new[] {
-                    new ChoiceData { Text = "Excavate carefully (+1 Relic, 3 turns)", RewardRelic = 1 },
+                    new ChoiceData { Text = "Excavate carefully (+1 Relic)", RewardRelic = 1 },
                     new ChoiceData { Text = "Rush extraction (+3 Advanced, risk injury)", RewardAdvanced = 3, InjuryCitizen = true },
-                    new ChoiceData { Text = "Seal it (no risk, no reward)" }
+                    new ChoiceData { Text = "Seal it (no risk)" }
+                }},
+            new() { Id = "major_caravan", Title = "Trade Caravan",
+                Description = "A well-armed caravan offers a major trade deal.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Buy supplies (-8 Advanced → +25 Basic)", CostAdvanced = 8, RewardBasic = 25 },
+                    new ChoiceData { Text = "Sell excess (-15 Basic → +6 Advanced)", CostBasic = 15, RewardAdvanced = 6 },
+                    new ChoiceData { Text = "No deal" }
+                }},
+            new() { Id = "major_raiders", Title = "Raider Threat",
+                Description = "Raiders spotted nearby. They demand tribute or fight.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Pay tribute (-10 Basic, -3 Advanced)", CostBasic = 10, CostAdvanced = 3 },
+                    new ChoiceData { Text = "Fight (building -30 HP, +1 citizen)", BuildingDamage = 30, RewardCitizens = 1 },
+                    new ChoiceData { Text = "Negotiate (-5 Basic)", CostBasic = 5 }
+                }},
+            new() { Id = "major_artifact", Title = "Mysterious Artifact",
+                Description = "An expedition returned with a glowing artifact of unknown origin.",
+                Choices = new[] {
+                    new ChoiceData { Text = "Research (+2 Relic)", RewardRelic = 2 },
+                    new ChoiceData { Text = "Trade for supplies (+20 Basic)", RewardBasic = 20 },
+                    new ChoiceData { Text = "Destroy it (citizen injured)", InjuryCitizen = true }
                 }},
         };
 
