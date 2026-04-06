@@ -191,7 +191,7 @@ namespace ProjectSun.V2.Defense.Bridge
 
         void CollectBuildingResults(EntityManager em, GameState gameState, WaveResult result)
         {
-            var query = em.CreateEntityQuery(
+            using var query = em.CreateEntityQuery(
                 ComponentType.ReadOnly<BuildingTag>(),
                 ComponentType.ReadOnly<BuildingData>());
 
@@ -238,7 +238,7 @@ namespace ProjectSun.V2.Defense.Bridge
         void CollectEnemyResults(EntityManager em, WaveResult result)
         {
             // BattleStatistics 싱글턴에서 읽기 (우선)
-            var statsQuery = em.CreateEntityQuery(ComponentType.ReadOnly<BattleStatistics>());
+            using var statsQuery = em.CreateEntityQuery(ComponentType.ReadOnly<BattleStatistics>());
             if (statsQuery.CalculateEntityCount() > 0)
             {
                 using var statsEntities = statsQuery.ToEntityArray(Unity.Collections.Allocator.Temp);
@@ -260,7 +260,7 @@ namespace ProjectSun.V2.Defense.Bridge
         /// </summary>
         void CollectSquadResults(EntityManager em, GameState gameState)
         {
-            var query = em.CreateEntityQuery(
+            using var query = em.CreateEntityQuery(
                 ComponentType.ReadOnly<SquadTag>(),
                 ComponentType.ReadOnly<SquadId>(),
                 ComponentType.ReadOnly<SquadStats>());
@@ -315,10 +315,10 @@ namespace ProjectSun.V2.Defense.Bridge
         /// </summary>
         void CollectEnemyResultsFallback(EntityManager em, WaveResult result)
         {
-            var allQuery = em.CreateEntityQuery(ComponentType.ReadOnly<EnemyTag>());
+            using var allQuery = em.CreateEntityQuery(ComponentType.ReadOnly<EnemyTag>());
             int total = allQuery.CalculateEntityCount();
 
-            var aliveQuery = em.CreateEntityQuery(
+            using var aliveQuery = em.CreateEntityQuery(
                 ComponentType.ReadOnly<EnemyTag>(),
                 ComponentType.Exclude<DeadTag>());
             int alive = aliveQuery.CalculateEntityCount();

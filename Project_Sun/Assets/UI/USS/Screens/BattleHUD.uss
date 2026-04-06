@@ -1,0 +1,247 @@
+/* === Battle HUD — Night Phase Combat UI (SF-WD-013) === */
+
+/* ── Top Bar: Wave + Enemy Count ── */
+.battle-top-bar {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: rgba(15, 13, 20, 0.85);
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+}
+
+.wave-info {
+    flex-direction: row;
+    align-items: center;
+}
+
+.wave-label {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-primary);
+    -unity-font-style: bold;
+    margin-right: 12px;
+}
+
+.wave-progress-container {
+    width: 200px;
+    height: 16px;
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    border-width: 1px;
+    border-color: var(--color-border);
+    overflow: hidden;
+}
+
+.wave-progress-fill {
+    height: 100%;
+    width: 0%;
+    background-color: var(--color-accent);
+    border-radius: 7px;
+    transition-property: width;
+    transition-duration: 300ms;
+}
+
+.enemy-count {
+    flex-direction: row;
+    align-items: center;
+}
+
+.enemy-count-label {
+    font-size: var(--font-size-lg);
+    color: var(--color-insufficient);
+    -unity-font-style: bold;
+}
+
+/* ── Left Panel: Squad Status ── */
+.squad-panel {
+    position: absolute;
+    left: 12px;
+    top: 60px;
+    width: 180px;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    padding: 8px;
+}
+
+.squad-panel-title {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.squad-hp-bar-bg {
+    height: 12px;
+    background-color: var(--color-bg-card);
+    border-radius: 6px;
+    margin-bottom: 4px;
+    overflow: hidden;
+}
+
+.squad-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-sufficient);
+    border-radius: 5px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+.squad-hp-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+    -unity-text-align: middle-center;
+}
+
+/* ── Right Panel: Building HP ── */
+.building-panel {
+    position: absolute;
+    right: 12px;
+    top: 60px;
+    width: 200px;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    padding: 8px;
+}
+
+.building-panel-title {
+    font-size: var(--font-size-md);
+    color: var(--color-text-secondary);
+    -unity-font-style: bold;
+    margin-bottom: 6px;
+}
+
+.hq-section {
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom-width: 1px;
+    border-bottom-color: var(--color-border);
+}
+
+.hq-label {
+    font-size: var(--font-size-md);
+    color: var(--color-turn);
+    -unity-font-style: bold;
+    margin-bottom: 4px;
+}
+
+.hq-hp-bar-bg {
+    height: 16px;
+    background-color: var(--color-bg-card);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.hq-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-turn);
+    border-radius: 7px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+.hq-hp-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-primary);
+    -unity-text-align: middle-center;
+    margin-top: 2px;
+}
+
+.building-total-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-dim);
+}
+
+.building-hp-bar-bg {
+    height: 10px;
+    background-color: var(--color-bg-card);
+    border-radius: 5px;
+    margin-top: 4px;
+    overflow: hidden;
+}
+
+.building-hp-bar-fill {
+    height: 100%;
+    width: 100%;
+    background-color: var(--color-accent);
+    border-radius: 4px;
+    transition-property: width;
+    transition-duration: 200ms;
+}
+
+/* ── Bottom Bar: Speed Controls ── */
+.speed-controls {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    flex-direction: row;
+    align-items: center;
+    background-color: rgba(20, 18, 24, 0.85);
+    border-radius: var(--radius-md);
+    border-width: 1px;
+    border-color: var(--color-border);
+    padding: 6px 8px;
+}
+
+.speed-btn {
+    width: 48px;
+    height: 36px;
+    margin: 0 4px;
+    background-color: var(--color-bg-card);
+    border-radius: var(--radius-sm);
+    border-width: 1px;
+    border-color: var(--color-border);
+    color: var(--color-text-primary);
+    font-size: var(--font-size-md);
+    -unity-font-style: bold;
+    -unity-text-align: middle-center;
+}
+
+.speed-btn:hover {
+    background-color: var(--color-bg-hover);
+    border-color: var(--color-border-highlight);
+}
+
+.speed-btn--active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent-hover);
+    color: white;
+}
+
+.speed-label {
+    font-size: var(--font-size-sm);
+    color: var(--color-text-secondary);
+    margin-right: 8px;
+}
+
+/* ── Game Over Overlay ── */
+.game-over-overlay {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+.game-over-text {
+    font-size: 48px;
+    color: var(--color-insufficient);
+    -unity-font-style: bold;
+    letter-spacing: 8px;
+}
+
+.game-over-sub {
+    font-size: var(--font-size-lg);
+    color: var(--color-text-secondary);
+    margin-top: 12px;
+}

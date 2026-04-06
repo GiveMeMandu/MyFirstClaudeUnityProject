@@ -78,7 +78,26 @@ namespace ProjectSun.V2.Defense.Bridge
         public void Deactivate()
         {
             _active = false;
+            DisposeQueries();
             Debug.Log("[BattleUIBridge] Deactivated");
+        }
+
+        void OnDestroy()
+        {
+            DisposeQueries();
+        }
+
+        void DisposeQueries()
+        {
+            var world = World.DefaultGameObjectInjectionWorld;
+            if (world == null || !world.IsCreated) return;
+
+            _allEnemyQuery.Dispose();
+            _aliveEnemyQuery.Dispose();
+            _buildingQuery.Dispose();
+            _squadQuery.Dispose();
+            _waveManagerQuery.Dispose();
+            _battleStatsQuery.Dispose();
         }
 
         void Update()
